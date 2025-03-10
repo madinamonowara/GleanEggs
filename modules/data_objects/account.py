@@ -1,4 +1,7 @@
+<<<<<<< HEAD
 import modules.firebase_connection
+=======
+>>>>>>> 23c49e2 (Initial commit)
 # User Accounts for our app
 #
 #

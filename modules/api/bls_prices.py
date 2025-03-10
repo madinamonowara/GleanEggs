@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 from modules.api import get_prices_now
 import requests
 import json
@@ -50,3 +51,11 @@ class BLSData(get_prices_now.APIPriceConnection):
 
 >>>>>>> 8e54880 (.)
 api = BLSData()
+=======
+from get_prices_now import APIPriceConnection
+
+class BLSData(APIPriceConnection):
+    #custom function to get BLS data
+    def get_price_for(self, item):
+        return super().get_price_for()
+>>>>>>> 23c49e2 (Initial commit)
