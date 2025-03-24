@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grocery List - GleanEggs</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <nav class="top-menu">
+            <button onclick="location.href='grocerystores.html'">🛒 Grocery Stores</button>
+            <button onclick="location.href='recipes.html'">🍳 Recipes</button>
+            <button onclick="location.href='charts.html'">📊 Charts</button>
+        </nav>
+    </header>
+
+    <main>
+        <h2>Hey, Here’s Your Grocery List</h2>
+
+        <section class="grocery-list">
+            <div class="grocery-item">
+                <img src="https://hips.hearstapps.com/hmg-prod/images/ripe-apple-royalty-free-image-1659454396.jpg?crop=0.924xw:0.679xh;0.0197xw,0.212xh&resize=980:*" alt="Apples">
+                <div class="item-details">
+                    <p class="item-name">Apples 2x</p>
+                    <p class="item-price">$2.99 at Whole Foods</p>
+                </div>
+            </div>
+        
+            <div class="grocery-item">
+                <img src="https://dtgxwmigmg3gc.cloudfront.net/imagery/assets/derivations/icon/256/256/true/eyJpZCI6IjYxOTFkMjY5ZGRlMDExYTQwMTE0NWFjZDdkNmE1YjUzLnBuZyIsInN0b3JhZ2UiOiJwdWJsaWNfc3RvcmUifQ?signature=0bf11805abb214f348c94973995475c345399572376edfad484b9ac777818047" alt="Eggs">
+                <div class="item-details">
+                    <p class="item-name">Eggs 1x</p>
+                    <p class="item-price">$3.49 at Whole Foods</p>
+                </div>
+            </div>
+        </section>
+ 
+        <h3>Add to List:</h3>
+        <section class="add-list">
+            <button class="add-item">🍎 Apples</button>
+            <button class="add-item">🥩 Steak</button>
+            <button class="add-item">🥦 Broccoli</button>
+        </section>
+
+        <button class="save-btn">Save to Buy Later</button>
+        <button class="add-btn">Add to Grocery List</button>
+
+        <section class="map">
+            <img src="https://pp.walk.sc/tile/e/0/748x600/loc/lat=34.0342792/lng=-118.3620419.png" alt="Store Locations">
+            <p>Store Locations</p>
+        </section>
+    </main>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background: #f9f9f9;
+            margin: 0;
+            padding: 0;
+        }
+
+        .top-menu {
+            display: flex;
+            justify-content: space-around;
+            background: white;
+            padding: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .menu-item {
+            font-size: 14px;
+        }
+
+        h2 {
+            margin-top: 20px;
+            font-size: 22px;
+        }
+
+        .grocery-list {
+            background: white;
+            padding: 15px;
+            margin: 20px;
+            border-radius: 10px;
+            box-shadow: 2px 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .grocery-item {
+            display: flex;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .grocery-item img {
+            width: 50px;
+            height: 50px;
+            border-radius: 5px;
+            margin-right: 10px;
+        }
+
+        .item-details {
+            text-align: left;
+        }
+
+        .item-name {
+            font-weight: bold;
+        }
+
+        .item-price {
+            color: gray;
+            font-size: 14px;
+        }
+
+        .add-list {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin: 20px 0;
+        }
+
+        .add-item {
+            background: white;
+            border: 1px solid #ddd;
+            padding: 8px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .save-btn, .add-btn {
+            display: block;
+            width: 80%;
+            margin: 10px auto;
+            padding: 12px;
+            font-size: 16px;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+        }
+
+        .save-btn {
+            background: white;
+            border: 1px solid black;
+        }
+
+        .add-btn {
+            background: black;
+            color: white;
+        }
+
+        .scroll-text {
+            font-size: 14px;
+            color: gray;
+            margin-top: 10px;
+        }
+
+        .map {
+            margin: 20px 0;
+        }
+
+        .map img {
+            width: 80%;
+            border-radius: 10px;
+        }
+    </style>
+</body>
+</html>
+
+
