@@ -15,7 +15,6 @@ def get_base_list(data = ""):
     """
 
 
-
     response = client.chat.completions.create(
         model="deepseek-chat",
         messages=[

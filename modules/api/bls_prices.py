@@ -37,6 +37,7 @@ class BLSData(get_prices_now.APIPriceConnection):
 <<<<<<< HEAD
                 print(prices)
             
+<<<<<<< HEAD
 =======
                 output[our_id] = prices[0]
         return output
@@ -59,3 +60,6 @@ class BLSData(get_prices_now.APIPriceConnection):
     def get_price_for(self, item):
         return super().get_price_for()
 >>>>>>> 23c49e2 (Initial commit)
+=======
+api = BLSData()
+>>>>>>> 98c649b (api_work)
