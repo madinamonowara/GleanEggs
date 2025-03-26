@@ -13,7 +13,6 @@ class BLSData(get_prices_now.APIPriceConnection):
         
         jr = json.loads(resp.text,object_hook=lambda d: SimpleNamespace(**d))
         
-        print("hello"+str(jr))
         price_points = []
         for result in jr.Results:
             date = datetime.datetime(result.year, result.period[1:].ltrim('0'), 1)
@@ -36,6 +35,4 @@ class BLSData(get_prices_now.APIPriceConnection):
                 prices = self.get_price_for(bls_id)
                 print(prices)
             
-            
-
 api = BLSData()
