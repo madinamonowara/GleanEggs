@@ -1,1 +1,4 @@
 templates/.env.local
+
+keys.py
+.venv

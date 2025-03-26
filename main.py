@@ -2,6 +2,14 @@ from flask import Flask, render_template
 from modules.api import bls_prices
 import datetime
 import math
+try:
+    import keys
+except:
+    print('NO KEYS DETECTED')
+    exit()
+
+from modules.api import ai_integration
+exit()
 
 app = Flask(__name__)
 
