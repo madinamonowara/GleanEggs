@@ -1,10 +1,10 @@
 Item,Price,Trend,Diff,User-Score
 Avocado,8.00,0.05,1.05,1.00
 bell peppers,4.00,0.08,1.02,0.2
-spinach,3.00,1.00,1.00,1.00
-bananas,5.00,1.00,1.00,1.00
-blueberries,9.00,1.00,1.00,1.00
-Greek yogurt,10.00,1.00,1.00,1.00
-cheddar cheese,8.00,1.00,1.00,1.00
+spinach,3.00,1.00,1.00,0.40
+bananas,5.00,-0.25,-0.80,0.20
+blueberries,9.00,1.00,1.00,0.99
+Greek yogurt,10.00,1.00,1.00,0.30
+cheddar cheese,8.00,1.00,1.00,0.50
 almond milk,17.00,1.90,5.00,0.05
 eggs,5.00,1.00,0.95,1.00
