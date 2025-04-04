@@ -1,5 +1,7 @@
 from flask import Flask, render_template
 from modules.api import bls_prices
+from modules import process_data
+import firebase_admin
 import datetime
 import math
 try:
@@ -7,9 +9,6 @@ try:
 except:
     print('NO KEYS DETECTED')
     exit()
-
-from modules.api import ai_integration
-exit()
 
 app = Flask(__name__)
 
@@ -31,5 +30,11 @@ def bls_data():
 def time_y(time):
     return math.sin(time.year+time.month+time.day+datetime.datetime.now().second)
     #return (time.year-2020)*12 + time.month-1
+
+@app.route('/create_list')
+def populate_data():
+    grocery_list = process_data.generate_grocery_list()
+    return render_template('/grocery_list.html', items=grocery_list)
+
 if __name__ == '__main__':
     app.run(debug=True)
