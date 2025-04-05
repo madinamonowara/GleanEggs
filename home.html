@@ -4,54 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Grocery List - GleanEggs</title>
+    <link href="https://fonts.googleapis.com/css2?family=Boldonse&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-    <header>
-        <nav class="top-menu">
-            <button onclick="location.href='grocerystores.html'">🛒 Grocery Stores</button>
-            <button onclick="location.href='recipes.html'">🍳 Recipes</button>
-            <button onclick="location.href='charts.html'">📊 Charts</button>
-        </nav>
-    </header>
-
-    <main>
-        <h2>Hey, Here’s Your Grocery List</h2>
-
-        <section class="grocery-list">
-            <div class="grocery-item">
-                <img src="https://hips.hearstapps.com/hmg-prod/images/ripe-apple-royalty-free-image-1659454396.jpg?crop=0.924xw:0.679xh;0.0197xw,0.212xh&resize=980:*" alt="Apples">
-                <div class="item-details">
-                    <p class="item-name">Apples 2x</p>
-                    <p class="item-price">$2.99 at Whole Foods</p>
-                </div>
-            </div>
-        
-            <div class="grocery-item">
-                <img src="https://dtgxwmigmg3gc.cloudfront.net/imagery/assets/derivations/icon/256/256/true/eyJpZCI6IjYxOTFkMjY5ZGRlMDExYTQwMTE0NWFjZDdkNmE1YjUzLnBuZyIsInN0b3JhZ2UiOiJwdWJsaWNfc3RvcmUifQ?signature=0bf11805abb214f348c94973995475c345399572376edfad484b9ac777818047" alt="Eggs">
-                <div class="item-details">
-                    <p class="item-name">Eggs 1x</p>
-                    <p class="item-price">$3.49 at Whole Foods</p>
-                </div>
-            </div>
-        </section>
- 
-        <h3>Add to List:</h3>
-        <section class="add-list">
-            <button class="add-item">🍎 Apples</button>
-            <button class="add-item">🥩 Steak</button>
-            <button class="add-item">🥦 Broccoli</button>
-        </section>
-
-        <button class="save-btn">Save to Buy Later</button>
-        <button class="add-btn">Add to Grocery List</button>
-
-        <section class="map">
-            <img src="https://pp.walk.sc/tile/e/0/748x600/loc/lat=34.0342792/lng=-118.3620419.png" alt="Store Locations">
-            <p>Store Locations</p>
-        </section>
-    </main>
-
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -61,12 +15,71 @@
             padding: 0;
         }
 
+        /* mobile responsiveness */
+        @media (max-width: 768px) {
+            .top-menu {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .nav-buttons {
+                flex-direction: column;
+                align-items: flex-start;
+                width: 100%;
+                margin-top: 10px;
+            }
+
+            .nav-buttons button {
+                width: 100%;
+                padding: 10px;
+                text-align: left;
+            }
+
+            .grocery-list, .saved-list {
+                margin: 10px;
+            }
+
+            .map img {
+                width: 100%;
+            }
+
+            h2 {
+                font-size: 18px;
+            }
+        }
+
         .top-menu {
             display: flex;
-            justify-content: space-around;
+            justify-content: space-between;
+            align-items: center;
             background: white;
             padding: 10px;
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo {
+            width: 60px; /* 50% of original size */
+        }
+
+        .logo-text {
+            font-family: 'Boldonse', sans-serif;
+            font-size: 24px;
+            margin-left: 10px;
+            display: inline-block;
+            vertical-align: middle;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 10px;
         }
 
         .menu-item {
@@ -78,7 +91,7 @@
             font-size: 22px;
         }
 
-        .grocery-list {
+        .grocery-list, .saved-list {
             background: white;
             padding: 15px;
             margin: 20px;
@@ -89,6 +102,7 @@
         .grocery-item {
             display: flex;
             align-items: center;
+            justify-content: space-between;
             padding: 10px 0;
             border-bottom: 1px solid #ddd;
         }
@@ -102,6 +116,7 @@
 
         .item-details {
             text-align: left;
+            flex: 1;
         }
 
         .item-name {
@@ -111,6 +126,13 @@
         .item-price {
             color: gray;
             font-size: 14px;
+        }
+
+        .remove-item {
+            background: none;
+            border: none;
+            font-size: 18px;
+            cursor: pointer;
         }
 
         .add-list {
@@ -127,9 +149,14 @@
             border-radius: 20px;
             cursor: pointer;
             font-size: 14px;
+            transition: background-color 0.3s;
         }
 
-        .save-btn, .add-btn {
+        .add-item:hover {
+            background-color: #f0f0f0;
+        }
+
+        .save-btn, .add-btn, .clear-btn {
             display: block;
             width: 80%;
             margin: 10px auto;
@@ -150,10 +177,21 @@
             color: white;
         }
 
-        .scroll-text {
-            font-size: 14px;
-            color: gray;
-            margin-top: 10px;
+        .clear-btn {
+            background-color: #f44336;
+            color: white;
+        }
+
+        .checkbox {
+            margin-right: 10px;
+        }
+
+        .saved-list {
+            margin-top: 20px;
+        }
+
+        .saved-list h3 {
+            text-align: left;
         }
 
         .map {
@@ -165,6 +203,144 @@
             border-radius: 10px;
         }
     </style>
+</head>
+<body>
+
+    <header>
+        <nav class="top-menu">
+            <div class="logo-section">
+                <img class="logo" src="static/images/gleaneggs_logo_jpgformat.jpg" alt="GleanEggs Logo">
+                <span class="logo-text">GleanEggs</span>
+            </div>
+            <div class="nav-buttons">
+                <button onclick="location.href='grocerystores.html'">🛒 Grocery Stores</button>
+                <button onclick="location.href='recipes.html'">🍳 Recipes</button>
+                <button onclick="location.href='charts.html'">📊 Charts</button>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <h2>Hey, Here’s Your Grocery List</h2>
+
+        <section class="grocery-list" id="groceryList">
+            <div class="grocery-item" data-name="Apples" data-quantity="2" id="item-1">
+                <input type="checkbox" class="checkbox">
+                <img src="https://hips.hearstapps.com/hmg-prod/images/ripe-apple-royalty-free-image-1659454396.jpg?crop=0.924xw:0.679xh;0.0197xw,0.212xh&resize=980:*" alt="Apples">
+                <div class="item-details">
+                    <p class="item-name">Apples 2x</p>
+                    <p class="item-price">$2.99 at Whole Foods</p>
+                </div>
+                <button class="remove-item" onclick="removeItem(1)">❌</button>
+            </div>
+        
+            <div class="grocery-item" data-name="Eggs" data-quantity="1" id="item-2">
+                <input type="checkbox" class="checkbox">
+                <img src="https://dtgxwmigmg3gc.cloudfront.net/imagery/assets/derivations/icon/256/256/true/eyJpZCI6IjYxOTFkMjY5ZGRlMDExYTQwMTE0NWFjZDdkNmE1YjUzLnBuZyIsInN0b3JhZ2UiOiJwdWJsaWNfc3RvcmUifQ?signature=0bf11805abb214f348c94973995475c345399572376edfad484b9ac777818047" alt="Eggs">
+                <div class="item-details">
+                    <p class="item-name">Eggs 1x</p>
+                    <p class="item-price">$3.49 at Whole Foods</p>
+                </div>
+                <button class="remove-item" onclick="removeItem(2)">❌</button>
+            </div>
+        </section>
+
+        <h3>Add to List:</h3>
+        <section class="add-list">
+            <button class="add-item" onclick="addItem('Apples', 1, 'https://hips.hearstapps.com/hmg-prod/images/ripe-apple-royalty-free-image-1659454396.jpg?crop=0.924xw:0.679xh;0.0197xw,0.212xh&resize=980:*')">🍎 Apples</button>
+            <button class="add-item" onclick="addItem('Steak', 1, 'https://hips.hearstapps.com/hmg-prod/images/ripe-apple-royalty-free-image-1659454396.jpg?crop=0.924xw:0.679xh;0.0197xw,0.212xh&resize=980:*')">🥩 Steak</button>
+            <button class="add-item" onclick="addItem('Broccoli', 1, 'https://hips.hearstapps.com/hmg-prod/images/ripe-apple-royalty-free-image-1659454396.jpg?crop=0.924xw:0.679xh;0.0197xw,0.212xh&resize=980:*')">🥦 Broccoli</button>
+        </section>
+
+        <button class="save-btn" onclick="saveForLater()">Save to Buy Later</button>
+        <button class="add-btn" onclick="addSavedToList()">Add to Grocery List</button>
+        <button class="clear-btn" onclick="clearList()">Clear List</button>
+
+        <section class="saved-list" id="savedList">
+            <h3>Saved for Later:</h3>
+            <!-- Saved items will be inserted here -->
+        </section>
+
+        <section class="map">
+            <img src="https://pp.walk.sc/tile/e/0/748x600/loc/lat=34.0342792/lng=-118.3620419.png" alt="Store Locations">
+            <p>Store Locations</p>
+        </section>
+    </main>
+
+    <script>
+        function removeItem(itemId) {
+            const item = document.getElementById('item-' + itemId);
+            let quantity = parseInt(item.dataset.quantity);
+
+            if (quantity > 1) {
+                quantity--;
+                item.dataset.quantity = quantity;
+                item.querySelector('.item-name').textContent = item.dataset.name + ' ' + quantity + 'x';
+            } else {
+                item.remove();
+            }
+        }
+
+        function addItem(name, quantity, image) {
+            const list = document.getElementById('groceryList');
+            const existingItem = Array.from(list.children).find(
+                (item) => item.dataset.name === name
+            );
+
+            if (existingItem) {
+                let currentQuantity = parseInt(existingItem.dataset.quantity);
+                currentQuantity += quantity;
+                existingItem.dataset.quantity = currentQuantity;
+                existingItem.querySelector('.item-name').textContent = name + ' ' + currentQuantity + 'x';
+            } else {
+                const newItem = document.createElement('div');
+                newItem.classList.add('grocery-item');
+                const itemId = Math.random() * 1000;
+                newItem.id = 'item-' + itemId;
+                newItem.dataset.name = name;
+                newItem.dataset.quantity = quantity;
+                newItem.innerHTML = `
+                    <input type="checkbox" class="checkbox">
+                    <img src="${image}" alt="${name}">
+                    <div class="item-details">
+                        <p class="item-name">${name} ${quantity}x</p>
+                        <p class="item-price">$4.99</p>
+                    </div>
+                    <button class="remove-item" onclick="removeItem(${itemId})">❌</button>
+                `;
+                list.appendChild(newItem);
+            }
+        }
+
+        function saveForLater() {
+            const checkboxes = document.querySelectorAll('.grocery-list .checkbox');
+            const savedList = document.getElementById('savedList');
+
+            checkboxes.forEach((checkbox) => {
+                if (checkbox.checked) {
+                    const item = checkbox.closest('.grocery-item');
+                    savedList.appendChild(item);
+                    checkbox.checked = false;
+                }
+            });
+        }
+
+        function addSavedToList() {
+            const savedItems = document.querySelectorAll('.saved-list .grocery-item');
+            const groceryList = document.getElementById('groceryList');
+
+            savedItems.forEach((item) => {
+                const newItem = item.cloneNode(true);
+                groceryList.appendChild(newItem);
+                item.remove();  // Remove the item from saved list
+            });
+        }
+
+        function clearList() {
+            const list = document.getElementById('groceryList');
+            list.innerHTML = '';
+        }
+    </script>
 </body>
 </html>
 
