@@ -93,10 +93,10 @@
             font-size: 22px;
         }
 
-        .grocery-list, .saved-list {
+        .grocery-list {
             background: white;
             padding: 15px;
-            margin: 20px;
+            margin: 20px 0;
             border-radius: 10px;
             box-shadow: 2px 2px 10px rgba(0,0,0,0.1);
         }
@@ -142,6 +142,7 @@
             justify-content: center;
             gap: 10px;
             margin: 20px 0;
+            flex-wrap: wrap;
         }
 
         .add-item {
@@ -201,9 +202,10 @@
         }
 
         .map img {
-            width: 80%;
+            width: 100%;
             border-radius: 10px;
         }
+
     </style>
 </head>
 <body>
@@ -352,3 +354,62 @@
 </html>
 
 
+
+
+
+
+<script>
+    const availableItems = [
+        { name: "Milk", price: "$1.99", store: "Trader Joe's" },
+        { name: "Bananas", price: "$0.59", store: "Walmart" },
+        { name: "Broccoli", price: "$1.29", store: "Whole Foods" },
+        { name: "Steak", price: "$8.99", store: "Costco" },
+        { name: "Eggs", price: "$3.49", store: "Whole Foods" },
+        { name: "Apples", price: "$2.99", store: "Trader Joe's" }
+    ];
+
+    const searchBox = document.getElementById('search-box');
+    const searchResults = document.getElementById('search-results');
+    const groceryList = document.querySelector('.grocery-list');
+
+    searchBox.addEventListener('input', function () {
+        const query = this.value.toLowerCase();
+        searchResults.innerHTML = '';
+
+        if (query === '') return;
+
+        const matches = availableItems.filter(item =>
+            item.name.toLowerCase().includes(query)
+        );
+
+        matches.forEach(item => {
+            const div = document.createElement('div');
+            div.textContent = `${item.name} - ${item.price} at ${item.store}`;
+            div.classList.add('search-item');
+            div.style.cursor = 'pointer';
+            div.style.margin = '5px 0';
+            div.onclick = () => addItemToList(item);
+            searchResults.appendChild(div);
+        });
+    });
+
+    function addItemToList(item) {
+        const itemDiv = document.createElement('div');
+        itemDiv.classList.add('grocery-item');
+
+        const img = document.createElement('img');
+        img.src = "https://via.placeholder.com/50"; // Placeholder
+        img.alt = item.name;
+
+        const details = document.createElement('div');
+        details.classList.add('item-details');
+        details.innerHTML = `<p class="item-name">${item.name}</p><p class="item-price">${item.price} at ${item.store}</p>`;
+
+        itemDiv.appendChild(img);
+        itemDiv.appendChild(details);
+
+        groceryList.appendChild(itemDiv);
+        searchBox.value = '';
+        searchResults.innerHTML = '';
+    }
+</script>
