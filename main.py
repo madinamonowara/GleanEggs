@@ -14,7 +14,7 @@ app = Flask(__name__)
 
 @app.route('/')
 def hello():
-    return render_template('/index.html')
+    return render_template('/home.html')
 
 @app.route('/bls')
 def bls_data():
@@ -35,6 +35,10 @@ def time_y(time):
 def populate_data():
     grocery_list = process_data.generate_grocery_list()
     return render_template('/grocery_list.html', items=grocery_list)
+
+@app.route('/charts')
+def populate():
+    return render_template('/charts.html')
 
 if __name__ == '__main__':
     app.run(debug=True)
