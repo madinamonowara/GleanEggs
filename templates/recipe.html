@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Recipe Detail</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 p-4">
+  <div class="max-w-3xl mx-auto bg-white p-6 rounded-lg shadow-lg w-full min-h-screen">
+    
+    <!-- Back Button -->
+    <button onclick="history.back()" class="text-blue-600 mb-4">&larr; Back</button>
+
+    <!-- Recipe Name -->
+    <h1 id="recipe-title" class="text-3xl font-bold mb-4">Loading...</h1>
+
+    <!-- Recipe Image -->
+    <img id="recipe-img" src="" alt="Recipe Image" class="w-full h-64 object-cover rounded-lg mb-4"/>
+
+    <!-- Category and Area -->
+    <div class="text-sm text-gray-600 mb-2" id="recipe-meta"></div>
+
+    <!-- Ingredients -->
+    <h2 class="text-2xl font-bold mt-6 mb-2">🛒 Ingredients</h2>
+    <ul id="ingredient-list" class="list-disc list-inside text-gray-700"></ul>
+
+    <!-- Instructions -->
+    <h2 class="text-2xl font-bold mt-6 mb-2">👨‍🍳 Instructions</h2>
+    <p id="instructions" class="text-gray-800 whitespace-pre-line"></p>
+
+    <!-- Video -->
+    <h2 class="text-2xl font-bold mt-6 mb-2">🎥 Watch It</h2>
+    <a id="video-link" href="#" target="_blank" class="text-blue-600 underline">YouTube Video</a>
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const recipe = JSON.parse(localStorage.getItem("selectedRecipe"));
+
+      if (recipe) {
+        document.getElementById("recipe-title").textContent = recipe.strMeal;
+        document.getElementById("recipe-img").src = recipe.strMealThumb;
+        document.getElementById("recipe-meta").textContent = `Category: ${recipe.strCategory} | Cuisine: ${recipe.strArea}`;
+        document.getElementById("instructions").textContent = recipe.strInstructions;
+        document.getElementById("video-link").href = recipe.strYoutube;
+
+        const ingredientList = document.getElementById("ingredient-list");
+        recipe.ingredients.forEach(item => {
+          const li = document.createElement("li");
+          li.textContent = `${item.measure} ${item.ingredient}`;
+          ingredientList.appendChild(li);
+        });
+      } else {
+        document.querySelector(".max-w-3xl").innerHTML = "<p class='text-red-600'>No recipe data found.</p>";
+      }
+    });
+  </script>
+</body>
+</html>
