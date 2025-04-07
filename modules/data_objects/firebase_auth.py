@@ -47,7 +47,7 @@ def logout():
 
 
 if __name__ == "__main__":
-    print("Welcome to Gleen Eggs")
+    print("Welcome to Glean Eggs")
     
     while True:
         print("\nOptions:")
