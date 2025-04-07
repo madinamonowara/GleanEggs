@@ -1,3 +1,4 @@
+import modules.firebase_connection
 # User Accounts for our app
 #
 #

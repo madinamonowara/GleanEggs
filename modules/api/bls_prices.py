@@ -13,7 +13,6 @@ class BLSData(get_prices_now.APIPriceConnection):
         
         jr = json.loads(resp.text,object_hook=lambda d: SimpleNamespace(**d))
         
-        print("hello"+str(jr))
         price_points = []
         for result in jr.Results:
             date = datetime.datetime(result.year, result.period[1:].ltrim('0'), 1)
@@ -27,15 +26,22 @@ class BLSData(get_prices_now.APIPriceConnection):
             for line in file:
                 rows.append(line.split(','))
             
+            output = {}
             #skip header
             for row in rows[1:]:
                 item_name = row[0]
                 bls_id = row[1]
                 our_id = row[2]
-
                 prices = self.get_price_for(bls_id)
-                print(prices)
-            
-            
+                output[our_id] = prices[0]
+        return output
+    
+    def get_all_prices(self):
+        for o in self.read_queries():
+            #CHECK IF O EXISTS IN FIREBASE: DATETIME
+                #UPLOAD O to Firebase
+            pass
+        self.read_queries()
+        
 
 api = BLSData()
