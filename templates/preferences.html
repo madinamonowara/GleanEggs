@@ -4,7 +4,74 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>User Preferences</title>
+  <link href="https://fonts.googleapis.com/css2?family=Boldonse&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static',filename='styles/navbarstyle.css') }}">
   <style>
+
+    .top-menu {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: white;
+        padding: 5px 15px;
+        /*took out margin-bottom: 20px to prevent spacing below the nav bar*/
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        position: sticky;
+        top: 0;
+        z-index: 100;
+    }
+
+    .logo-section {
+        display: flex;
+        align-items: center;
+    }
+
+    .logo {
+        width: 60px;
+    }
+
+    .logo-text {
+        font-family: 'Boldonse', sans-serif;
+        font-size: 24px;
+        margin-left: 10px;
+        display: inline-block;
+        vertical-align: middle;
+    }
+
+    .nav-buttons {
+        display: flex;
+        gap: 10px;
+    }
+
+
+    .nav-buttons button {
+        font-size: 14px;
+        padding: 8px 12px;
+        border: none;
+        background: none;
+        cursor: pointer;
+    }
+
+    @media (max-width: 768px) {
+      .top-menu {
+            flex-direction: column;
+            align-items: flex-start;
+      }
+
+      .nav-buttons {
+            flex-direction: column;
+            width: 100%;
+            margin-top: 10px;
+      }
+
+      .nav-buttons button {
+            width: 100%;
+            padding: 10px;
+            text-align: left;
+      }
+    }
+
+
     body {
       font-family: Arial, sans-serif;
       background-color: #f5f5f5;
@@ -76,6 +143,21 @@
   </style>
 </head>
 <body>
+  <header>
+    <nav class="top-menu">
+        <div class="logo-section">
+            <img class="logo" src="/static/images/gleaneggs_logo.jpg" alt="GleanEggs Logo">
+            <span class="logo-text">GleanEggs</span>
+        </div>
+        <div class="nav-buttons">
+            <button onclick="location.href='/recipes'">🍳 Recipes</button>
+            <button onclick="location.href='/products'">📊 Items</button>
+            <button onclick="location.href='/preferences'">🔧 Preferences</button>
+            <button onclick="location.href='/login'">👋 Log Out</button>
+        </div>
+    </nav>
+  </header>
+
   <div class="header">
     <h1>Tell us about your preferences</h1>
     <p>We’ll personalize your experience based on your diet and allergies.</p>
