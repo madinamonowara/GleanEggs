@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Grocery List - GleanEggs</title>
     <link href="https://fonts.googleapis.com/css2?family=Boldonse&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="{{ url_for('static',filename='styles/navbarstyle.css') }}">
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -211,7 +211,7 @@
     <header>
         <nav class="top-menu">
             <div class="logo-section">
-                <img src="/static/images/gleaneggs_logo.jpg" alt="GleanEggs Logo">
+                <img class="logo" src="/static/images/gleaneggs_logo.jpg" alt="GleanEggs Logo">
                 <span class="logo-text">GleanEggs</span>
             </div>
             <div class="nav-buttons">
