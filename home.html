@@ -6,6 +6,50 @@
     <title>Grocery List - GleanEggs</title>
     <link href="https://fonts.googleapis.com/css2?family=Boldonse&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
+<<<<<<< HEAD
+=======
+</head>
+<body>
+    <header>
+        <nav class="top-menu">
+            <button onclick="location.href='grocerystores.html'">🛒 Grocery Stores</button>
+            <button onclick="location.href='recipes.html'">🍳 Recipes</button>
+            <button onclick="location.href='charts.html'">📊 Charts</button>
+        </nav>
+    </header>
+
+    <main>
+        <div class="container">
+            <h2>Hey, Here’s Your Grocery List</h2>
+
+            <section class="grocery-list">
+                <div class="grocery-item">
+                    <img src="https://hips.hearstapps.com/hmg-prod/images/ripe-apple-royalty-free-image-1659454396.jpg?crop=0.924xw:0.679xh;0.0197xw,0.212xh&resize=980:*" alt="Apples">
+                    <div class="item-details">
+                        <p class="item-name">Apples</p>
+                        <p class="item-price">Price</p>
+                    </div>
+                </div>
+            </section>
+
+            <h3>Search for an item:</h3>
+            <input type="text" id="search-box" placeholder="e.g. Milk, Bananas..." />
+            <div id="search-results"></div>
+
+            <h3>Quick Add:</h3>
+            <section class="add-list">
+                <button class="add-item">🍎 Apple</button>
+                <button class="add-item">🥩 Steak</button>
+                <button class="add-item">🥦 Broccoli</button>
+            </section>
+
+            <section class="map">
+                <img src="https://pp.walk.sc/tile/e/0/748x600/loc/lat=34.0342792/lng=-118.3620419.png" alt="Store Locations">
+            </section>
+        </div>
+    </main>
+
+>>>>>>> f5ffb06e76928db1c1959e2247d60cf44464fb05
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -53,7 +97,7 @@
             justify-content: space-between;
             align-items: center;
             background: white;
-            padding: 10px;
+            padding: 15px;
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
             position: sticky;
             top: 0;
@@ -91,10 +135,20 @@
             font-size: 22px;
         }
 
+<<<<<<< HEAD
         .grocery-list, .saved-list {
+=======
+        .container {
+            max-width: 700px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        .grocery-list {
+>>>>>>> f5ffb06e76928db1c1959e2247d60cf44464fb05
             background: white;
             padding: 15px;
-            margin: 20px;
+            margin: 20px 0;
             border-radius: 10px;
             box-shadow: 2px 2px 10px rgba(0,0,0,0.1);
         }
@@ -140,6 +194,7 @@
             justify-content: center;
             gap: 10px;
             margin: 20px 0;
+            flex-wrap: wrap;
         }
 
         .add-item {
@@ -199,9 +254,10 @@
         }
 
         .map img {
-            width: 80%;
+            width: 100%;
             border-radius: 10px;
         }
+
     </style>
 </head>
 <body>
@@ -345,3 +401,62 @@
 </html>
 
 
+
+
+
+
+<script>
+    const availableItems = [
+        { name: "Milk", price: "$1.99", store: "Trader Joe's" },
+        { name: "Bananas", price: "$0.59", store: "Walmart" },
+        { name: "Broccoli", price: "$1.29", store: "Whole Foods" },
+        { name: "Steak", price: "$8.99", store: "Costco" },
+        { name: "Eggs", price: "$3.49", store: "Whole Foods" },
+        { name: "Apples", price: "$2.99", store: "Trader Joe's" }
+    ];
+
+    const searchBox = document.getElementById('search-box');
+    const searchResults = document.getElementById('search-results');
+    const groceryList = document.querySelector('.grocery-list');
+
+    searchBox.addEventListener('input', function () {
+        const query = this.value.toLowerCase();
+        searchResults.innerHTML = '';
+
+        if (query === '') return;
+
+        const matches = availableItems.filter(item =>
+            item.name.toLowerCase().includes(query)
+        );
+
+        matches.forEach(item => {
+            const div = document.createElement('div');
+            div.textContent = `${item.name} - ${item.price} at ${item.store}`;
+            div.classList.add('search-item');
+            div.style.cursor = 'pointer';
+            div.style.margin = '5px 0';
+            div.onclick = () => addItemToList(item);
+            searchResults.appendChild(div);
+        });
+    });
+
+    function addItemToList(item) {
+        const itemDiv = document.createElement('div');
+        itemDiv.classList.add('grocery-item');
+
+        const img = document.createElement('img');
+        img.src = "https://via.placeholder.com/50"; // Placeholder
+        img.alt = item.name;
+
+        const details = document.createElement('div');
+        details.classList.add('item-details');
+        details.innerHTML = `<p class="item-name">${item.name}</p><p class="item-price">${item.price} at ${item.store}</p>`;
+
+        itemDiv.appendChild(img);
+        itemDiv.appendChild(details);
+
+        groceryList.appendChild(itemDiv);
+        searchBox.value = '';
+        searchResults.innerHTML = '';
+    }
+</script>
