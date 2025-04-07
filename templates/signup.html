@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Sign Up | GleanEggs</title>
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Boldonse&display=swap" rel="stylesheet" />
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Poppins', sans-serif;
+      display: flex;
+      height: 100vh;
+      margin: 0;
+    }
+    .container {
+      display: flex;
+      width: 100%;
+    }
+    .left {
+      flex: 2;
+      background-color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .right {
+      flex: 3;
+      background-color: #d3f8d3;
+      flex-direction: column;
+      padding: 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .logo img {
+      max-width: 90%;
+      height: auto;
+      display: block;
+      margin: 0 auto;
+    }
+    .heading {
+      font-family: 'Boldonse', sans-serif;
+      font-size: 60px;
+      font-weight: 600;
+      margin-bottom: 15px;
+    }
+    .subheading {
+      font-size: 16px;
+      color: #777;
+      margin-bottom: 30px;
+    }
+    form {
+      width: 80%;
+      max-width: 400px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    input {
+      width: 100%;
+      padding: 12px 15px;
+      margin: 10px 0;
+      border-radius: 25px;
+      border: 1px solid #ccc;
+      font-size: 16px;
+    }
+    .submit-btn {
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    .submit-btn:hover {
+      background-color: #45a049;
+    }
+    .switch {
+      margin-top: 15px;
+      font-size: 14px;
+      color: #555;
+    }
+    .switch a {
+      color: #4CAF50;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    @media (max-width: 768px) {
+      body {
+        flex-direction: column;
+      }
+      .container {
+        flex-direction: column;
+      }
+      .left, .right {
+        flex: none;
+        width: 100%;
+      }
+      .right {
+        padding: 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="left">
+      <!-- Logo -->
+      <div class="logo">
+        <img src="static/images/gleaneggs_logo.jpg" alt="GleanEggs Logo">
+      </div>
+    </div>
+    <div class="right">
+      <div class="heading">Create Account</div>
+      <div class="subheading">Join GleanEggs and start saving on groceries!</div>
+
+      <form id="signup-form">
+        <input type="text" id="name" placeholder="Full Name" required />
+        <input type="email" id="email" placeholder="Email" required />
+        <input type="password" id="password" placeholder="Password" required />
+        <input type="submit" class="submit-btn" value="Sign Up" />
+      </form>
+
+      <div class="switch">
+        Already have an account? <a href="/login">Log In</a>
+      </div>
+    </div>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js';
+    import { getAuth, createUserWithEmailAndPassword, fetchSignInMethodsForEmail, signOut } from 'https://www.gstatic.com/firebasejs/9.0.0/firebase-auth.js';
+    import { updateProfile } from 'https://www.gstatic.com/firebasejs/9.0.0/firebase-auth.js';
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyADHcwj1cRWUIWQ0G972bUtzLFSzXNQRss",
+      authDomain: "glean-eggs-db.firebaseapp.com",
+      projectId: "glean-eggs-db",
+      storageBucket: "glean-eggs-db.firebasestorage.app",
+      messagingSenderId: "503667607910",
+      appId: "1:503667607910:web:8c9d3a4adda349264120a7",
+      measurementId: "G-ECNHPQN720"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    const signupForm = document.getElementById("signup-form");
+
+    signupForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+
+      const name = document.getElementById("name").value;
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+
+      // Before sign up, ensure previous session is cleared
+      signOut(auth)
+        .then(() => {
+          console.log("Previous session cleared");
+
+          // Check if the email is already in use
+          fetchSignInMethodsForEmail(auth, email)
+            .then((methods) => {
+              if (methods.length > 0) {
+                // Email already in use
+                alert("This email is already in use. Please log in or use a different email.");
+                return;
+              }
+
+              // Proceed with sign-up if email is not in use
+              createUserWithEmailAndPassword(auth, email, password)
+                .then((userCredential) => {
+                  const user = userCredential.user;
+                  console.log("User signed up:", user);
+
+                  // Update the user's name in the profile
+                  updateProfile(user, {
+                    displayName: name
+                  }).then(() => {
+                    console.log("User's name updated");
+                  }).catch((error) => {
+                    console.error("Error updating profile:", error.message);
+                  });
+
+                  // Redirect to home page after successful sign-up
+                  //window.location.href = "home.html";
+                  
+                  // Redirect to login page with 'from=signup' query parameter
+                    window.location.href = "login.html?from=signup";
+
+                })
+                .catch((error) => {
+                  console.error("Error signing up:", error.message);
+                  alert("Sign Up failed: " + error.message);
+                });
+            })
+            .catch((error) => {
+              console.error("Error checking email:", error.message);
+            });
+        })
+        .catch((error) => {
+          console.error("Error clearing session:", error.message);
+        });
+    });
+  </script>
+</body>
+</html>

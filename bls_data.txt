@@ -1,0 +1,424 @@
+Cereals and bakery products
+Flour, white, all purpose, per lb. (453.6 gm)
+ Go to web page with historical data for series APU0000701111
+0.558	0.561	0.561	0.5	0.0	
+ Go to web page with historical data for series APU0400701111
+ 	 	 	 	 
+Rice, white, long grain, uncooked, per lb. (453.6 gm)
+ Go to web page with historical data for series APU0000701312
+1.001	1.008	1.030	2.9	2.2	
+ Go to web page with historical data for series APU0400701312
+0.832	0.833	0.862	3.6	3.5
+Spaghetti and macaroni, per lb. (453.6 gm)
+ Go to web page with historical data for series APU0000701322
+1.432	1.366	1.381	-3.6	1.1	
+ Go to web page with historical data for series APU0400701322
+1.679	1.574	1.684	0.3	7.0
+Bread, white, pan, per lb. (453.6 gm)
+ Go to web page with historical data for series APU0000702111
+2.006	1.925	1.925	-4.0	0.0	
+ Go to web page with historical data for series APU0400702111
+2.240	2.221	2.202	-1.7	-0.9
+Bread, whole wheat, pan, per lb. (453.6 gm)
+ Go to web page with historical data for series APU0000702212
+2.604	2.760	2.759	6.0	0.0	
+ Go to web page with historical data for series APU0400702212
+ 	2.674	2.744	 	2.6
+Cookies, chocolate chip, per lb. (453.6 gm)
+ Go to web page with historical data for series APU0000702421
+5.248	4.895	4.658	-11.2	-4.8	
+ Go to web page with historical data for series APU0400702421
+5.317	5.448	5.022	-5.5	-7.8
+Meats, poultry, fish and eggs
+Beef and veal
+Ground chuck, 100% beef, per lb. (453.6 gm)
+ Go to web page with historical data for series APU0000703111
+5.213	5.495	5.744	10.2	4.5	
+ Go to web page with historical data for series APU0400703111
+ 	 	 	 	 
+Ground beef, 100% beef, per lb. (453.6 gm)
+ Go to web page with historical data for series APU0000703112
+5.132	5.545	5.625	9.6	1.4	
+ Go to web page with historical data for series APU0400703112
+5.937	5.961	6.171	3.9	3.5
+Ground beef, lean and extra lean, per lb. (453.6 gm)
+ Go to web page with historical data for series APU0000703113
+6.651	7.110	7.244	8.9	1.9	
+ Go to web page with historical data for series APU0400703113
+ 	 	 	 	 
+All uncooked ground beef, per lb. (453.6 gm)
+ Go to web page with historical data for series APU0000FC1101
+5.479	5.820	5.961	8.8	2.4	
+ Go to web page with historical data for series APU0400FC1101
+5.495	5.735	5.934	8.0	3.5
+Chuck roast, graded and ungraded, excluding USDA Prime and Choice, per lb. (453.6 gm)
+ Go to web page with historical data for series APU0000703212
+ 	 	 	 	 	
+ Go to web page with historical data for series APU0400703212
+ 	 	 	 	 
+Chuck roast, USDA Choice, boneless, per lb. (453.6 gm)
+ Go to web page with historical data for series APU0000703213
+7.513	7.694	8.104	7.9	5.3	
+ Go to web page with historical data for series APU0400703213
+7.855	7.539	8.082	2.9	7.2
+Round roast, USDA Choice, boneless, per lb. (453.6 gm)
+ Go to web page with historical data for series APU0000703311
+6.710	7.270	7.490	11.6	3.0	
+ Go to web page with historical data for series APU0400703311
+6.968	8.228	8.681	24.6	5.5
+Round roast, graded and ungraded, excluding USDA Prime and Choice, per lb. (453.6 gm)
+ Go to web page with historical data for series APU0000703312
+ 	 	 	 	 	
+ Go to web page with historical data for series APU0400703312
+ 	 	 	 	 
+All Uncooked Beef Roasts, per lb. (453.6 gm)
+ Go to web page with historical data for series APU0000FC2101
+7.351	7.718	7.995	8.8	3.6	
+ Go to web page with historical data for series APU0400FC2101
+7.937	8.133	8.492	7.0	4.4
+Steak, round, USDA Choice, boneless, per lb. (453.6 gm)
+ Go to web page with historical data for series APU0000703511
+7.883	8.280	8.485	7.6	2.5	
+ Go to web page with historical data for series APU0400703511
+8.342	 	 	 	 
+Steak, round, graded and ungraded, excluding USDA Prime and Choice, per lb. (453.6 gm)
+ Go to web page with historical data for series APU0000703512
+ 	8.055	8.128	 	0.9	
+ Go to web page with historical data for series APU0400703512
+ 	 	 	 	 
+Steak, sirloin, graded and ungraded, excluding USDA Prime and Choice, per lb. (453.6 gm)
+ Go to web page with historical data for series APU0000703612
+ 	 	 	 	 	
+ Go to web page with historical data for series APU0400703612
+ 	 	 	 	 
+Steak, sirloin, USDA Choice, boneless, per lb. (453.6 gm)
+ Go to web page with historical data for series APU0000703613
+11.716	11.965	11.899	1.6	-0.6	
+ Go to web page with historical data for series APU0400703613
+14.075	15.758	15.660	11.3	-0.6
+Beef for stew, boneless, per lb. (453.6 gm)
+ Go to web page with historical data for series APU0000703432
+6.839	7.318	7.677	12.3	4.9	
+ Go to web page with historical data for series APU0400703432
+6.873	 	 	 	 
+All Uncooked Beef Steaks, per lb. (453.6 gm)
+ Go to web page with historical data for series APU0000FC3101
+10.530	10.905	10.868	3.2	-0.3	
+ Go to web page with historical data for series APU0400FC3101
+11.363	11.863	11.768	3.6	-0.8
+All Uncooked Other Beef (Excluding Veal), per lb. (453.6 gm)
+ Go to web page with historical data for series APU0000FC4101
+6.969	6.926	7.165	2.8	3.5	
+ Go to web page with historical data for series APU0400FC4101
+7.235	6.513	6.919	-4.4	6.2
+Pork
+Bacon, sliced, per lb. (453.6 gm)
+ Go to web page with historical data for series APU0000704111
+6.560	7.044	6.798	3.6	-3.5	
+ Go to web page with historical data for series APU0400704111
+6.926	7.681	7.403	6.9	-3.6
+Chops, center cut, bone-in, per lb. (453.6 gm)
+ Go to web page with historical data for series APU0000704211
+4.400	4.625	4.463	1.4	-3.5	
+ Go to web page with historical data for series APU0400704211
+ 	 	 	 	 
+Chops, boneless, per lb. (453.6 gm)
+ Go to web page with historical data for series APU0000704212
+4.377	4.530	4.558	4.1	0.6	
+ Go to web page with historical data for series APU0400704212
+4.663	4.466	4.670	0.2	4.6
+All Pork Chops, per lb. (453.6 gm)
+ Go to web page with historical data for series APU0000FD3101
+4.157	4.249	4.226	1.7	-0.5	
+ Go to web page with historical data for series APU0400FD3101
+4.510	4.288	4.357	-3.4	1.6
+Ham, rump or shank half, bone-in, smoked, per lb. (453.6 gm)
+ Go to web page with historical data for series APU0000704311
+ 	 	 	 	 	
+ Go to web page with historical data for series APU0400704311
+ 	 	 	 	 
+Ham, boneless, excluding canned, per lb. (453.6 gm)
+ Go to web page with historical data for series APU0000704312
+5.666	5.476	5.520	-2.6	0.8	
+ Go to web page with historical data for series APU0400704312
+5.523	5.166	5.292	-4.2	2.4
+All Ham (Excluding Canned Ham and Luncheon Slices), per lb. (453.6 gm)
+ Go to web page with historical data for series APU0000FD2101
+4.517	4.411	4.428	-2.0	0.4	
+ Go to web page with historical data for series APU0400FD2101
+4.933	4.619	4.555	-7.7	-1.4
+All Other Pork (Excluding Canned Ham and Luncheon Slices), per lb. (453.6 gm)
+ Go to web page with historical data for series APU0000FD4101
+3.564	3.704	3.632	1.9	-1.9	
+ Go to web page with historical data for series APU0400FD4101
+3.721	4.091	3.939	5.9	-3.7
+Other meats
+Bologna, all beef or mixed, per lb. (453.6 gm)
+ Go to web page with historical data for series APU0000705121
+ 	 	 	 	 	
+ Go to web page with historical data for series APU0400705121
+ 	 	 	 	 
+Poultry
+Chicken, fresh, whole, per lb. (453.6 gm)
+ Go to web page with historical data for series APU0000706111
+1.951	2.061	2.051	5.1	-0.5	
+ Go to web page with historical data for series APU0400706111
+2.133	2.204	2.224	4.3	0.9
+Chicken breast, bone-in, per lb. (453.6 gm)
+ Go to web page with historical data for series APU0000706211
+ 	 	 	 	 	
+ Go to web page with historical data for series APU0400706211
+ 	 	 	 	 
+Chicken breast, boneless, per lb. (453.6 gm)
+ Go to web page with historical data for series APU0000FF1101
+4.105	3.969	4.079	-0.6	2.8	
+ Go to web page with historical data for series APU0400FF1101
+4.705	4.869	4.993	6.1	2.5
+Chicken legs, bone-in, per lb. (453.6 gm)
+ Go to web page with historical data for series APU0000706212
+1.752	1.791	1.792	2.3	0.1	
+ Go to web page with historical data for series APU0400706212
+1.602	1.608	1.625	1.4	1.1
+Turkey, frozen, whole, per lb. (453.6 gm)
+ Go to web page with historical data for series APU0000706311
+ 	 	 	 	 	
+ Go to web page with historical data for series APU0400706311
+ 	 	 	 	 
+Eggs
+Eggs, grade A, large, per doz.
+ Go to web page with historical data for series APU0000708111
+2.996	4.953	5.897	96.8	19.1	
+ Go to web page with historical data for series APU0400708111
+ 	 	 	 	 
+Dairy products
+Milk, fresh, whole, fortified, per gal. (3.8 lit)
+ Go to web page with historical data for series APU0000709112
+3.940	4.025	4.026	2.2	0.0	
+ Go to web page with historical data for series APU0400709112
+3.906	4.143	4.065	4.1	-1.9
+Butter, salted, grade AA, stick, per lb. (453.6 gm)
+ Go to web page with historical data for series APU0000710111
+ 	 	 	 	 	
+ Go to web page with historical data for series APU0400710111
+ 	 	 	 	 
+American processed cheese, per lb. (453.6 gm)
+ Go to web page with historical data for series APU0000710211
+4.769	5.058	5.026	5.4	-0.6	
+ Go to web page with historical data for series APU0400710211
+ 	 	 	 	 
+Cheddar cheese, natural, per lb. (453.6 gm)
+ Go to web page with historical data for series APU0000710212
+5.726	5.698	5.536	-3.3	-2.8	
+ Go to web page with historical data for series APU0400710212
+5.563	5.801	5.699	2.4	-1.8
+Ice cream, prepackaged, bulk, regular, per 1/2 gal. (1.9 lit)
+ Go to web page with historical data for series APU0000710411
+5.885	6.459	6.255	6.3	-3.2	
+ Go to web page with historical data for series APU0400710411
+6.498	7.188	6.768	4.2	-5.8
+Fruits and vegetables
+Fresh fruits and vegetables
+Apples, Red Delicious, per lb. (453.6 gm)
+ Go to web page with historical data for series APU0000711111
+ 	 	 	 	 	
+ Go to web page with historical data for series APU0400711111
+ 	 	 	 	 
+Bananas, per lb. (453.6 gm)
+ Go to web page with historical data for series APU0000711211
+0.625	0.621	0.619	-1.0	-0.3	
+ Go to web page with historical data for series APU0400711211
+0.689	0.704	0.695	0.9	-1.3
+Oranges, Navel, per lb. (453.6 gm)
+ Go to web page with historical data for series APU0000711311
+1.532	1.531	1.536	0.3	0.3	
+ Go to web page with historical data for series APU0400711311
+1.451	1.485	1.453	0.1	-2.2
+Oranges, Valencia, per lb. (453.6 gm)
+ Go to web page with historical data for series APU0000711312
+ 	 	 	 	 	
+ Go to web page with historical data for series APU0400711312
+ 	 	 	 	 
+Cherries, per lb. (453.6 gm)
+ Go to web page with historical data for series APU0000711418
+ 	 	 	 	 	
+ Go to web page with historical data for series APU0400711418
+ 	 	 	 	 
+Grapefruit, per lb. (453.6 gm)
+ Go to web page with historical data for series APU0000711411
+1.691	1.676	1.668	-1.4	-0.5	
+ Go to web page with historical data for series APU0400711411
+ 	 	 	 	 
+Grapes, Thompson Seedless, per lb. (453.6 gm)
+ Go to web page with historical data for series APU0000711417
+ 	 	 	 	 	
+ Go to web page with historical data for series APU0400711417
+ 	 	 	 	 
+Lemons, per lb. (453.6 gm)
+ Go to web page with historical data for series APU0000711412
+2.036	2.080	2.056	1.0	-1.2	
+ Go to web page with historical data for series APU0400711412
+1.898	1.906	1.826	-3.8	-4.2
+Peaches, per lb. (453.6 gm)
+ Go to web page with historical data for series APU0000711414
+ 	 	 	 	 	
+ Go to web page with historical data for series APU0400711414
+ 	 	 	 	 
+Pears, Anjou, per lb. (453.6 gm)
+ Go to web page with historical data for series APU0000711413
+ 	 	 	 	 	
+ Go to web page with historical data for series APU0400711413
+ 	 	 	 	 
+Strawberries, dry pint, per 12 oz. (340.2 gm)
+ Go to web page with historical data for series APU0000711415
+3.049	3.295	2.905	-4.7	-11.8	
+ Go to web page with historical data for series APU0400711415
+ 	 	 	 	 
+Potatoes, white, per lb. (453.6 gm)
+ Go to web page with historical data for series APU0000712112
+0.971	0.973	0.957	-1.4	-1.6	
+ Go to web page with historical data for series APU0400712112
+0.880	0.912	0.864	-1.8	-5.3
+Lettuce, iceberg, per lb. (453.6 gm)
+ Go to web page with historical data for series APU0000712211
+1.443	1.618	1.522	5.5	-5.9	
+ Go to web page with historical data for series APU0400712211
+ 	 	 	 	 
+Lettuce, romaine, per lb. (453.6 gm)
+ Go to web page with historical data for series APU0000FL2101
+2.568	2.831	2.865	11.6	1.2	
+ Go to web page with historical data for series APU0400FL2101
+2.455	 	 	 	 
+Tomatoes, field grown, per lb. (453.6 gm)
+ Go to web page with historical data for series APU0000712311
+2.132	2.050	1.848	-13.3	-9.9	
+ Go to web page with historical data for series APU0400712311
+2.244	1.933	1.613	-28.1	-16.6
+Broccoli, per lb. (453.6 gm)
+ Go to web page with historical data for series APU0000712412
+ 	 	 	 	 	
+ Go to web page with historical data for series APU0400712412
+ 	 	 	 	 
+Cabbage, per lb. (453.6 gm)
+ Go to web page with historical data for series APU0000712401
+ 	 	 	 	 	
+ Go to web page with historical data for series APU0400712401
+ 	 	 	 	 
+Carrots, short trimmed and topped, per lb. (453.6 gm)
+ Go to web page with historical data for series APU0000712403
+ 	 	 	 	 	
+ Go to web page with historical data for series APU0400712403
+ 	 	 	 	 
+Celery, per lb. (453.6 gm)
+ Go to web page with historical data for series APU0000712402
+ 	 	 	 	 	
+ Go to web page with historical data for series APU0400712402
+ 	 	 	 	 
+Peppers, sweet, per lb. (453.6 gm)
+ Go to web page with historical data for series APU0000712406
+ 	 	 	 	 	
+ Go to web page with historical data for series APU0400712406
+ 	 	 	 	 
+Processed fruits and vegetables
+Orange juice, frozen concentrate, 12 oz. can, per 16 oz. (473.2 ml)
+ Go to web page with historical data for series APU0000713111
+4.214	4.480	4.492	6.6	0.3	
+ Go to web page with historical data for series APU0400713111
+ 	 	 	 	 
+Beans, dried, any type, all sizes, per lb. (453.6 gm)
+ Go to web page with historical data for series APU0000714233
+1.625	1.654	1.631	0.4	-1.4	
+ Go to web page with historical data for series APU0400714233
+ 	 	 	 	 
+Other foods at home
+Sugar and sweets
+Sugar, white, all sizes, per lb. (453.6 gm)
+ Go to web page with historical data for series APU0000715211
+0.984	1.011	1.012	2.8	0.1	
+ Go to web page with historical data for series APU0400715211
+1.000	0.991	0.992	-0.8	0.1
+Sugar, white, 33-80 oz. pkg, per lb. (453.6 gm)
+ Go to web page with historical data for series APU0000715212
+ 	 	 	 	 	
+ Go to web page with historical data for series APU0400715212
+ 	 	 	 	 
+Fats and oils
+Margarine, stick, per lb. (453.6 gm)
+ Go to web page with historical data for series APU0000716114
+ 	 	 	 	 	
+ Go to web page with historical data for series APU0400716114
+ 	 	 	 	 
+Margarine, soft, tubs, per lb. (453.6 gm)
+ Go to web page with historical data for series APU0000716116
+ 	 	 	 	 	
+ Go to web page with historical data for series APU0400716116
+ 	 	 	 	 
+Peanut butter, creamy, all sizes, per lb. (453.6 gm)
+ Go to web page with historical data for series APU0000716141
+ 	 	 	 	 	
+ Go to web page with historical data for series APU0400716141
+ 	 	 	 	 
+Nonalcoholic beverages
+Cola, nondiet, per 2 liters (67.6 oz)(2)
+ Go to web page with historical data for series APU0000717114
+ 	 	 	 	 	
+ Go to web page with historical data for series APU0400717114
+ 	 	 	 	 
+Coffee, 100%, ground roast, all sizes, per lb. (453.6 gm)
+ Go to web page with historical data for series APU0000717311
+6.094	7.019	7.246	18.9	3.2	
+ Go to web page with historical data for series APU0400717311
+5.570	 	 	 	 
+Other prepared foods
+Potato chips, per 16 oz.
+ Go to web page with historical data for series APU0000718311
+6.410	6.474	6.462	0.8	-0.2	
+ Go to web page with historical data for series APU0400718311
+6.670	5.859	5.833	-12.5	-0.4
+Alcoholic beverages at home
+Malt beverages, all types, all sizes, any origin, per 16 oz. (473.2 ml)
+ Go to web page with historical data for series APU0000720111
+1.772	1.813	1.819	2.7	0.3	
+ Go to web page with historical data for series APU0400720111
+1.876	1.895	1.906	1.6	0.6
+Wine, red and white table, all sizes, any origin, per 1 liter (33.8 oz)
+ Go to web page with historical data for series APU0000720311
+13.391	14.035	14.087	5.2	0.4	
+ Go to web page with historical data for series APU0400720311
+12.905	15.204	15.345	18.9	0.9
+Energy (residential)
+Fuel oil #2 per gallon (3.785 liters)
+ Go to web page with historical data for series APU000072511
+3.828	3.793	3.827	0.0	0.9	
+ Go to web page with historical data for series APU040072511
+ 	 	 	 	 
+Utility (piped) gas per therm
+ Go to web page with historical data for series APU000072620
+1.465	1.552	1.584	8.1	2.1	
+ Go to web page with historical data for series APU040072620
+1.841	1.786	1.831	-0.5	2.5
+Electricity per KWH
+ Go to web page with historical data for series APU000072610
+0.173	0.179	0.179	3.5	0.0	
+ Go to web page with historical data for series APU040072610
+0.208	0.210	0.211	1.4	0.5
+Gasoline, all types, per gallon/3.785 liters(3)
+ Go to web page with historical data for series APU00007471A
+3.486	3.342	3.396	-2.6	1.6	
+ Go to web page with historical data for series APU04007471A
+4.209	4.023	4.232	0.5	5.2
+Gasoline, unleaded regular, per gallon/3.785 liters
+ Go to web page with historical data for series APU000074714
+3.359	3.211	3.261	-2.9	1.6	
+ Go to web page with historical data for series APU040074714
+4.112	3.921	4.131	0.5	5.4
+Gasoline, unleaded midgrade, per gallon/3.785 liters
+ Go to web page with historical data for series APU000074715
+3.774	3.643	3.702	-1.9	1.6	
+ Go to web page with historical data for series APU040074715
+4.360	4.178	4.385	0.6	5.0
+Gasoline, unleaded premium, per gallon/3.785 liters
+ Go to web page with historical data for series APU000074716
+4.162	4.035	4.110	-1.2	1.9	
+ Go to web page with historical data for series APU040074716
+4.553	4.387	4.590	0.8	4.6
+Automotive diesel fuel, per gallon/3.785 liters
