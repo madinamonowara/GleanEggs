@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request, session, redirect, url_for
 from modules.api import bls_prices
 from modules import process_data
 import firebase_admin
@@ -12,9 +12,38 @@ except:
 
 app = Flask(__name__)
 
-@app.route('/')
-def hello():
-    return render_template('/home.html')
+def get_session_value(key):
+    if not key in session: return ""
+    else: return session[key]
+
+@app.route('/login')
+def login():
+    session["token"] = ""
+    session['email'] = ""
+    session['name'] = ""
+    return render_template('/login.html')
+
+def check_login(location):
+    print("HERE")
+    if get_session_value("token") != "":
+        return location
+    else:
+        return redirect(url_for("login"))
+
+@app.route('/return')
+def login_return():
+    session['token'] =  request.args.get("id")
+    session['email'] =  request.args.get("email")
+    session['name'] =  request.args.get("name")
+    return redirect(url_for("home"))
+
+@app.route("/")
+def home():
+    return check_login(render_template("/home.html", name=get_session_value("name")))
+
+@app.route("/preferences")
+def preferences():
+    return check_login(render_template("/preferences.html"))
 
 @app.route('/bls')
 def bls_data():
@@ -36,9 +65,15 @@ def populate_data():
     grocery_list = process_data.generate_grocery_list()
     return render_template('/grocery_list.html', items=grocery_list)
 
+@app.route('/recipes')
+def recipes():
+    return check_login(render_template('/recipes.html'))
+
 @app.route('/charts')
 def populate():
     return render_template('/charts.html')
 
+
 if __name__ == '__main__':
+    app.secret_key = 'SECRET KEY'
     app.run(debug=True)
