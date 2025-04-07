@@ -12,6 +12,10 @@ except:
 
 app = Flask(__name__)
 
+def get_session_value(key):
+    if not key in session: return ""
+    else: return session[key]
+
 @app.route('/login')
 def login():
     session["token"] = ""
@@ -20,7 +24,8 @@ def login():
     return render_template('/login.html')
 
 def check_login(location):
-    if 'token' in session and session['token'] != "":
+    print("HERE")
+    if get_session_value("token") != "":
         return location
     else:
         return redirect(url_for("login"))
@@ -34,10 +39,7 @@ def login_return():
 
 @app.route("/")
 def home():
-    session["token"] = ""
-    session['email'] = ""
-    session['name'] = ""
-    return check_login(render_template("/home.html", name=session["name"]))
+    return check_login(render_template("/home.html", name=get_session_value("name")))
 
 @app.route("/preferences")
 def preferences():
@@ -62,6 +64,10 @@ def time_y(time):
 def populate_data():
     grocery_list = process_data.generate_grocery_list()
     return render_template('/grocery_list.html', items=grocery_list)
+
+@app.route('/recipes')
+def recipes():
+    return check_login(render_template('/recipes.html'))
 
 @app.route('/charts')
 def populate():
