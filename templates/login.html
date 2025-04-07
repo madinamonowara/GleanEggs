@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | GleanEggs</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Boldonse&display=swap" rel="stylesheet">
+    <!-- Firebase App (core SDK) 
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js"></script>
+    Firebase Authentication SDK 
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-auth.js"></script> -->
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Poppins', sans-serif;
+            display: flex;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            display: flex;
+            width: 100%;
+        }
+        .left {
+            flex: 2; /* 40% of screen width */
+            background-color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .right {
+            flex: 3; /* 60% of screen width */
+            background-color: #d3f8d3;
+            flex-direction: column;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .logo img {
+            max-width: 90%; 
+            height: auto;
+            display: block;
+            margin: 0 auto;
+        }
+        .heading {
+            font-family: 'Boldonse', sans-serif;
+            font-size: 60px;
+            font-weight: 600; 
+            margin-bottom: 15px;
+        }
+        .subheading {
+            font-size: 16px;
+            color: #777;
+            margin-bottom: 30px;
+        }
+        .button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 15px 20px;
+            font-size: 16px;
+            color: black;
+            text-align: center;
+            border-radius: 25px;
+            width: 40%;
+            margin-bottom: 15px;
+            cursor: pointer;
+            border: 1px solid #ddd;
+            background-color: white;
+        }
+        .google-btn {
+            color: #4285F4;
+        }
+        .apple-btn {
+            color: #333;
+            margin-bottom: 1px;
+        }
+        .or {
+            margin: 10px 0;
+            color: #777;
+        }
+        .create-account {
+            background-color: #4CAF50;
+            color: white;
+            width: 40%;
+        }
+        
+        .button img {
+            width: 20px;
+            height: 20px;
+            margin-right: 10px;
+        }
+        /* Responsivness */
+        @media (max-width: 768px) {
+            body {
+                flex-direction: column;
+            }
+            .container {
+                flex-direction: column;
+            }
+            .left, .right {
+                flex: none;
+                width: 100%;
+            }
+            .right {
+                padding: 10px;
+            }
+            .button {
+                width: 80%; 
+            }
+            .heading {
+                font-size: 24px;
+            }
+            .subheading {
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="left">
+            <!-- logo -->
+            <div class="logo">
+                <img src="static/images/gleaneggs_logo.jpg" alt="GleanEggs Logo">
+            </div>
+        </div>
+        <div class="right">
+            <div class="heading">GleanEggs</div>
+            <div class="subheading">Find the best grocery prices near you!</div>
+        
+            <!-- google -->
+            <div class="button google-btn">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg" alt="Google Logo">
+                Sign in with Google
+            </div>
+        
+            <!-- apple -->
+            <div class="button apple-btn">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_logo_black.svg" alt="Apple Logo">
+                Sign in with Apple
+            </div>
+        
+            <div class="or">--------------- or ---------------</div>
+        
+            <!-- login form -->
+            <form id="login-form" method="POST" action="/login" style="display: flex; flex-direction: column; align-items: center; width: 100%;">
+                <input type="email" name="email" placeholder="Email" required style="padding: 10px; margin-bottom: 10px; width: 40%; border-radius: 20px; border: 1px solid #ccc;" />
+                <input type="password" name="password" placeholder="Password" required style="padding: 10px; margin-bottom: 20px; width: 40%; border-radius: 20px; border: 1px solid #ccc;" />
+                <button type="submit" class="button create-account">Log In</button>
+            </form>
+        
+            <!-- Sign up redirect (optional) -->
+            <p style="margin-top: 10px;">Don't have an account? <a href="/signup">Sign up</a></p>
+        </div>
+        
+    </div>
+
+    <!-- Firebase App (modular SDK) -->
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js';
+        import { getAuth, GoogleAuthProvider, signInWithPopup, signInWithEmailAndPassword } from 'https://www.gstatic.com/firebasejs/9.0.0/firebase-auth.js';
+        const firebaseConfig = {
+        apiKey: "AIzaSyADHcwj1cRWUIWQ0G972bUtzLFSzXNQRss",
+        authDomain: "glean-eggs-db.firebaseapp.com",
+        projectId: "glean-eggs-db",
+        storageBucket: "glean-eggs-db.firebasestorage.app",
+        messagingSenderId: "503667607910",
+        appId: "1:503667607910:web:8c9d3a4adda349264120a7",
+        measurementId: "G-ECNHPQN720"
+        };
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        // Google Sign-In
+        document.querySelector(".google-btn").addEventListener("click", () => {
+        const provider = new GoogleAuthProvider();
+        signInWithPopup(auth, provider)
+            .then((result) => {
+            const user = result.user;
+            console.log("User signed in:", user);
+            window.location.href = "home.html";
+            })
+            .catch((error) => {
+            console.error("Error during Google sign-in:", error.message);
+            alert(error.message);
+            });
+        });
+        // Email/Password Sign-In
+        const loginForm = document.getElementById("login-form");
+        loginForm.addEventListener("submit", (e) => {
+        e.preventDefault();
+        const email = loginForm.email.value;
+        const password = loginForm.password.value;
+        signInWithEmailAndPassword(auth, email, password)
+            .then((userCredential) => {
+                const user = userCredential.user;
+                console.log("User signed in with email:", user);
+                // Check if the user is coming from the sign-up page
+                const urlParams = new URLSearchParams(window.location.search);
+                if (urlParams.has('from') && urlParams.get('from') === 'signup') {
+                    // Redirect to preferences page after login
+                    window.location.href = "preferences.html";
+                } else {
+                    // Regular login redirection (for existing users)
+                    window.location.href = "home.html";
+                }
+            })
+            .catch((error) => {
+                console.error("Login error:", error.message);
+                alert("Login failed: " + error.message);
+            });
+        });
+    </script>
+
+
+</body>
+</html>
