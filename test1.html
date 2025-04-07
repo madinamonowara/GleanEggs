@@ -6,6 +6,8 @@
     <title>Main Page | GleanEggs</title>
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Boldonse&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="navbarstyle.css">
     <style>
         * {
             margin: 0;
@@ -18,7 +20,11 @@
             flex-direction: column;
             min-height: 100vh;
         }
+
         /* Header */
+        .top-menu{
+            background-color: #4CAF50;
+        }
         header {
             display: flex;
             justify-content: space-between;
@@ -41,6 +47,7 @@
             margin-left: 20px;
             text-decoration: none;
         }
+
         /* Main Section */
         .main-container {
             display: flex;
@@ -109,18 +116,20 @@
 </head>
 <body>
 
-    <!-- Header -->
     <header>
-        <div class="logo">GleanEggs</div>
-        <div class="search-bar">
-            <input type="text" placeholder="Search for products...">
-        </div>
-        <div class="nav-links">
-            <a href="#">Home</a>
-            <a href="#">Categories</a>
-            <a href="#">My List</a>
-        </div>
+        <nav class="top-menu">
+            <div class="logo-section">
+                <img class="logo" src="static/images/gleaneggs_logo.jpg" alt="GleanEggs Logo">
+                <span class="logo-text">GleanEggs</span>
+            </div>
+            <div class="nav-buttons">
+                <button onclick="location.href='grocerystores.html'">🛒 Grocery Stores</button>
+                <button onclick="location.href='recipes.html'">🍳 Recipes</button>
+                <button onclick="location.href='charts.html'">📊 Charts</button>
+            </div>
+        </nav>
     </header>
+
 
     <!-- Main Content -->
     <div class="main-container">
