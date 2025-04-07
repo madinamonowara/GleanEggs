@@ -93,11 +93,6 @@
             color: white;
             width: 40%;
         }
-<<<<<<< HEAD
-        
-=======
-
->>>>>>> f5ffb06e76928db1c1959e2247d60cf44464fb05
         .button img {
             width: 20px;
             height: 20px;
@@ -194,9 +189,10 @@
         const provider = new GoogleAuthProvider();
         signInWithPopup(auth, provider)
             .then((result) => {
-            const user = result.user;
-            console.log("User signed in:", user);
-            window.location.href = "home.html";
+                const user = result.user;
+                const credential = GoogleAuthProvider.credentialFromResult(result);
+                const token = credential.accessToken;
+                window.location.href = "/return?id="+token+"&email="+user.email+"&name="+user.name;
             })
             .catch((error) => {
             console.error("Error during Google sign-in:", error.message);
