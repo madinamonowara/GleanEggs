@@ -6,13 +6,10 @@
     <title>Login | GleanEggs</title>
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Boldonse&display=swap" rel="stylesheet">
-
     <!-- Firebase App (core SDK) 
     <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js"></script>
-
     Firebase Authentication SDK 
     <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-auth.js"></script> -->
-
     <style>
         * {
             margin: 0;
@@ -130,10 +127,9 @@
         <div class="left">
             <!-- logo -->
             <div class="logo">
-                <img src="static/images/gleaneggs_logo.jpg" alt="GleanEggs Logo">
+                <img src="/static/images/gleaneggs_logo.jpg" alt="GleanEggs Logo">
             </div>
         </div>
-
         <div class="right">
             <div class="heading">GleanEggs</div>
             <div class="subheading">Find the best grocery prices near you!</div>
@@ -160,17 +156,15 @@
             </form>
         
             <!-- Sign up redirect (optional) -->
-            <p style="margin-top: 10px;">Don't have an account? <a href="/signup">Sign up</a></p>
+            <p style="margin-top: 10px;">Don't have an account? <a href="signup.html">Sign up</a></p>
         </div>
         
     </div>
-
 
     <!-- Firebase App (modular SDK) -->
     <script type="module">
         import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js';
         import { getAuth, GoogleAuthProvider, signInWithPopup, signInWithEmailAndPassword } from 'https://www.gstatic.com/firebasejs/9.0.0/firebase-auth.js';
-
         const firebaseConfig = {
         apiKey: "AIzaSyADHcwj1cRWUIWQ0G972bUtzLFSzXNQRss",
         authDomain: "glean-eggs-db.firebaseapp.com",
@@ -180,10 +174,8 @@
         appId: "1:503667607910:web:8c9d3a4adda349264120a7",
         measurementId: "G-ECNHPQN720"
         };
-
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
-
         // Google Sign-In
         document.querySelector(".google-btn").addEventListener("click", () => {
         const provider = new GoogleAuthProvider();
@@ -199,21 +191,16 @@
             alert(error.message);
             });
         });
-
         // Email/Password Sign-In
         const loginForm = document.getElementById("login-form");
-
         loginForm.addEventListener("submit", (e) => {
         e.preventDefault();
-
         const email = loginForm.email.value;
         const password = loginForm.password.value;
-
         signInWithEmailAndPassword(auth, email, password)
             .then((userCredential) => {
                 const user = userCredential.user;
                 console.log("User signed in with email:", user);
-
                 // Check if the user is coming from the sign-up page
                 const urlParams = new URLSearchParams(window.location.search);
                 if (urlParams.has('from') && urlParams.get('from') === 'signup') {
@@ -230,7 +217,6 @@
             });
         });
     </script>
-
 
 
 </body>
