@@ -7,80 +7,83 @@
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-100 p-4">
+    <!-- Header -->
+    <header>
+        <nav class="top-menu">
+            <div class="logo-section">
+                <img src="/static/images/gleaneggs_logo.jpg" alt="GleanEggs Logo">
+                <span class="logo-text">GleanEggs</span>
+            </div>
+            <div class="nav-buttons">
+                <button onclick="location.href='/recipes'">🍳 Recipes</button>
+                <button onclick="location.href='/products'">📊 Items</button>
+                <button onclick="location.href='/preferences'">🔧 Preferences</button>
+                <button onclick="location.href='/login'">👋 Log Out</button>
+            </div>
+        </nav>
+    </header>
+
     <div class="max-w-3xl mx-auto bg-white p-6 rounded-lg shadow-lg w-full min-h-screen">
+    
         <!-- Featured Recipe -->
-        <div class="flex items-center gap-4 mb-6">
-            <img src="https://www.thelifejolie.com/wp-content/uploads/2023/01/Featured-Hearty-Chicken-Noodle-Soup-Recipe-The-Life-Jolie.jpg" alt="Recipe" class="w-12 h-12 rounded-full">
-            <div>
-                <h2 class="font-bold text-lg">Featured Recipe</h2>
-                <p class="text-gray-600">Chicken Noodle Soup</p>
-            </div>
-        </div>
-        
-        <!-- Ingredients To Buy -->
-        <h2 class="font-bold text-2xl mb-4">Ingredients To Buy</h2>
-        <div class="border rounded-lg overflow-hidden shadow-sm mb-4">
-            <img src="https://www.countrymeat.co.za/wp-content/uploads/2024/04/WhatsApp-Image-2021-08-10-at-11.11.59-AM.jpeg" alt="Organic Chicken" class="w-full h-48 object-cover">
-            <div class="p-4">
-                <span class="text-green-700 bg-green-200 text-sm font-bold p-1 rounded-md">In Stock</span>
-                <p class="text-lg font-bold mt-2">Organic Chicken</p>
-                <p class="text-xl font-bold">Price: $12.99</p>
-            </div>
-        </div>
-        <div class="border rounded-lg overflow-hidden shadow-sm mb-4">
-            <img src="https://i.herbalreality.com/wp-content/uploads/2020/09/22143155/Parsley-Petroselinum-crispum-1200x798.jpg" alt="Fresh Parsley" class="w-full h-48 object-cover">
-            <div class="p-4">
-                <span class="text-green-700 bg-green-200 text-sm font-bold p-1 rounded-md">In Stock</span>
-                <p class="text-lg font-bold mt-2">Fresh Parsley</p>
-                <p class="text-xl font-bold">Price: $1.49</p>
-            </div>
-        </div>
-        
-        <!-- Trending Recipes -->
-        <h2 class="font-bold text-2xl mb-4">Trending Recipes</h2>
-        <div class="border-b pb-2 mb-2">
-            <p class="font-bold">Vegan Lentil Soup <span class="text-green-600 ml-2">Easy</span></p>
-            <p class="text-gray-600 text-sm">1 hr | 4.9 ★</p>
-        </div>
-        <div class="border-b pb-2 mb-2">
-            <p class="font-bold">Spaghetti Aglio e Olio <span class="text-yellow-600 ml-2">Medium</span></p>
-            <p class="text-gray-600 text-sm">30 mins | 4.8 ★</p>
-        </div>
-        
-        <!-- Another Featured Recipe -->
         <h2 class="font-bold text-2xl mt-6 mb-4">Featured Recipe</h2>
         <p class="text-gray-600">Try a new recipe you’ve never made before!</p>
-        <div class="border rounded-lg overflow-hidden shadow-sm p-4 mt-2">
+
+        <!-- Clickable Recipe Card -->
+        <div class="border rounded-lg overflow-hidden shadow-sm p-4 mt-4 cursor-pointer hover:bg-gray-100 transition"
+             onclick="viewRecipe()">
             <div class="flex gap-4">
-                <img src="https://kitchenswagger.com/wp-content/uploads/2023/07/pesto-shrimp-pasta-4.jpg" alt="Pesto Pasta" class="w-20 h-20 object-cover rounded-lg">
+                <img src="https://www.themealdb.com/images/media/meals/wvpsxx1468256321.jpg" alt="Teriyaki Chicken" class="w-20 h-20 object-cover rounded-lg">
                 <div>
-                    <p class="font-bold text-lg">Pesto Pasta</p>
-                    <span class="bg-green-200 text-green-700 text-sm font-bold p-1 rounded-md">Vegetarian</span>
-                    <span class="bg-gray-200 text-gray-700 text-sm font-bold p-1 rounded-md ml-2">Easy</span>
-                    <p class="text-gray-600 text-sm mt-2">A simple yet flavorful pasta dish with homemade pesto sauce.</p>
-                    <p class="text-gray-600 text-sm mt-1">👨‍🍳 Chef Adam</p>
+                    <p class="font-bold text-lg">Teriyaki Chicken Casserole</p>
+                    <span class="bg-yellow-200 text-yellow-700 text-sm font-bold p-1 rounded-md">Japanese</span>
+                    <span class="bg-gray-200 text-gray-700 text-sm font-bold p-1 rounded-md ml-2">Chicken</span>
+                    <p class="text-gray-600 text-sm mt-2">Sweet, savory, and super satisfying casserole for dinner.</p>
+                    <p class="text-gray-600 text-sm mt-1">🎥 <a href="https://www.youtube.com/watch?v=4aZr5hZXP_s" class="underline" target="_blank">Watch Recipe</a></p>
                 </div>
             </div>
-        </div>
-        
-        <!-- Action Buttons -->
-        <div class="mt-6 space-y-4">
-            <button class="w-full bg-gray-200 p-3 rounded-md font-bold text-lg">Favorites</button>
-                <button class="w-full bg-gray-200 p-3 rounded-md font-bold text-lg">Recently Viewed</button>
-                <button class="w-full bg-black text-white p-3 rounded-md font-bold text-lg mb-20">Filter</button>
         </div>
 
         <!-- Bottom Navigation -->
         <div class="left-0 w-full bg-white p-4 flex justify-around shadow-lg">
             <a href="home.html" class="flex flex-col items-center">
-            <span class="text-black text-xl">🏠</span>
-            <span class="text-sm">Home</span>
-        </a>
-        <a href="search.html" class="flex flex-col items-center">
-            <span class="text-black text-xl">🔍</span>
-            <span class="text-sm">Search</span>
+                <span class="text-black text-xl">🏠</span>
+                <span class="text-sm">Home</span>
             </a>
         </div>
     </div>
+
+    <!-- Script to store recipe in localStorage and redirect -->
+    <script>
+        function viewRecipe() {
+            const recipe = {
+                idMeal: "52772",
+                strMeal: "Teriyaki Chicken Casserole",
+                strCategory: "Chicken",
+                strArea: "Japanese",
+                strInstructions: `Preheat oven to 350° F. Spray a 9x13-inch baking pan with non-stick spray.
+Combine soy sauce, ½ cup water, brown sugar, ginger and garlic in a small saucepan and cover. Bring to a boil over medium heat. Remove lid and cook for one minute once boiling.
+Meanwhile, stir together the corn starch and 2 tablespoons of water in a separate dish until smooth. Once sauce is boiling, add mixture to the saucepan and stir to combine. Cook until the sauce starts to thicken then remove from heat.
+Place the chicken breasts in the prepared pan. Pour one cup of the sauce over top of chicken. Place chicken in oven and bake 35 minutes or until cooked through. Remove from oven and shred chicken in the dish using two forks.
+*Meanwhile, steam or cook the vegetables according to package directions.
+Add the cooked vegetables and rice to the casserole dish with the chicken. Add most of the remaining sauce, reserving a bit to drizzle over the top when serving. Gently toss everything together in the casserole dish until combined. Return to oven and cook 15 minutes. Remove from oven and let stand 5 minutes before serving. Drizzle each serving with remaining sauce. Enjoy!`,
+                strMealThumb: "https://www.themealdb.com/images/media/meals/wvpsxx1468256321.jpg",
+                strYoutube: "https://www.youtube.com/watch?v=4aZr5hZXP_s",
+                ingredients: [
+                    { ingredient: "soy sauce", measure: "3/4 cup" },
+                    { ingredient: "water", measure: "1/2 cup" },
+                    { ingredient: "brown sugar", measure: "1/4 cup" },
+                    { ingredient: "ground ginger", measure: "1/2 teaspoon" },
+                    { ingredient: "minced garlic", measure: "1/2 teaspoon" },
+                    { ingredient: "cornstarch", measure: "4 Tablespoons" },
+                    { ingredient: "chicken breasts", measure: "2" },
+                    { ingredient: "stir-fry vegetables", measure: "1 (12 oz.)" },
+                    { ingredient: "brown rice", measure: "3 cups" }
+                ]
+            };
+            localStorage.setItem("selectedRecipe", JSON.stringify(recipe));
+            window.location.href = "recipe.html";
+        }
+    </script>
 </body>
 </html>
