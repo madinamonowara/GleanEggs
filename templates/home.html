@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Grocery List - GleanEggs</title>
     <link href="https://fonts.googleapis.com/css2?family=Boldonse&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static',filename='styles/navbarstyle.css') }}">
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -52,9 +53,7 @@
             justify-content: space-between;
             align-items: center;
             background: white;
-            margin-bottom: 20px;
-            padding: 10px 10px;
-            padding-right: 20px;
+            padding: 15px;
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
             position: sticky;
             top: 0;
@@ -92,13 +91,7 @@
             font-size: 22px;
         }
 
-        .container {
-            max-width: 700px;
-            margin: 0 auto;
-            padding: 0 15px;
-        }
-
-        .grocery-list {
+        .grocery-list, .saved-list {
             background: white;
             padding: 15px;
             margin: 20px 0;
@@ -218,20 +211,22 @@
     <header>
         <nav class="top-menu">
             <div class="logo-section">
-                <!--  <img src="/static/images/gleaneggs_logo.jpg" alt="GleanEggs Logo">   -->
+                <img class="logo" src="/static/images/gleaneggs_logo.jpg" alt="GleanEggs Logo">
                 <span class="logo-text">GleanEggs</span>
             </div>
             <div class="nav-buttons">
-                <button onclick="location.href='grocerystores.html'">🛒 Grocery Stores</button>
-                <button onclick="location.href='recipes.html'">🍳 Recipes</button>
-                <button onclick="location.href='charts.html'">📊 Charts</button>
+                <button onclick="location.href='/recipes'">🍳 Recipes</button>
+                <button onclick="location.href='/products'">📊 Items</button>
+                <button onclick="location.href='/preferences'">🔧 Preferences</button>
+                <button onclick="location.href='/login'">👋 Log Out</button>
             </div>
         </nav>
     </header>
 
     <div style="max-width: 768px; margin: 0 auto; padding: 20px; background: white; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.05);">
         <main>
-            <h2>Hey, Here’s Your Grocery List</h2>
+            {% if list %}
+            <h2>Hey, {{name}}! Here’s Your Grocery List</h2>
     
             <section class="grocery-list" id="groceryList">
                 <div class="grocery-item" data-name="Apples" data-quantity="2" id="item-1">
@@ -254,27 +249,18 @@
                     <button class="remove-item" onclick="removeItem(2)">❌</button>
                 </div>
             </section>
-    
-            <h3>Add to List:</h3>
-            <section class="add-list">
-                <button class="add-item" onclick="addItem('Apples', 1, 'https://hips.hearstapps.com/hmg-prod/images/ripe-apple-royalty-free-image-1659454396.jpg?crop=0.924xw:0.679xh;0.0197xw,0.212xh&resize=980:*')">🍎 Apples</button>
-                <button class="add-item" onclick="addItem('Steak', 1, 'https://hips.hearstapps.com/hmg-prod/images/ripe-apple-royalty-free-image-1659454396.jpg?crop=0.924xw:0.679xh;0.0197xw,0.212xh&resize=980:*')">🥩 Steak</button>
-                <button class="add-item" onclick="addItem('Broccoli', 1, 'https://hips.hearstapps.com/hmg-prod/images/ripe-apple-royalty-free-image-1659454396.jpg?crop=0.924xw:0.679xh;0.0197xw,0.212xh&resize=980:*')">🥦 Broccoli</button>
-            </section>
-    
-            <button class="save-btn" onclick="saveForLater()">Save to Buy Later</button>
-            <button class="add-btn" onclick="addSavedToList()">Add to Grocery List</button>
-            <button class="clear-btn" onclick="clearList()">Clear List</button>
-    
+            
+            <button class="clear-btn" onclick="clearList()">Remake List</button>
+            
             <section class="saved-list" id="savedList">
                 <h3>Saved for Later:</h3>
                 <!-- Saved items will be inserted here -->
             </section>
-    
-            <section class="map">
-                <img src="https://pp.walk.sc/tile/e/0/748x600/loc/lat=34.0342792/lng=-118.3620419.png" alt="Store Locations">
-                <p>Store Locations</p>
-            </section>
+            {% else %}
+            <h2>Hi {{ name }}, let's make a list!</h2>
+            <button class="save-btn" onclick="saveForLater()">Start New List</button>
+            {% endif %}
+            
         </main>
     
     </div>
