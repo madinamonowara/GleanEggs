@@ -6,50 +6,6 @@
     <title>Grocery List - GleanEggs</title>
     <link href="https://fonts.googleapis.com/css2?family=Boldonse&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
-<<<<<<< HEAD
-=======
-</head>
-<body>
-    <header>
-        <nav class="top-menu">
-            <button onclick="location.href='grocerystores.html'">🛒 Grocery Stores</button>
-            <button onclick="location.href='recipes.html'">🍳 Recipes</button>
-            <button onclick="location.href='charts.html'">📊 Charts</button>
-        </nav>
-    </header>
-
-    <main>
-        <div class="container">
-            <h2>Hey, Here’s Your Grocery List</h2>
-
-            <section class="grocery-list">
-                <div class="grocery-item">
-                    <img src="https://hips.hearstapps.com/hmg-prod/images/ripe-apple-royalty-free-image-1659454396.jpg?crop=0.924xw:0.679xh;0.0197xw,0.212xh&resize=980:*" alt="Apples">
-                    <div class="item-details">
-                        <p class="item-name">Apples</p>
-                        <p class="item-price">Price</p>
-                    </div>
-                </div>
-            </section>
-
-            <h3>Search for an item:</h3>
-            <input type="text" id="search-box" placeholder="e.g. Milk, Bananas..." />
-            <div id="search-results"></div>
-
-            <h3>Quick Add:</h3>
-            <section class="add-list">
-                <button class="add-item">🍎 Apple</button>
-                <button class="add-item">🥩 Steak</button>
-                <button class="add-item">🥦 Broccoli</button>
-            </section>
-
-            <section class="map">
-                <img src="https://pp.walk.sc/tile/e/0/748x600/loc/lat=34.0342792/lng=-118.3620419.png" alt="Store Locations">
-            </section>
-        </div>
-    </main>
-
->>>>>>> f5ffb06e76928db1c1959e2247d60cf44464fb05
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -97,7 +53,9 @@
             justify-content: space-between;
             align-items: center;
             background: white;
-            padding: 15px;
+            margin-bottom: 20px;
+            padding: 2px 10px;
+            padding-right: 20px;
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
             position: sticky;
             top: 0;
@@ -135,9 +93,6 @@
             font-size: 22px;
         }
 
-<<<<<<< HEAD
-        .grocery-list, .saved-list {
-=======
         .container {
             max-width: 700px;
             margin: 0 auto;
@@ -145,7 +100,6 @@
         }
 
         .grocery-list {
->>>>>>> f5ffb06e76928db1c1959e2247d60cf44464fb05
             background: white;
             padding: 15px;
             margin: 20px 0;
@@ -265,7 +219,7 @@
     <header>
         <nav class="top-menu">
             <div class="logo-section">
-                <img class="logo" src="static/images/gleaneggs_logo_jpgformat.jpg" alt="GleanEggs Logo">
+                <img class="logo" src="static/images/gleaneggs_logo.jpg" alt="GleanEggs Logo">
                 <span class="logo-text">GleanEggs</span>
             </div>
             <div class="nav-buttons">
@@ -276,52 +230,57 @@
         </nav>
     </header>
 
-    <main>
-        <h2>Hey, Here’s Your Grocery List</h2>
-
-        <section class="grocery-list" id="groceryList">
-            <div class="grocery-item" data-name="Apples" data-quantity="2" id="item-1">
-                <input type="checkbox" class="checkbox">
-                <img src="https://hips.hearstapps.com/hmg-prod/images/ripe-apple-royalty-free-image-1659454396.jpg?crop=0.924xw:0.679xh;0.0197xw,0.212xh&resize=980:*" alt="Apples">
-                <div class="item-details">
-                    <p class="item-name">Apples 2x</p>
-                    <p class="item-price">$2.99 at Whole Foods</p>
+    <div style="max-width: 768px; margin: 0 auto; padding: 20px; background: white; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.05);">
+        <main>
+            <h2>Hey, Here’s Your Grocery List</h2>
+    
+            <section class="grocery-list" id="groceryList">
+                <div class="grocery-item" data-name="Apples" data-quantity="2" id="item-1">
+                    <input type="checkbox" class="checkbox">
+                    <img src="https://hips.hearstapps.com/hmg-prod/images/ripe-apple-royalty-free-image-1659454396.jpg?crop=0.924xw:0.679xh;0.0197xw,0.212xh&resize=980:*" alt="Apples">
+                    <div class="item-details">
+                        <p class="item-name">Apples 2x</p>
+                        <p class="item-price">$2.99 at Whole Foods</p>
+                    </div>
+                    <button class="remove-item" onclick="removeItem(1)">❌</button>
                 </div>
-                <button class="remove-item" onclick="removeItem(1)">❌</button>
-            </div>
-        
-            <div class="grocery-item" data-name="Eggs" data-quantity="1" id="item-2">
-                <input type="checkbox" class="checkbox">
-                <img src="https://dtgxwmigmg3gc.cloudfront.net/imagery/assets/derivations/icon/256/256/true/eyJpZCI6IjYxOTFkMjY5ZGRlMDExYTQwMTE0NWFjZDdkNmE1YjUzLnBuZyIsInN0b3JhZ2UiOiJwdWJsaWNfc3RvcmUifQ?signature=0bf11805abb214f348c94973995475c345399572376edfad484b9ac777818047" alt="Eggs">
-                <div class="item-details">
-                    <p class="item-name">Eggs 1x</p>
-                    <p class="item-price">$3.49 at Whole Foods</p>
+            
+                <div class="grocery-item" data-name="Eggs" data-quantity="1" id="item-2">
+                    <input type="checkbox" class="checkbox">
+                    <img src="https://dtgxwmigmg3gc.cloudfront.net/imagery/assets/derivations/icon/256/256/true/eyJpZCI6IjYxOTFkMjY5ZGRlMDExYTQwMTE0NWFjZDdkNmE1YjUzLnBuZyIsInN0b3JhZ2UiOiJwdWJsaWNfc3RvcmUifQ?signature=0bf11805abb214f348c94973995475c345399572376edfad484b9ac777818047" alt="Eggs">
+                    <div class="item-details">
+                        <p class="item-name">Eggs 1x</p>
+                        <p class="item-price">$3.49 at Whole Foods</p>
+                    </div>
+                    <button class="remove-item" onclick="removeItem(2)">❌</button>
                 </div>
-                <button class="remove-item" onclick="removeItem(2)">❌</button>
-            </div>
-        </section>
+            </section>
+    
+            <h3>Add to List:</h3>
+            <section class="add-list">
+                <button class="add-item" onclick="addItem('Apples', 1, 'https://hips.hearstapps.com/hmg-prod/images/ripe-apple-royalty-free-image-1659454396.jpg?crop=0.924xw:0.679xh;0.0197xw,0.212xh&resize=980:*')">🍎 Apples</button>
+                <button class="add-item" onclick="addItem('Steak', 1, 'https://hips.hearstapps.com/hmg-prod/images/ripe-apple-royalty-free-image-1659454396.jpg?crop=0.924xw:0.679xh;0.0197xw,0.212xh&resize=980:*')">🥩 Steak</button>
+                <button class="add-item" onclick="addItem('Broccoli', 1, 'https://hips.hearstapps.com/hmg-prod/images/ripe-apple-royalty-free-image-1659454396.jpg?crop=0.924xw:0.679xh;0.0197xw,0.212xh&resize=980:*')">🥦 Broccoli</button>
+            </section>
+    
+            <button class="save-btn" onclick="saveForLater()">Save to Buy Later</button>
+            <button class="add-btn" onclick="addSavedToList()">Add to Grocery List</button>
+            <button class="clear-btn" onclick="clearList()">Clear List</button>
+    
+            <section class="saved-list" id="savedList">
+                <h3>Saved for Later:</h3>
+                <!-- Saved items will be inserted here -->
+            </section>
+    
+            <section class="map">
+                <img src="https://pp.walk.sc/tile/e/0/748x600/loc/lat=34.0342792/lng=-118.3620419.png" alt="Store Locations">
+                <p>Store Locations</p>
+            </section>
+        </main>
+    
+    </div>
 
-        <h3>Add to List:</h3>
-        <section class="add-list">
-            <button class="add-item" onclick="addItem('Apples', 1, 'https://hips.hearstapps.com/hmg-prod/images/ripe-apple-royalty-free-image-1659454396.jpg?crop=0.924xw:0.679xh;0.0197xw,0.212xh&resize=980:*')">🍎 Apples</button>
-            <button class="add-item" onclick="addItem('Steak', 1, 'https://hips.hearstapps.com/hmg-prod/images/ripe-apple-royalty-free-image-1659454396.jpg?crop=0.924xw:0.679xh;0.0197xw,0.212xh&resize=980:*')">🥩 Steak</button>
-            <button class="add-item" onclick="addItem('Broccoli', 1, 'https://hips.hearstapps.com/hmg-prod/images/ripe-apple-royalty-free-image-1659454396.jpg?crop=0.924xw:0.679xh;0.0197xw,0.212xh&resize=980:*')">🥦 Broccoli</button>
-        </section>
-
-        <button class="save-btn" onclick="saveForLater()">Save to Buy Later</button>
-        <button class="add-btn" onclick="addSavedToList()">Add to Grocery List</button>
-        <button class="clear-btn" onclick="clearList()">Clear List</button>
-
-        <section class="saved-list" id="savedList">
-            <h3>Saved for Later:</h3>
-            <!-- Saved items will be inserted here -->
-        </section>
-
-        <section class="map">
-            <img src="https://pp.walk.sc/tile/e/0/748x600/loc/lat=34.0342792/lng=-118.3620419.png" alt="Store Locations">
-            <p>Store Locations</p>
-        </section>
-    </main>
+    
 
     <script>
         function removeItem(itemId) {
