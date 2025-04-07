@@ -3,24 +3,93 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Charts</title>
+    <title>Charts | GleanEggs</title>
 
     <link href="https://fonts.googleapis.com/css2?family=Boldonse&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static',filename='styles/navbarstyle.css') }}">
 
     <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .top-menu {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: white;
+            padding: 5px 15px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo {
+            width: 60px;
+        }
+
+        .logo-text {
+            font-family: 'Boldonse', sans-serif;
+            font-size: 24px;
+            margin-left: 10px;
+            display: inline-block;
+            vertical-align: middle;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+
+        .nav-buttons button {
+            font-size: 14px;
+            padding: 8px 12px;
+            border: none;
+            background: none;
+            cursor: pointer;
+        }
+
+        @media (max-width: 768px) {
+            .top-menu {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .nav-buttons {
+                flex-direction: column;
+                width: 100%;
+                margin-top: 10px;
+            }
+
+            .nav-buttons button {
+                width: 100%;
+                padding: 10px;
+                text-align: left;
+            }
+        }
+
+
+    </style>
 </head>
 <body class="bg-gray-100">
+
 
     <header>
         <nav class="top-menu">
             <div class="logo-section">
-                <!--  <img src="/static/images/gleaneggs_logo.jpg" alt="GleanEggs Logo">   -->
+                <img class="logo" src="/static/images/gleaneggs_logo.jpg" alt="GleanEggs Logo">
                 <span class="logo-text">GleanEggs</span>
             </div>
             <div class="nav-buttons">
-                <button onclick="location.href='recipes.html'">🍳 Recipes</button>
-                <button onclick="location.href='charts.html'">📊 Charts</button>
+                <button onclick="location.href='/recipes'">🍳 Recipes</button>
+                <button onclick="location.href='/products'">📊 Items</button>
+                <button onclick="location.href='/preferences'">🔧 Preferences</button>
+                <button onclick="location.href='/login'">👋 Log Out</button>
             </div>
         </nav>
     </header>

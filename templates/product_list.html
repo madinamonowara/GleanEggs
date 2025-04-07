@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Products | GleanEggs</title>
     <link href="https://fonts.googleapis.com/css2?family=Boldonse&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static',filename='styles/navbarstyle.css') }}">
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -245,15 +246,17 @@
     <header>
         <nav class="top-menu">
             <div class="logo-section">
+                <img class="logo" src="/static/images/gleaneggs_logo.jpg" alt="GleanEggs Logo">
                 <span class="logo-text">GleanEggs</span>
             </div>
             <div class="nav-buttons">
-                <button onclick="location.href='grocerystores.html'">🛒 Grocery Stores</button>
-                <button onclick="location.href='recipes.html'">🍳 Recipes</button>
-                <button onclick="location.href='charts.html'">📊 Charts</button>
+                <button onclick="location.href='/recipes'">🍳 Recipes</button>
+                <button onclick="location.href='/products'">📊 Items</button>
+                <button onclick="location.href='/preferences'">🔧 Preferences</button>
+                <button onclick="location.href='/login'">👋 Log Out</button>
             </div>
         </nav>
-    </header>
+      </header>
 
     <div class="container">
     
