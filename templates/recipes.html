@@ -1,17 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Recipes</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-</head>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Recipes</title>
+        <script src="https://cdn.tailwindcss.com"></script>
+    </head>
 <body class="bg-gray-100 p-4">
     <!-- Header -->
     <header>
         <nav class="top-menu">
             <div class="logo-section">
-                <img src="/static/images/gleaneggs_logo.jpg" alt="GleanEggs Logo">
                 <span class="logo-text">GleanEggs</span>
             </div>
             <div class="nav-buttons">
@@ -23,8 +22,8 @@
         </nav>
     </header>
 
-    <div class="max-w-3xl mx-auto bg-white p-6 rounded-lg shadow-lg w-full min-h-screen">
-    
+        <div style="max-width: 768px; margin: 0 auto; padding: 20px; background: white; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.05);">
+       
         <!-- Featured Recipe -->
         <h2 class="font-bold text-2xl mt-6 mb-4">Featured Recipe</h2>
         <p class="text-gray-600">Try a new recipe you’ve never made before!</p>
@@ -42,14 +41,6 @@
                     <p class="text-gray-600 text-sm mt-1">🎥 <a href="https://www.youtube.com/watch?v=4aZr5hZXP_s" class="underline" target="_blank">Watch Recipe</a></p>
                 </div>
             </div>
-        </div>
-
-        <!-- Bottom Navigation -->
-        <div class="left-0 w-full bg-white p-4 flex justify-around shadow-lg">
-            <a href="home.html" class="flex flex-col items-center">
-                <span class="text-black text-xl">🏠</span>
-                <span class="text-sm">Home</span>
-            </a>
         </div>
     </div>
 
@@ -85,5 +76,26 @@ Add the cooked vegetables and rice to the casserole dish with the chicken. Add m
             window.location.href = "recipe.html";
         }
     </script>
+
+    <style>
+        .top-menu {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: white;
+            padding: 15px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 10px;
+        }
+    </style>
+
+
 </body>
 </html>
