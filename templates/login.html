@@ -192,7 +192,7 @@
                 const user = result.user;
                 const credential = GoogleAuthProvider.credentialFromResult(result);
                 const token = credential.accessToken;
-                window.location.href = "/return?id="+token+"&email="+user.email+"&name="+user.name;
+                window.location.href = "/return?id="+token+"&email="+user.email+"&name="+user.displayName;
             })
             .catch((error) => {
             console.error("Error during Google sign-in:", error.message);
