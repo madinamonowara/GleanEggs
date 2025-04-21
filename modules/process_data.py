@@ -38,3 +38,19 @@ def generate_grocery_list():
         for f in full_list:
             print(f)
         return full_list
+
+def default_product_record(data):
+     product = {"price": data["price"],
+                "trend": 0,
+                "diff": 0,
+                "name": data["name"]}
+     return default_product_record()
+
+def upload_prices_to_api(list):
+     for l in list:
+          item = firebase_connection.get_node("products", l)
+          if not item:
+               firebase_connection.upload_to_firebase("products", )
+
+def check_list():
+     pass
