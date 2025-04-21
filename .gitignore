@@ -1,6 +1,10 @@
 keys.py
 .venv
 templates/.env.local
+<<<<<<< HEAD
 
 keys.py
 .venv
+=======
+cred.json
+>>>>>>> 57b40db (updated requirements)
