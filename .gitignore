@@ -1,3 +1,4 @@
 keys.py
 .venv
 templates/.env.local
+cred.json
