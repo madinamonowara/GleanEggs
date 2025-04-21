@@ -1,6 +1,6 @@
 keys.py
 .venv
 templates/.env.local
-credentials.json
+modules/credentials.json
 cred.json
 
