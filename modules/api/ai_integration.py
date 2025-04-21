@@ -1,5 +1,5 @@
 from openai import OpenAI
-import keys
+import modules.keys as keys
 import csv
 
 def get_base_list(data = ""):

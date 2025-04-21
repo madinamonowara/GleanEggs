@@ -2,7 +2,7 @@ import requests
 import json
 import datetime
 from types import SimpleNamespace
-import keys
+import modules.keys as keys
 import random
 
 mealdb_url = 'https://www.themealdb.com/api/json/v1/'
