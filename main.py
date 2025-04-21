@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, session, redirect, url_for
 from modules.api import bls_prices
 from modules import process_data
 import firebase_admin
+from modules import firebase_connection
 import datetime
 import math
 try:
@@ -72,6 +73,18 @@ def recipes():
 @app.route('/charts')
 def populate():
     return render_template('/charts.html')
+
+@app.route("/search", methods=['GET', 'POST'])
+def search():
+    if request.method == 'POST':
+        category = request.form['category'] 
+        items = firebase_connection.get_items_by_category(category)  
+
+        if items:
+            return render_template('/search_results.html', items=items, category=category)  
+        else:
+            return render_template('/search_results.html', items=[], category=category)  
+    return render_template('/search.html')  
 
 
 if __name__ == '__main__':
