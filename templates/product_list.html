@@ -14,39 +14,6 @@
             margin: 0;
             padding: 0;
         }
-
-        @media (max-width: 768px) {
-            .top-menu {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-
-            .nav-buttons {
-                flex-direction: column;
-                align-items: flex-start;
-                width: 100%;
-                margin-top: 10px;
-            }
-
-            .nav-buttons button {
-                width: 100%;
-                padding: 10px;
-                text-align: left;
-            }
-
-            .grocery-list, .saved-list {
-                margin: 10px;
-            }
-
-            .map img {
-                width: 100%;
-            }
-
-            h2 {
-                font-size: 18px;
-            }
-        }
-
         .top-menu {
             display: flex;
             justify-content: space-between;
@@ -60,53 +27,28 @@
             top: 0;
             z-index: 100;
         }
-
         .logo-section {
             display: flex;
             align-items: center;
         }
-
         .logo {
             width: 60px;
         }
-
         .logo-text {
             font-family: 'Boldonse', sans-serif;
             font-size: 24px;
             margin-left: 10px;
             display: inline-block;
-            vertical-align: middle;
         }
-
         .nav-buttons {
             display: flex;
             gap: 10px;
         }
-
-        .menu-item {
-            font-size: 14px;
-        }
-
-        h2 {
-            margin-top: 20px;
-            font-size: 22px;
-        }
-
         .container {
             max-width: 700px;
             margin: 0 auto;
             padding: 0 15px;
         }
-
-        .grocery-list {
-            background: white;
-            padding: 15px;
-            margin: 20px 0;
-            border-radius: 10px;
-            box-shadow: 2px 2px 10px rgba(0,0,0,0.1);
-        }
-
-        /* NEW white rectangle style for other sections */
         .product-container {
             background: white;
             padding: 20px;
@@ -114,7 +56,6 @@
             border-radius: 12px;
             box-shadow: 2px 2px 10px rgba(0,0,0,0.1);
         }
-
         .grocery-item {
             display: flex;
             align-items: center;
@@ -122,127 +63,45 @@
             padding: 10px 0;
             border-bottom: 1px solid #ddd;
         }
-
         .grocery-item img {
             width: 50px;
             height: 50px;
             border-radius: 5px;
             margin-right: 10px;
         }
-
         .item-details {
             text-align: left;
             flex: 1;
         }
-
         .item-name {
             font-weight: bold;
         }
-
         .item-price {
             color: gray;
             font-size: 14px;
         }
-
-        .remove-item {
-            background: none;
-            border: none;
-            font-size: 18px;
-            cursor: pointer;
-        }
-
-        .add-list {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            margin: 20px 0;
-            flex-wrap: wrap;
-        }
-
-        .add-item {
-            background: white;
-            border: 1px solid #ddd;
-            padding: 8px 15px;
-            border-radius: 20px;
-            cursor: pointer;
-            font-size: 14px;
-            transition: background-color 0.3s;
-        }
-
-        .add-item:hover {
-            background-color: #f0f0f0;
-        }
-
-        .save-btn, .add-btn, .clear-btn {
-            display: block;
-            width: 80%;
-            margin: 10px auto;
-            padding: 12px;
-            font-size: 16px;
-            border-radius: 8px;
-            border: none;
-            cursor: pointer;
-        }
-
-        .save-btn {
-            background: white;
-            border: 1px solid black;
-        }
-
-        .add-btn {
-            background: black;
-            color: white;
-        }
-
-        .clear-btn {
-            background-color: #f44336;
-            color: white;
-        }
-
         .checkbox {
-            margin-right: 10px;
+            margin-right: 5px;
         }
-
-        .saved-list {
-            margin-top: 20px;
-        }
-
-        .saved-list h3 {
-            text-align: left;
-        }
-
-        .map {
-            margin: 20px 0;
-        }
-
-        .map img {
-            width: 100%;
-            border-radius: 10px;
-        }
-
         .action-buttons {
             display: flex;
             gap: 10px;
         }
-
         .action-buttons button {
-            padding: 8px 15px;
-            font-size: 14px;
+            padding: 6px 10px;
+            font-size: 12px;
             background: white;
             border: 1px solid #ddd;
             border-radius: 20px;
             cursor: pointer;
             transition: background-color 0.3s;
         }
-
         .action-buttons button:hover {
             background-color: #f0f0f0;
         }
-
     </style>
 </head>
 <body>
-
     <header>
         <nav class="top-menu">
             <div class="logo-section">
@@ -256,34 +115,40 @@
                 <button onclick="location.href='/login'">👋 Log Out</button>
             </div>
         </nav>
-      </header>
+    </header>
 
     <div class="container">
-    
         <section class="product-container">
             <h2>Hey, Here’s Your Products List</h2>
-            <div class="grocery-list" id="groceryList">
-                <!-- this is where grocery items will be dynamically added -->
-            
+            <div style="display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap;">
+                <input type="text" id="searchInput" placeholder="Search products..." style="flex: 2; padding: 4px; border-radius: 8px; border: 1px solid #ccc;">
+                <select id="categorySelect" style="flex: 1; padding: 4px; border-radius: 8px; border: 1px solid #ccc;">
+                    <option value="">All Categories</option>
+                    <option value="fruit">Fruits</option>
+                    <option value="vegetable">Vegetables</option>
+                    <option value="dairy">Dairy</option>
+                    <option value="meat">Meat</option>
+                </select>
             </div>
+            <div class="grocery-list" id="groceryList"></div>
         </section>
     </div>
 
     <script>
-        // Sample data (replace this with API or CSV data fetch)
         const products = [
-            { name: "Apple", quantity: 1, image: "apple.jpg", price: 1.50 },
-            { name: "Banana", quantity: 2, image: "banana.jpg", price: 0.99 },
-            { name: "Carrot", quantity: 3, image: "carrot.jpg", price: 0.75 }
+            { name: "Apple", quantity: 1, image: "apple.jpg", price: 1.50, category: "fruit" },
+            { name: "Banana", quantity: 2, image: "banana.jpg", price: 0.99, category: "fruit" },
+            { name: "Carrot", quantity: 3, image: "carrot.jpg", price: 0.75, category: "vegetable" },
+            { name: "Milk", quantity: 1, image: "milk.jpg", price: 2.50, category: "dairy" }
         ];
 
-        // Function to dynamically add a grocery item
-        function addItem(name, quantity, image, price) {
+        function addItem(name, quantity, image, price, category) {
             const list = document.getElementById("groceryList");
             const item = document.createElement("div");
             item.classList.add("grocery-item");
             item.dataset.name = name;
             item.dataset.quantity = quantity;
+            item.dataset.category = category;
 
             item.innerHTML = `
                 <input type="checkbox" class="checkbox">
@@ -300,16 +165,33 @@
             list.appendChild(item);
         }
 
-        // Loop through the products and add them to the list
+        function filterProducts() {
+            const searchValue = document.getElementById("searchInput").value.toLowerCase();
+            const selectedCategory = document.getElementById("categorySelect").value;
+
+            const items = document.querySelectorAll(".grocery-item");
+            items.forEach(item => {
+                const itemName = item.querySelector(".item-name").textContent.toLowerCase();
+                const itemCategory = item.dataset.category;
+
+                const matchesSearch = itemName.includes(searchValue);
+                const matchesCategory = selectedCategory === "" || selectedCategory === itemCategory;
+
+                item.style.display = (matchesSearch && matchesCategory) ? "flex" : "none";
+            });
+        }
+
         products.forEach(product => {
-            addItem(product.name, product.quantity, product.image, product.price);
+            addItem(product.name, product.quantity, product.image, product.price, product.category);
         });
 
-        // Function to toggle item quantity or remove it
+        document.getElementById("searchInput").addEventListener("input", filterProducts);
+        document.getElementById("categorySelect").addEventListener("change", filterProducts);
+
         function toggleItem(itemId) {
             const item = document.querySelector(`[data-name='${itemId}']`);
+            if (!item) return;
             let quantity = parseInt(item.dataset.quantity);
-
             if (quantity > 1) {
                 quantity--;
                 item.dataset.quantity = quantity;
@@ -319,8 +201,5 @@
             }
         }
     </script>
-
 </body>
 </html>
-
-
