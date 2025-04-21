@@ -49,6 +49,16 @@ def upload_to_firebase(collection_name, data_dict, doc_id=None):
     except Exception as e:
         print(f"Error uploading to {collection_name}: {str(e)}")
 
+def get_node(collection, node_id):
+    try:
+        doc = db.collection(collection).document(str(node_id)).get()
+        if doc.exists:
+            return doc.to_dict()
+        return None
+    except Exception as e:
+        print(f"Error retrieving {node_id} for {collection}: {str(e)}")
+        return None
+    
 def get_user_preferences(user_id):
   
     try:
