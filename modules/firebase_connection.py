@@ -157,6 +157,20 @@ def get_user_preferences(user_id):
         print(f"Error retrieving preferences for {user_id}: {str(e)}")
         return {}
 
+def add_product_price_and_store(price, store_name):
+    try:
+        data = {
+            "price": price,  
+            "store_name": store_name,  
+            "timestamp": firestore.SERVER_TIMESTAMP  
+        }
+        
+        upload_to_firebase("Store_Prices", data_dict=data)
+        print("Product price and store name successfully uploaded!")
+    
+    except Exception as e:
+        print(f"Error uploading product price and store name: {str(e)}")
+
 
 
 if __name__ == "__main__":
