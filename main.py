@@ -7,7 +7,7 @@ from modules.api import recipe_api
 import datetime
 import math
 try:
-    import keys
+    import modules.keys as keys
 except:
     print('NO KEYS DETECTED')
     exit()
@@ -41,15 +41,50 @@ def login_return():
 
 @app.route("/")
 def home():
-    return check_login(render_template("/home.html", name=get_session_value("name")))
+    if not logged_in(): return redirect(url_for("login"))
+    list = firebase_connection.get_node("groceryLists", session['email'])
+    if not list: return check_login(render_template("/home.html", name=get_session_value("name")))
+    grocery_list = []
+    for i in range(len(list["items"])):
+        grocery_list.append({
+            "product": list["items"][i],
+            "name": list["items"][i].capitalize().replace("_", " "),
+            "price": list["prices"][i],
+            "reason": list["reason"][i],
+            "img":  recipe_api.get_thumbnail(list["items"][i])
+        })
+    return check_login(render_template("/home.html", name=get_session_value("name"), list=grocery_list))
 
 def logged_in():
     return 'token' in session
 
 @app.route("/preferences")
 def preferences():
-    return check_login(render_template("/preferences.html"))
+    if not logged_in(): return redirect(url_for("home"))
+    prefs = firebase_connection.get_node('preferences', session['email'])
+    if not prefs: return check_login(render_template("/preferences.html", preferences={}))
+    preferences = {}
+    for j in prefs:
+        preferences[j+"_"+prefs[j]] = "checked"
+    if "budget" in prefs: preferences["budget"] = prefs['budget']
+    print(preferences)
+    return check_login(render_template("/preferences.html", preferences=preferences))
 
+@app.route("/save_preferences", methods=['POST'])
+def save_preferences():
+    if request.method != 'POST': return ""
+    if not logged_in(): return ""
+
+    preferences = {
+        "diet": request.form['diet'],
+        "allergy": request.form['allergy'],
+        "shop": request.form['shop-frequency'],
+        "budget": request.form['budget']
+    }
+    firebase_connection.upload_to_firebase("preferences", preferences, session['email'])
+    return 'Data retrieved successfully!'
+
+    
 def time_y(time):
     return math.sin(time.year+time.month+time.day+datetime.datetime.now().second)
     #return (time.year-2020)*12 + time.month-1
@@ -109,7 +144,6 @@ def search():
         else:
             return render_template('/search_results.html', items=[], category=category)  
     return render_template('/search.html')  
-
 
 if __name__ == '__main__':
     app.secret_key = 'SECRET KEY'

@@ -225,28 +225,28 @@ input[type="range"] {
   </div>
 
   <div class="form-container">
-    <form>
+    <form id="myForm" action="/save_preferences" method="post">
       <div class="preference-sections">
         <div class="preference-column">
           <p class="section-title">Diet</p>
     
           <label class="preference-bubble">
-            <input type="checkbox" name="diet" value="vegan" />
+            <input type="checkbox" name="diet" value="vegan" {{preferences['diet_vegan']}}/>
             <span>Vegan</span>
           </label>
     
           <label class="preference-bubble">
-            <input type="checkbox" name="diet" value="vegetarian" />
+            <input type="checkbox" name="diet" value="vegetarian" {{preferences['diet_vegetarian']}}/>
             <span>Vegetarian</span>
           </label>
     
           <label class="preference-bubble">
-            <input type="checkbox" name="diet" value="glutenfree" />
+            <input type="checkbox" name="diet" value="glutenfree" {{preferences['diet_glutenfree']}}/>
             <span>Gluten-Free</span>
           </label>
     
           <label class="preference-bubble">
-            <input type="checkbox" name="diet" value="keto" />
+            <input type="checkbox" name="diet" value="keto" {{preferences['diet_keto']}}/>
             <span>Keto</span>
           </label>
         </div>
@@ -255,22 +255,22 @@ input[type="range"] {
           <p class="section-title">Allergies</p>
     
           <label class="preference-bubble">
-            <input type="checkbox" name="allergy" value="peanuts" />
+            <input type="checkbox" name="allergy" value="peanuts" {{preferences['allergy_peanuts']}}/>
             <span>Peanuts</span>
           </label>
     
           <label class="preference-bubble">
-            <input type="checkbox" name="allergy" value="dairy" />
+            <input type="checkbox" name="allergy" value="dairy" {{preferences['allergy_dairy']}}/>
             <span>Dairy</span>
           </label>
     
           <label class="preference-bubble">
-            <input type="checkbox" name="allergy" value="soy" />
+            <input type="checkbox" name="allergy" value="soy" {{preferences['allergy_soy']}}/>
             <span>Soy</span>
           </label>
     
           <label class="preference-bubble">
-            <input type="checkbox" name="allergy" value="shellfish" />
+            <input type="checkbox" name="allergy" value="shellfish" {{preferences['allergy_shellfish']}}/>
             <span>Shellfish</span>
           </label>
         </div>
@@ -280,20 +280,20 @@ input[type="range"] {
         <h3>How often do you grocery shop?</h3>
         <div class="shop-frequency-options">
           <label>
-            <input type="radio" name="shop-frequency" value="1x" />
+            <input type="radio" name="shop-frequency" value="1x" {{preferences['shop_1x']}}/>
             1x a week
           </label>
           
           <label>
-            <input type="radio" name="shop-frequency" value="2x" />
+            <input type="radio" name="shop-frequency" value="2x" {{preferences['shop_2x']}}/>
             2x a week
           </label>
           <label>
-            <input type="radio" name="shop-frequency" value="biweekly" />
+            <input type="radio" name="shop-frequency" value="biweekly" {{preferences['shop_biweekly']}}/>
             Every 2 weeks
           </label>
           <label>
-            <input type="radio" name="shop-frequency" value="monthly" />
+            <input type="radio" name="shop-frequency" value="monthly" {{preferences['shop_monthly']}}/>
             Every month
           </label>
         </div>
@@ -302,8 +302,8 @@ input[type="range"] {
       <div class="question-bubble">
         <h3>What’s your weekly grocery budget?</h3>
         <div class="slider-container">
-          <input type="range" id="budget" name="budget" min="10" max="125" step="5" value="10" oninput="updateBudgetValue(this.value)">
-          <div id="budget-value">$10</div>
+          <input type="range" id="budget" name="budget" min="10" max="125" step="5" value="{{preferences["budget"]}}" oninput="updateBudgetValue(this.value)">
+          <div id="budget-value">${{preferences["budget"]}}</div>
         </div>
       </div>           
       
@@ -330,6 +330,26 @@ input[type="range"] {
         document.getElementById('budget-value').textContent = `$${value}`;
       }
     }
+
+    const form = document.getElementById('myForm');
+
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
+
+      const formData = new FormData(form);
+
+      fetch('/save_preferences', {
+        method: 'POST',
+        body: formData
+      })
+      .then(response => response.text())
+      .then(data => {
+        alert("Successfully saved preferences")
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
+    });
   </script>
   
   
