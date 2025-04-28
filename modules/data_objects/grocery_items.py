@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 from modules import firebase_connection
 import datetime
 
