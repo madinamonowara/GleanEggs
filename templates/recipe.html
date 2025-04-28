@@ -35,26 +35,20 @@
   </div>
 
   <script>
-    document.addEventListener("DOMContentLoaded", function () {
-      const recipe = JSON.parse(localStorage.getItem("selectedRecipe"));
+    document.getElementById("recipe-title").textContent = "{{recipe['strMeal']}}";
+    document.getElementById("recipe-img").src = "{{recipe['strMealThumb']}}";
+    document.getElementById("recipe-meta").textContent = `Category: {{recipe['strCategory']}} | Cuisine: {{recipe['strArea']}}`;
+    document.getElementById("instructions").textContent = `{{recipe['strInstructions']}}`;
+    document.getElementById("video-link").href = "{{recipe['strYoutube']}}";
 
-      if (recipe) {
-        document.getElementById("recipe-title").textContent = recipe.strMeal;
-        document.getElementById("recipe-img").src = recipe.strMealThumb;
-        document.getElementById("recipe-meta").textContent = `Category: ${recipe.strCategory} | Cuisine: ${recipe.strArea}`;
-        document.getElementById("instructions").textContent = recipe.strInstructions;
-        document.getElementById("video-link").href = recipe.strYoutube;
-
-        const ingredientList = document.getElementById("ingredient-list");
-        recipe.ingredients.forEach(item => {
-          const li = document.createElement("li");
-          li.textContent = `${item.measure} ${item.ingredient}`;
-          ingredientList.appendChild(li);
-        });
-      } else {
-        document.querySelector(".max-w-3xl").innerHTML = "<p class='text-red-600'>No recipe data found.</p>";
-      }
-    });
+    const ingredientList = document.getElementById("ingredient-list");
+    var li = null
+    {% for item in recipe['items'] %}
+      li = document.createElement("li");
+      li.textContent = `{{item['measure']}} {{item['ingredient']}}`;
+      ingredientList.appendChild(li);
+    {% endfor %}
+    
   </script>
 </body>
 </html>

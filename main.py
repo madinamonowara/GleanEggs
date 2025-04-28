@@ -1,7 +1,9 @@
 from flask import Flask, render_template, request, session, redirect, url_for
 from modules.api import bls_prices
 from modules import process_data
-import firebase_admin
+from modules import firebase_connection
+from modules.api import recipe_api
+
 import datetime
 import math
 try:
@@ -24,7 +26,6 @@ def login():
     return render_template('/login.html')
 
 def check_login(location):
-    print("HERE")
     if get_session_value("token") != "":
         return location
     else:
@@ -41,20 +42,12 @@ def login_return():
 def home():
     return check_login(render_template("/home.html", name=get_session_value("name")))
 
+def logged_in():
+    return 'token' in session
+
 @app.route("/preferences")
 def preferences():
     return check_login(render_template("/preferences.html"))
-
-@app.route('/bls')
-def bls_data():
-    #bls_prices.api.read_queries()
-    prices = [1.1, 1.3, 1.5, 1.4, 1, 1.2]
-    dates = [datetime.datetime(2024, 1, 1), datetime.datetime(2024, 2, 1), datetime.datetime(2024, 3, 1), datetime.datetime(2024, 4, 1),
-             datetime.datetime(2024, 5, 1), datetime.datetime(2024, 6, 1)]
-    nd = []
-    for d in dates:
-        nd.append(time_y(d))
-    return render_template('/product.html', date=dates, price=nd)
 
 def time_y(time):
     return math.sin(time.year+time.month+time.day+datetime.datetime.now().second)
@@ -67,7 +60,38 @@ def populate_data():
 
 @app.route('/recipes')
 def recipes():
-    return check_login(render_template('/recipes.html'))
+    if not logged_in(): return redirect(url_for("home"))
+    
+    list = firebase_connection.get_node("groceryLists", session['email'])
+    if not list:  return redirect(url_for("home"))
+    recipes = []
+    for id in list["recipes"]:
+        response = recipe_api.get_recipe(id)
+        meal = response["meals"][0]
+        recipes.append({
+            "id": id,
+            "image": meal["strMealThumb"],
+            "name": meal["strMeal"],
+            "area":meal["strArea"],
+            "category":meal["strCategory"]
+        })
+
+
+    return check_login(render_template('/recipes.html', recipes=recipes))
+
+@app.route('/recipe')
+def recipe():
+    id = request.args.get('id')
+    response = recipe_api.get_recipe(id)
+    recipe = response["meals"][0]
+    recipe["items"] = []
+    for i in range(1,21):
+        if ("strIngredient"+str(i)) in recipe:
+            if recipe['strIngredient'+str(i)] == '': break
+            recipe["items"].append({"ingredient": recipe["strIngredient"+str(i)], "measure": recipe["strMeasure"+str(i)]})
+        else:  break
+    print(recipe)
+    return check_login(render_template('/recipe.html', recipe=recipe))
 
 @app.route('/charts')
 def populate():

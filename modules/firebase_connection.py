@@ -60,6 +60,17 @@ def get_user_preferences(user_id):
         print(f"Error retrieving preferences for {user_id}: {str(e)}")
         return None
 
+def get_prices(name, date):
+    collection_name = "price_points"
+    try:
+        docs = db.collection(collection_name).where("date", ">", date).where("item_id", "=", name).stream()
+        items = [doc.to_dict() for doc in docs]
+        return items
+    except Exception as e:
+        print(f"Error retrieving items from {collection_name}: {str(e)}")
+        return []
+   
+
 def get_all_items_from_collection(collection_name):
    
     try:
