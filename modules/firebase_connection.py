@@ -6,20 +6,21 @@ parent_dir = Path(__file__).parent.parent
 sys.path.insert(0, str(parent_dir))
 
 import firebase_admin
+from firebase_admin import auth
 from firebase_admin import credentials, firestore
-from modules.keys import FIREBASE_CREDENTIALS_PATH  
+from keys import FIREBASE_CREDENTIALS_PATH  
 
+if not firebase_admin._apps:
+    try:
+        cred = credentials.Certificate(FIREBASE_CREDENTIALS_PATH)
+        firebase_admin.initialize_app(cred)
+        print("Firebase initialized successfully!")
+    except Exception as e:
+        print(f"Failed to initialize Firebase: {e}")
+else:
+    print("Firebase app already initialized")
 
-
-try:
-    cred = credentials.Certificate(FIREBASE_CREDENTIALS_PATH)
-    firebase_admin.initialize_app(cred)
-    db = firestore.client()
-    print("Firebase initialized successfully!")
-except Exception as e:
-    print(f"Failed to initialize Firebase: {str(e)}")
-    raise
-
+db = firestore.client()
 
 def test_firebase_connection():
     try:
@@ -103,6 +104,27 @@ def get_items_by_category(category_name):
     except Exception as e:
         print(f"Error retrieving items by category '{category_name}': {str(e)}")
         return []
+    
+def save_user_preferences(user_id, preferences):
+    try:
+        db.collection("users").document(str(user_id)).set({
+            "preferences": preferences
+        }, merge=True)
+        print(f"Preferences saved for user {user_id}")
+        return True
+    except Exception as e:
+        print(f"Error saving preferences for {user_id}: {str(e)}")
+        return False
+
+def get_user_preferences(user_id):
+    try:
+        doc = db.collection("users").document(str(user_id)).get()
+        if doc.exists:
+            return doc.to_dict().get("preferences", {})
+        return {}
+    except Exception as e:
+        print(f"Error retrieving preferences for {user_id}: {str(e)}")
+        return {}
 
 
 
