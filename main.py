@@ -7,7 +7,7 @@ from modules.api import recipe_api
 import datetime
 import math
 try:
-    import keys
+    import modules.keys as keys
 except:
     print('NO KEYS DETECTED')
     exit()
