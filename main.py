@@ -26,6 +26,7 @@ def login():
     return render_template('/login.html')
 
 def check_login(location):
+    print("HERE")
     if get_session_value("token") != "":
         return location
     else:
@@ -96,6 +97,18 @@ def recipe():
 @app.route('/charts')
 def populate():
     return render_template('/charts.html')
+
+@app.route("/search", methods=['GET', 'POST'])
+def search():
+    if request.method == 'POST':
+        category = request.form['category'] 
+        items = firebase_connection.get_items_by_category(category)  
+
+        if items:
+            return render_template('/search_results.html', items=items, category=category)  
+        else:
+            return render_template('/search_results.html', items=[], category=category)  
+    return render_template('/search.html')  
 
 
 if __name__ == '__main__':

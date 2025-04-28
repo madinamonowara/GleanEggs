@@ -2,3 +2,6 @@ keys.py
 .venv
 templates/.env.local
 cred.json
+modules/credentials.json
+cred.json
+__pycache__

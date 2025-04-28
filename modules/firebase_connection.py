@@ -7,7 +7,12 @@ sys.path.insert(0, str(parent_dir))
 
 import firebase_admin
 from firebase_admin import credentials, firestore
+<<<<<<< HEAD
 from keys import FIREBASE_CREDENTIALS_PATH  
+=======
+from modules.keys import FIREBASE_CREDENTIALS_PATH  
+
+>>>>>>> 58c64dade3e0ef72dd5643cd57f6f177e2b9443f
 
 
 try:
@@ -70,6 +75,7 @@ def get_user_preferences(user_id):
         print(f"Error retrieving preferences for {user_id}: {str(e)}")
         return None
 
+<<<<<<< HEAD
 def get_prices(name, date):
     collection_name = "price_points"
     try:
@@ -81,6 +87,8 @@ def get_prices(name, date):
         return []
    
 
+=======
+>>>>>>> 58c64dade3e0ef72dd5643cd57f6f177e2b9443f
 def get_all_items_from_collection(collection_name):
    
     try:
@@ -90,6 +98,33 @@ def get_all_items_from_collection(collection_name):
     except Exception as e:
         print(f"Error retrieving items from {collection_name}: {str(e)}")
         return []
+<<<<<<< HEAD
+=======
+    
+
+def add_item_by_category(name, price, diff, trend, category):
+    data = {
+        "name": name,
+        "price": price,
+        "diff": diff,
+        "trend": trend,
+        "category": category
+    }
+    upload_to_firebase("Grocery_Items", data_dict=data, doc_id=name.lower())
+
+
+def get_items_by_category(category_name):
+    try:
+        docs = db.collection("Grocery_Items").where("category", "==", category_name).stream()
+        
+        items = [doc.to_dict() for doc in docs]
+        return items
+    except Exception as e:
+        print(f"Error retrieving items by category '{category_name}': {str(e)}")
+        return []
+
+
+>>>>>>> 58c64dade3e0ef72dd5643cd57f6f177e2b9443f
 
 if __name__ == "__main__":
     print("Running Firebase test connection...")
@@ -110,3 +145,20 @@ if __name__ == "__main__":
     
     all_items = get_all_items_from_collection("items")
     print("All Items in 'items' Collection:", all_items)
+<<<<<<< HEAD
+=======
+
+
+    print("\nAdding new grocery item with category...")
+    add_item_by_category(
+        name="carrot",
+        price="1.29",
+        diff="-0.05",
+        trend="0.102",
+        category="Vegetable"
+    )
+
+
+
+
+>>>>>>> 58c64dade3e0ef72dd5643cd57f6f177e2b9443f

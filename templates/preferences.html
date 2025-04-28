@@ -38,9 +38,17 @@
     form {
       display: flex;
       flex-direction: column;
+<<<<<<< HEAD
       align-items: flex-start;
     }
 
+=======
+      align-items: center; /* centers everything inside the form */
+      width: 100%;
+    }
+
+
+>>>>>>> 58c64dade3e0ef72dd5643cd57f6f177e2b9443f
     label {
       font-size: 18px;
       margin: 6px 0;
@@ -49,6 +57,11 @@
     .section-title {
       font-weight: bold;
       margin-top: 20px;
+<<<<<<< HEAD
+=======
+      text-align: center; /* Ensures multi-line titles are centered */
+      font-size: 20px; /* Increase from default */
+>>>>>>> 58c64dade3e0ef72dd5643cd57f6f177e2b9443f
     }
 
     .btn {
@@ -73,16 +86,163 @@
       font-size: 14px;
       color: #555;
     }
+<<<<<<< HEAD
+=======
+    .preference-bubble {
+  background-color: white;
+  border: 2px solid #ddd;
+  border-radius: 20px;
+  padding: 10px 20px;
+  margin: 8px 0;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  font-size: 16px;
+  cursor: pointer;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+  display: flex;
+  align-items: center;
+}
+
+.preference-bubble:hover {
+  border-color: #4CAF50;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.15);
+}
+
+/* Hide default checkbox */
+.preference-bubble input[type="checkbox"] {
+  margin-right: 10px;
+  width: 16px;
+  height: 16px;
+}
+
+/* Selected bubble */
+.preference-bubble input[type="checkbox"]:checked ~ span {
+  font-weight: bold;
+}
+
+/* Use this instead: */
+.preference-bubble:has(input[type="checkbox"]:checked) {
+  background-color: #e0f5e9;
+  border-color: #4CAF50;
+  box-shadow: 0 4px 6px rgba(0, 128, 0, 0.2);
+}
+
+
+.preference-sections {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 40px;
+  justify-content: center;
+  width: 100%;
+}
+
+.preference-column {
+  display: flex;
+  flex-direction: column;
+  min-width: 260px;
+}
+
+.question-bubble {
+  background-color: white;
+  border: 2px solid #ddd;
+  border-radius: 20px;
+  padding: 20px;
+  margin: 20px 0;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  width: 100%;
+  max-width: 600px;
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto; /* Centers the bubble horizontally */
+}
+ 
+
+.question-bubble h3 {
+  margin-bottom: 15px;
+}
+
+.shop-frequency-options {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+}
+
+.shop-frequency-options label:has(input[type="radio"]:checked) {
+  border-color: #4CAF50;
+  background-color: #e0f5e9;
+  box-shadow: 0 4px 6px rgba(0, 128, 0, 0.2);
+}
+
+
+/* Hide radio buttons */
+.shop-frequency-options input[type="radio"] {
+  display: none;
+}
+
+/* Green outline when selected */
+.shop-frequency-options label:has(input[type="radio"]:checked) {
+  border-color: #4CAF50;
+  background-color: #e0f5e9;
+  box-shadow: 0 4px 6px rgba(0, 128, 0, 0.2);
+}
+
+/* Green outline before selection*/
+.shop-frequency-options label {
+  border: 2px solid #ccc;
+  border-radius: 20px;
+  padding: 10px 16px;
+  background-color: white;
+  font-size: 16px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  transition: all 0.2s ease;
+  cursor: pointer;
+  margin: 5px;
+  display: inline-block;
+}
+
+.shop-frequency-options label:hover {
+  border-color: #4CAF50;
+  box-shadow: 0 4px 6px rgba(0, 128, 0, 0.2);
+}
+
+
+.slider-container {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Centers the slider and value text */
+}
+
+input[type="range"] {
+  width: 100%;
+  margin-top: 10px;
+}
+
+#budget-value {
+  font-weight: bold;
+  font-size: 18px;
+  margin-top: 8px;
+}
+
+
+
+
+>>>>>>> 58c64dade3e0ef72dd5643cd57f6f177e2b9443f
   </style>
 </head>
 <body>
   <div class="header">
     <h1>Tell us about your preferences</h1>
+<<<<<<< HEAD
     <p>We’ll personalize your experience based on your diet and allergies.</p>
+=======
+    <p>We’ll personalize your experience a bit!</p>
+>>>>>>> 58c64dade3e0ef72dd5643cd57f6f177e2b9443f
   </div>
 
   <div class="form-container">
     <form>
+<<<<<<< HEAD
       <label><input type="checkbox" name="diet" value="vegan" /> Vegan</label>
       <label><input type="checkbox" name="diet" value="vegetarian" /> Vegetarian</label>
       <label><input type="checkbox" name="diet" value="glutenfree" /> Gluten-Free</label>
@@ -96,6 +256,93 @@
 
       <button type="submit" class="btn">Save Preferences</button>
     </form>
+=======
+      <div class="preference-sections">
+        <div class="preference-column">
+          <p class="section-title">Diet</p>
+    
+          <label class="preference-bubble">
+            <input type="checkbox" name="diet" value="vegan" />
+            <span>Vegan</span>
+          </label>
+    
+          <label class="preference-bubble">
+            <input type="checkbox" name="diet" value="vegetarian" />
+            <span>Vegetarian</span>
+          </label>
+    
+          <label class="preference-bubble">
+            <input type="checkbox" name="diet" value="glutenfree" />
+            <span>Gluten-Free</span>
+          </label>
+    
+          <label class="preference-bubble">
+            <input type="checkbox" name="diet" value="keto" />
+            <span>Keto</span>
+          </label>
+        </div>
+    
+        <div class="preference-column">
+          <p class="section-title">Allergies</p>
+    
+          <label class="preference-bubble">
+            <input type="checkbox" name="allergy" value="peanuts" />
+            <span>Peanuts</span>
+          </label>
+    
+          <label class="preference-bubble">
+            <input type="checkbox" name="allergy" value="dairy" />
+            <span>Dairy</span>
+          </label>
+    
+          <label class="preference-bubble">
+            <input type="checkbox" name="allergy" value="soy" />
+            <span>Soy</span>
+          </label>
+    
+          <label class="preference-bubble">
+            <input type="checkbox" name="allergy" value="shellfish" />
+            <span>Shellfish</span>
+          </label>
+        </div>
+      </div>
+    
+      <div class="question-bubble">
+        <h3>How often do you grocery shop?</h3>
+        <div class="shop-frequency-options">
+          <label>
+            <input type="radio" name="shop-frequency" value="1x" />
+            1x a week
+          </label>
+          
+          <label>
+            <input type="radio" name="shop-frequency" value="2x" />
+            2x a week
+          </label>
+          <label>
+            <input type="radio" name="shop-frequency" value="biweekly" />
+            Every 2 weeks
+          </label>
+          <label>
+            <input type="radio" name="shop-frequency" value="monthly" />
+            Every month
+          </label>
+        </div>
+      </div>
+      
+      <div class="question-bubble">
+        <h3>What’s your weekly grocery budget?</h3>
+        <div class="slider-container">
+          <input type="range" id="budget" name="budget" min="10" max="125" step="5" value="10" oninput="updateBudgetValue(this.value)">
+          <div id="budget-value">$10</div>
+        </div>
+      </div>           
+      
+
+      <button type="submit" class="btn">Save Preferences</button>
+    </form>
+        
+>>>>>>> 58c64dade3e0ef72dd5643cd57f6f177e2b9443f
 
     <a href="/" class="btn">← Back to Home</a>
   </div>
@@ -103,5 +350,24 @@
   <footer>
     © 2025 GleanEggs. All rights reserved.
   </footer>
+<<<<<<< HEAD
+=======
+
+
+  <script>
+    function updateBudgetValue(value) {
+      // Check if the value is 125, if so, show "$125+"
+      if (value == 125) {
+        document.getElementById('budget-value').textContent = "$125+";
+      } else {
+        // Otherwise, just show the value
+        document.getElementById('budget-value').textContent = `$${value}`;
+      }
+    }
+  </script>
+  
+  
+
+>>>>>>> 58c64dade3e0ef72dd5643cd57f6f177e2b9443f
 </body>
 </html>
