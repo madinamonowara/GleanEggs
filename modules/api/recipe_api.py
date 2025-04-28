@@ -9,6 +9,10 @@ mealdb_url = 'https://www.themealdb.com/api/json/v1/'
 def get_base_url():
     return mealdb_url+keys.mealdb_key+"/"
 
+def get_recipe(id):
+    response = requests.get(get_base_url()+"lookup.php?i="+str(id))
+    return json.loads(response.text)
+
 def get_recipes_for_items(items, num_items = 3):
     recipes = []
     for i in items:
