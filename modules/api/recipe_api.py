@@ -2,24 +2,17 @@ import requests
 import json
 import datetime
 from types import SimpleNamespace
-<<<<<<< HEAD
-import keys
-=======
 import modules.keys as keys
->>>>>>> 58c64dade3e0ef72dd5643cd57f6f177e2b9443f
 import random
 
 mealdb_url = 'https://www.themealdb.com/api/json/v1/'
 def get_base_url():
     return mealdb_url+keys.mealdb_key+"/"
 
-<<<<<<< HEAD
 def get_recipe(id):
     response = requests.get(get_base_url()+"lookup.php?i="+str(id))
     return json.loads(response.text)
 
-=======
->>>>>>> 58c64dade3e0ef72dd5643cd57f6f177e2b9443f
 def get_recipes_for_items(items, num_items = 3):
     recipes = []
     for i in items:

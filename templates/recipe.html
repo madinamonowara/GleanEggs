@@ -35,7 +35,6 @@
   </div>
 
   <script>
-<<<<<<< HEAD
     document.getElementById("recipe-title").textContent = "{{recipe['strMeal']}}";
     document.getElementById("recipe-img").src = "{{recipe['strMealThumb']}}";
     document.getElementById("recipe-meta").textContent = `Category: {{recipe['strCategory']}} | Cuisine: {{recipe['strArea']}}`;
@@ -50,28 +49,6 @@
       ingredientList.appendChild(li);
     {% endfor %}
     
-=======
-    document.addEventListener("DOMContentLoaded", function () {
-      const recipe = JSON.parse(localStorage.getItem("selectedRecipe"));
-
-      if (recipe) {
-        document.getElementById("recipe-title").textContent = recipe.strMeal;
-        document.getElementById("recipe-img").src = recipe.strMealThumb;
-        document.getElementById("recipe-meta").textContent = `Category: ${recipe.strCategory} | Cuisine: ${recipe.strArea}`;
-        document.getElementById("instructions").textContent = recipe.strInstructions;
-        document.getElementById("video-link").href = recipe.strYoutube;
-
-        const ingredientList = document.getElementById("ingredient-list");
-        recipe.ingredients.forEach(item => {
-          const li = document.createElement("li");
-          li.textContent = `${item.measure} ${item.ingredient}`;
-          ingredientList.appendChild(li);
-        });
-      } else {
-        document.querySelector(".max-w-3xl").innerHTML = "<p class='text-red-600'>No recipe data found.</p>";
-      }
-    });
->>>>>>> 58c64dade3e0ef72dd5643cd57f6f177e2b9443f
   </script>
 </body>
 </html>

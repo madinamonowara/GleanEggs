@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 from modules import firebase_connection
 import datetime
 
@@ -24,9 +23,3 @@ def calculate_price(item):
     return avg_price
 
         
-=======
-def calculate_score(item, account):
-    score = 1.0
-    #given user preferences and pricing data calculate score using different weights
-    return score
->>>>>>> 58c64dade3e0ef72dd5643cd57f6f177e2b9443f
