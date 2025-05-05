@@ -150,11 +150,6 @@ def products():
     return check_login(render_template('/product.html', recipes=recipes))
 
 
-@app.route('/product_data', methods=['GET'])
-def product_data():
-    name = request.args.get('name')
-    product = {"history": [], "lastWeekPrice": 0, "thisWeekPrice": 0, "image": recipe_api.get_thumbnail(name)}
-    return json.dumps(product)
 @app.route('/recipe')
 def recipe():
     id = request.args.get('id')
@@ -169,9 +164,17 @@ def recipe():
     print(recipe)
     return check_login(render_template('/recipe.html', recipe=recipe))
 
-@app.route('/charts')
-def populate():
-    return render_template('/charts.html')
+@app.route('/charts', methods=['GET', 'POST'])
+def charts():
+    if request.method == 'POST':
+        price = request.form['price']
+        store_name = request.form['store_name']
+
+        add_product_price_and_store(price, store_name)
+
+        return redirect(url_for('charts'))
+
+    return render_template('charts.html')
 
 @app.route("/search", methods=['GET', 'POST'])
 def search():
@@ -184,6 +187,26 @@ def search():
         else:
             return render_template('/search_results.html', items=[], category=category)  
     return render_template('/search.html')  
+
+
+def product_data():
+    return json.dumps(product)
+
+@app.route('/product_data', methods=['GET'])
+def product():
+    name = request.args.get('name')
+    price_history = firebase_connection.get_price_history_by_item(name)
+
+    if not price_history:
+        return redirect(url_for('home'))
+
+    dates = [entry["date"].strftime("%Y-%m-%d") for entry in price_history]
+    prices = [entry["price"] for entry in price_history]
+    product = {"history": zip(dates, prices), "lastWeekPrice": 0, "thisWeekPrice": 0, "image": recipe_api.get_thumbnail(name)}
+
+    return json.dumps(product)
+
+
 
 if __name__ == '__main__':
     app.secret_key = 'SECRET KEY'
