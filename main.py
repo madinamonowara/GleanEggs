@@ -4,6 +4,7 @@ from modules import process_data
 from modules import firebase_connection
 from modules.api import recipe_api
 
+import json
 import datetime
 import math
 try:

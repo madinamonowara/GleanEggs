@@ -6,9 +6,9 @@ parent_dir = Path(__file__).parent.parent
 sys.path.insert(0, str(parent_dir))
 
 import firebase_admin
-from firebase_admin import auth
+# from firebase_admin import auth
 from firebase_admin import credentials, firestore
-from keys import FIREBASE_CREDENTIALS_PATH  
+from modules.keys import FIREBASE_CREDENTIALS_PATH  
 
 if not firebase_admin._apps:
     try:
