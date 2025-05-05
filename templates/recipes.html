@@ -3,22 +3,81 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Recipes</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Grocery List - GleanEggs</title>
+    <link href="https://fonts.googleapis.com/css2?family=Boldonse&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static',filename='styles/navbarstyle.css') }}">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background: #f9f9f9;
+            margin: 0;
+            padding: 0;
+        }
+
+        .top-menu {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: white;
+            padding: 20px 30px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            border: 2px solid #4CAF50;
+            border-left: none;
+            border-right: none;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo {
+            width: 60px;
+        }
+
+        .logo-text {
+            font-family: 'Boldonse', sans-serif;
+            font-size: 28px;
+            margin-left: 10px;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 15px;
+        }
+
+        .nav-buttons button {
+            font-size: 16px;
+            padding: 10px 15px;
+            border: 2px solid #4CAF50;
+            background: white;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .nav-buttons button:hover {
+            background-color: #e8f5e9;
+        }
+    </style>
 </head>
-<body class="bg-gray-100 p-4">
+<body>
     <header>
         <nav class="top-menu">
             <div class="logo-section">
-                <img class="logo" src="/static/images/gleaneggs_logo.jpg" onclick="location.href='/'" alt="GleanEggs Logo">
+                <img class="logo" src="/static/images/gleaneggs_logo.jpg" alt="GleanEggs Logo">
                 <span class="logo-text">GleanEggs</span>
             </div>
             <div class="nav-buttons">
-                <button onclick="location.href='/recipes'">🍳 Recipes</button>
-                <button onclick="location.href='/products'">📊 Products</button>
-                <button onclick="location.href='/preferences'">🔧 Preferences</button>
-                <button onclick="location.href='/login'">👋 Log Out</button>
+                <button onclick="location.href='recipes.html'">🍳 Recipes</button>
+                <button onclick="location.href='product_list.html'">📊 Products</button>
+                <button onclick="location.href='home.html'">🛒 Grocery List</button>
+                <button onclick="location.href='preferences.html'">🔧 Preferences</button>
+                <button onclick="location.href='login.html'">👋 Log Out</button>
             </div>
         </nav>
     </header>

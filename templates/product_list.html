@@ -1,205 +1,274 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Products | GleanEggs</title>
-    <link href="https://fonts.googleapis.com/css2?family=Boldonse&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="{{ url_for('static',filename='styles/navbarstyle.css') }}">
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            background: #f9f9f9;
-            margin: 0;
-            padding: 0;
-        }
-        .top-menu {
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Products | GleanEggs</title>
+  <link href="https://fonts.googleapis.com/css2?family=Boldonse&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="{{ url_for('static',filename='styles/navbarstyle.css') }}"/>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      background: #f9f9f9;
+      margin: 0;
+      padding: 0;
+    }
+    .top-menu {
             display: flex;
             justify-content: space-between;
             align-items: center;
             background: white;
-            margin-bottom: 20px;
-            padding: 10px 10px;
-            padding-right: 20px;
+            padding: 20px 30px;
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            border: 2px solid #4CAF50;
+            border-left: none;
+            border-right: none;
             position: sticky;
             top: 0;
             z-index: 100;
         }
-        .logo-section {
-            display: flex;
-            align-items: center;
-        }
-        .logo {
-            width: 60px;
-        }
-        .logo-text {
-            font-family: 'Boldonse', sans-serif;
-            font-size: 24px;
-            margin-left: 10px;
-            display: inline-block;
-        }
-        .nav-buttons {
-            display: flex;
-            gap: 10px;
-        }
-        .container {
-            max-width: 700px;
-            margin: 0 auto;
-            padding: 0 15px;
-        }
-        .product-container {
+    .logo-section {
+      display: flex;
+      align-items: center;
+    }
+    .logo {
+      width: 60px;
+    }
+    .logo-text {
+      font-family: 'Boldonse', sans-serif;
+      font-size: 28px;
+      margin-left: 10px;
+    }
+    .nav-buttons {
+      display: flex;
+      gap: 15px;
+    }
+    .nav-buttons button {
+            font-size: 16px;
+            padding: 10px 15px;
+            border: 2px solid #4CAF50;
             background: white;
-            padding: 20px;
-            margin: 20px 0;
-            border-radius: 12px;
-            box-shadow: 2px 2px 10px rgba(0,0,0,0.1);
-        }
-        .grocery-item {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 10px 0;
-            border-bottom: 1px solid #ddd;
-        }
-        .grocery-item img {
-            width: 50px;
-            height: 50px;
-            border-radius: 5px;
-            margin-right: 10px;
-        }
-        .item-details {
-            text-align: left;
-            flex: 1;
-        }
-        .item-name {
-            font-weight: bold;
-        }
-        .item-price {
-            color: gray;
-            font-size: 14px;
-        }
-        .checkbox {
-            margin-right: 5px;
-        }
-        .action-buttons {
-            display: flex;
-            gap: 10px;
-        }
-        .action-buttons button {
-            padding: 6px 10px;
-            font-size: 12px;
-            background: white;
-            border: 1px solid #ddd;
-            border-radius: 20px;
+            border-radius: 10px;
             cursor: pointer;
             transition: background-color 0.3s;
         }
-        .action-buttons button:hover {
-            background-color: #f0f0f0;
+        .nav-buttons button:hover {
+            background-color: #e8f5e9;
         }
-    </style>
+    .container {
+      max-width: 700px;
+      margin: 0 auto;
+      padding: 0 15px;
+    }
+    .product-container {
+      background: white;
+      padding: 20px;
+      margin: 20px 0;
+      border-radius: 12px;
+      box-shadow: 2px 2px 10px rgba(0,0,0,0.1);
+    }
+    .grocery-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 0;
+      border-bottom: 1px solid #ddd;
+    }
+    .grocery-item img {
+      width: 50px;
+      height: 50px;
+      border-radius: 5px;
+      margin-right: 10px;
+    }
+    .item-details {
+      text-align: left;
+      flex: 1;
+    }
+    .item-name {
+      font-weight: bold;
+    }
+    .item-price {
+      color: gray;
+      font-size: 14px;
+    }
+    .action-buttons {
+      display: flex;
+      gap: 10px;
+    }
+    .action-buttons button {
+      padding: 6px 12px;
+      font-size: 12px;
+      background: white;
+      border: 2px solid green;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: background-color 0.3s, color 0.3s;
+    }
+    .action-buttons button:hover {
+      background-color: green;
+      color: white;
+    }
+  </style>
 </head>
 <body>
-    <header>
-        <nav class="top-menu">
-            <div class="logo-section">
-                <img class="logo" src="/static/images/gleaneggs_logo.jpg" alt="GleanEggs Logo">
-                <span class="logo-text">GleanEggs</span>
-            </div>
-            <div class="nav-buttons">
-                <button onclick="location.href='/recipes'">🍳 Recipes</button>
-                <button onclick="location.href='/products'">📊 Items</button>
-                <button onclick="location.href='/preferences'">🔧 Preferences</button>
-                <button onclick="location.href='/login'">👋 Log Out</button>
-            </div>
-        </nav>
-    </header>
+  <header>
+    <nav class="top-menu">
+      <div class="logo-section">
+        <img class="logo" src="/static/images/gleaneggs_logo.jpg" alt="GleanEggs Logo">
+        <span class="logo-text">GleanEggs</span>
+      </div>
+      <div class="nav-buttons">
+        <button onclick="location.href='recipes.html'">🍳 Recipes</button>
+        <button onclick="location.href='product_list.html'">📊 Products</button>
+        <button onclick="location.href='home.html'">🛒 Grocery List</button>
+        <button onclick="location.href='preferences.html'">🔧 Preferences</button>
+        <button onclick="location.href='login.html'">👋 Log Out</button>
+      </div>
+    </nav>
+  </header>
 
-    <div class="container">
-        <section class="product-container">
-            <h2>Hey, Here’s Your Products List</h2>
-            <div style="display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap;">
-                <input type="text" id="searchInput" placeholder="Search products..." style="flex: 2; padding: 4px; border-radius: 8px; border: 1px solid #ccc;">
-                <select id="categorySelect" style="flex: 1; padding: 4px; border-radius: 8px; border: 1px solid #ccc;">
-                    <option value="">All Categories</option>
-                    <option value="fruit">Fruits</option>
-                    <option value="vegetable">Vegetables</option>
-                    <option value="dairy">Dairy</option>
-                    <option value="meat">Meat</option>
-                </select>
-            </div>
-            <div class="grocery-list" id="groceryList"></div>
-        </section>
-    </div>
+  <div class="container">
+    <section class="product-container">
+      <h2>Hey, Here’s All the Products</h2>
+      <div style="display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap;">
+        <input type="text" id="searchInput" placeholder="Search products..." style="flex: 2; padding: 4px; border-radius: 8px; border: 1px solid #ccc;">
+        <select id="categorySelect" style="flex: 1; padding: 4px; border-radius: 8px; border: 1px solid #ccc;">
+          <option value="">All Categories</option>
+          <option value="fruit">Fruits</option>
+          <option value="vegetable">Vegetables</option>
+          <option value="dairy">Dairy</option>
+          <option value="meat">Meat</option>
+        </select>
+      </div>
+      <div class="grocery-list" id="groceryList"></div>
+    </section>
+  </div>
 
-    <script>
-        const products = [
-            { name: "Apple", quantity: 1, image: "apple.jpg", price: 1.50, category: "fruit" },
-            { name: "Banana", quantity: 2, image: "banana.jpg", price: 0.99, category: "fruit" },
-            { name: "Carrot", quantity: 3, image: "carrot.jpg", price: 0.75, category: "vegetable" },
-            { name: "Milk", quantity: 1, image: "milk.jpg", price: 2.50, category: "dairy" }
+  <script>
+    
+    const products = [
+            { name: "Flour", quantity: 1, image: "flour.jpg" },
+            { name: "Rice", quantity: 1, image: "rice.jpg" },
+            { name: "Spaghetti and macaroni", quantity: 1, image: "spaghetti_and_macaroni.jpg" },
+            { name: "Bread", quantity: 1, image: "bread.jpg" },
+            { name: "Bread: whole wheat", quantity: 1, image: "bread_whole_wheat.jpg" },
+            { name: "Cookies", quantity: 1, image: "cookies.jpg" },
+            { name: "Ground chuck", quantity: 1, image: "ground_chuck.jpg" },
+            { name: "Ground beef", quantity: 1, image: "ground_beef.jpg" },
+            { name: "Ground beef: lean and extra lean", quantity: 1, image: "ground_beef_lean.jpg" },
+            { name: "All uncooked ground beef", quantity: 1, image: "ground_beef_uncooked.jpg" },
+            { name: "Chuck roast", quantity: 1, image: "chuck_roast.jpg" },
+            { name: "Chuck roast: USDA Choice", quantity: 1, image: "chuck_roast_usda_choice.jpg" },
+            { name: "Round roast", quantity: 1, image: "round_roast.jpg" },
+            { name: "Round roast: graded and ungraded", quantity: 1, image: "round_roast_graded.jpg" },
+            { name: "All Uncooked Beef Roasts", quantity: 1, image: "beef_roasts_uncooked.jpg" },
+            { name: "Steak", quantity: 1, image: "steak.jpg" },
+            { name: "Steak: round", quantity: 1, image: "steak_round.jpg" },
+            { name: "Steak: sirloin", quantity: 1, image: "steak_sirloin.jpg" },
+            { name: "Beef for stew", quantity: 1, image: "beef_for_stew.jpg" },
+            { name: "All Uncooked Beef Steaks", quantity: 1, image: "beef_steaks_uncooked.jpg" },
+            { name: "All Uncooked Other Beef (Excluding Veal)", quantity: 1, image: "other_beef_uncooked.jpg" },
+            { name: "Bacon", quantity: 1, image: "bacon.jpg" },
+            { name: "Chops", quantity: 1, image: "chops.jpg" },
+            { name: "Chops: boneless", quantity: 1, image: "chops_boneless.jpg" },
+            { name: "All Pork Chops", quantity: 1, image: "pork_chops_all.jpg" },
+            { name: "Ham", quantity: 1, image: "ham.jpg" },
+            { name: "Ham: boneless", quantity: 1, image: "ham_boneless.jpg" },
+            { name: "All Ham (Excluding Canned Ham and Luncheon Slices)", quantity: 1, image: "ham_all.jpg" },
+            { name: "All Other Pork (Excluding Canned Ham and Luncheon Slices)", quantity: 1, image: "other_pork.jpg" },
+            { name: "Bologna", quantity: 1, image: "bologna.jpg" },
+            { name: "Chicken", quantity: 1, image: "chicken.jpg" },
+            { name: "Chicken breast", quantity: 1, image: "chicken_breast.jpg" },
+            { name: "Chicken breast: boneless", quantity: 1, image: "chicken_breast_boneless.jpg" },
+            { name: "Chicken legs", quantity: 1, image: "chicken_legs.jpg" },
+            { name: "Turkey", quantity: 1, image: "turkey.jpg" },
+            { name: "Eggs", quantity: 1, image: "eggs.jpg" },
+            { name: "Milk", quantity: 1, image: "milk.jpg" },
+            { name: "Butter", quantity: 1, image: "butter.jpg" },
+            { name: "American processed cheese", quantity: 1, image: "processed_cheese.jpg" },
+            { name: "Cheddar cheese", quantity: 1, image: "cheddar_cheese.jpg" },
+            { name: "Ice cream", quantity: 1, image: "ice_cream.jpg" },
+            { name: "Apple", quantity: 1, image: "apples.jpg" },
+            { name: "Banana", quantity: 1, image: "bananas.jpg" },
+            { name: "Orange", quantity: 1, image: "oranges.jpg" },
+            { name: "Oranges: Valencia", quantity: 1, image: "oranges_valencia.jpg" },
+            { name: "Cherries", quantity: 1, image: "cherries.jpg" },
+            { name: "Grapefruit", quantity: 1, image: "grapefruit.jpg" },
+            { name: "Grape", quantity: 1, image: "grapes.jpg" },
+            { name: "Lemon", quantity: 1, image: "lemons.jpg" },
+            { name: "Peach", quantity: 1, image: "peaches.jpg" },
+            { name: "Pear", quantity: 1, image: "pears.jpg" },
+            { name: "Strawberries", quantity: 1, image: "strawberries.jpg" },
+            { name: "Potato", quantity: 1, image: "potatoes.jpg" },
+            { name: "Lettuce", quantity: 1, image: "lettuce.jpg" },
+            { name: "Lettuce: romaine", quantity: 1, image: "lettuce_romaine.jpg" },
+            { name: "Tomato", quantity: 1, image: "tomatoes.jpg" },
+            { name: "Broccoli", quantity: 1, image: "broccoli.jpg" },
+            { name: "Cabbage", quantity: 1, image: "cabbage.jpg" },
+            { name: "Carrot", quantity: 1, image: "carrots.jpg" },
+            { name: "Celery", quantity: 1, image: "celery.jpg" },
+            { name: "Pepper", quantity: 1, image: "peppers.jpg" },
+            { name: "Orange juice", quantity: 1, image: "orange_juice.jpg" },
+            { name: "Beans", quantity: 1, image: "beans.jpg" },
+            { name: "Sugar", quantity: 1, image: "sugar.jpg" },
+            { name: "Sugar: white", quantity: 1, image: "sugar_white.jpg" },
+            { name: "Margarine", quantity: 1, image: "margarine.jpg" },
+            { name: "Margarine: soft", quantity: 1, image: "margarine_soft.jpg" },
+            { name: "Peanut butter", quantity: 1, image: "peanut_butter.jpg" },
+            { name: "Cola", quantity: 1, image: "cola.jpg" },
+            { name: "Coffee", quantity: 1, image: "coffee.jpg" },
+            { name: "Potato chips", quantity: 1, image: "potato_chips.jpg" },
+            { name: "Malt beverages", quantity: 1, image: "malt_beverages.jpg" },
+            { name: "Wine", quantity: 1, image: "wine.jpg" }
         ];
 
-        function addItem(name, quantity, image, price, category) {
-            const list = document.getElementById("groceryList");
-            const item = document.createElement("div");
-            item.classList.add("grocery-item");
-            item.dataset.name = name;
-            item.dataset.quantity = quantity;
-            item.dataset.category = category;
 
-            item.innerHTML = `
-                <input type="checkbox" class="checkbox">
-                <img src="${image}" alt="${name}">
-                <div class="item-details">
-                    <p class="item-name">${name} ${quantity}x</p>
-                    <p class="item-price">$${price.toFixed(2)} at Whole Foods</p>
-                </div>
-                <div class="action-buttons">
-                    <button class="remove-item" onclick="toggleItem(${Date.now()})">Add/Remove</button>
-                    <a href="charts.html"><button class="remove-item">View</button></a>
-                </div>
-            `;
-            list.appendChild(item);
-        }
+    function addItem(name, quantity, image, price, category) {
+  const list = document.getElementById("groceryList");
+  const item = document.createElement("div");
+  item.classList.add("grocery-item");
+  item.dataset.name = name;
+  item.dataset.quantity = quantity;
+  item.dataset.category = category;
 
-        function filterProducts() {
-            const searchValue = document.getElementById("searchInput").value.toLowerCase();
-            const selectedCategory = document.getElementById("categorySelect").value;
+  item.innerHTML = `
+    <img src="${image}" alt="${name}">
+    <div class="item-details">
+      <p class="item-name">${name} ${quantity}x</p>
+    </div>
+    <div class="action-buttons">
+      <button onclick="alert('Item added or removed')">Add/Remove</button>
+      <a href="product.html?name=${encodeURIComponent(name)}">
+  <button class="remove-item">View</button>
+</a>
 
-            const items = document.querySelectorAll(".grocery-item");
-            items.forEach(item => {
-                const itemName = item.querySelector(".item-name").textContent.toLowerCase();
-                const itemCategory = item.dataset.category;
+    </div>
+  `;
+  list.appendChild(item);
+}
 
-                const matchesSearch = itemName.includes(searchValue);
-                const matchesCategory = selectedCategory === "" || selectedCategory === itemCategory;
 
-                item.style.display = (matchesSearch && matchesCategory) ? "flex" : "none";
-            });
-        }
+    function filterProducts() {
+      const searchValue = document.getElementById("searchInput").value.toLowerCase();
+      const selectedCategory = document.getElementById("categorySelect").value;
 
-        products.forEach(product => {
-            addItem(product.name, product.quantity, product.image, product.price, product.category);
-        });
+      const items = document.querySelectorAll(".grocery-item");
+      items.forEach(item => {
+        const itemName = item.querySelector(".item-name").textContent.toLowerCase();
+        const itemCategory = item.dataset.category;
 
-        document.getElementById("searchInput").addEventListener("input", filterProducts);
-        document.getElementById("categorySelect").addEventListener("change", filterProducts);
+        const matchesSearch = itemName.includes(searchValue);
+        const matchesCategory = selectedCategory === "" || selectedCategory === itemCategory;
 
-        function toggleItem(itemId) {
-            const item = document.querySelector(`[data-name='${itemId}']`);
-            if (!item) return;
-            let quantity = parseInt(item.dataset.quantity);
-            if (quantity > 1) {
-                quantity--;
-                item.dataset.quantity = quantity;
-                item.querySelector('.item-name').textContent = item.dataset.name + ' ' + quantity + 'x';
-            } else {
-                item.remove();
-            }
-        }
-    </script>
+        item.style.display = (matchesSearch && matchesCategory) ? "flex" : "none";
+      });
+    }
+
+    products.forEach(product => addItem(product.name, product.quantity, product.image, product.price, product.category));
+
+    document.getElementById("searchInput").addEventListener("input", filterProducts);
+    document.getElementById("categorySelect").addEventListener("change", filterProducts);
+  </script>
 </body>
 </html>

@@ -1,43 +1,158 @@
 <!DOCTYPE html>
-<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
-<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
-<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
-<!--[if gt IE 8]>      <html class="no-js"> <!--<![endif]-->
-<html>
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title></title>
-        <meta name="description" content="">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="">
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
-    </head>
-    <body>
-        <!--[if lt IE 7]>
-        <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p>
-        <![endif]-->
-        <h1>Flour Graph</h1>
-        <canvas id="myChart" style="width:100%;max-width:700px"></canvas>
-        <script>
-            var datetime = {'datetime': (x,y,z)=>{
-                return x+"-"+y+"-"+z
-            }}
-            const xValues = {{date}}
-            const yValues = {{price}}
-            new Chart("myChart", {
-            type: "line",
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Product Details | GleanEggs</title>
+  <link href="https://fonts.googleapis.com/css2?family=Boldonse&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles/navbarstyle.css') }}">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f9f9f9;
+      margin: 0;
+      padding: 0;
+    }
+    .top-menu {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: white;
+      margin-bottom: 20px;
+      padding: 10px 10px;
+      padding-right: 20px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .logo-section {
+      display: flex;
+      align-items: center;
+    }
+    .logo {
+      width: 60px;
+    }
+    .logo-text {
+      font-family: 'Boldonse', sans-serif;
+      font-size: 24px;
+      margin-left: 10px;
+      display: inline-block;
+    }
+    .nav-buttons {
+      display: flex;
+      gap: 10px;
+    }
+    .nav-buttons button {
+      padding: 6px 12px;
+      border: 2px solid green;
+      border-radius: 12px;
+      background: white;
+      cursor: pointer;
+      font-size: 14px;
+    }
+    .container {
+      max-width: 800px;
+      margin: 40px auto;
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      text-align: center;
+    }
+    .product-image {
+      width: 150px;
+      height: 150px;
+      object-fit: cover;
+      border-radius: 10px;
+      margin-bottom: 20px;
+    }
+    .price-info {
+      margin: 20px 0;
+      font-size: 18px;
+    }
+    canvas {
+      max-width: 100%;
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="top-menu">
+    <div class="logo-section">
+      <img class="logo" src="/static/images/gleaneggs_logo.jpg" alt="GleanEggs Logo">
+      <span class="logo-text">GleanEggs</span>
+    </div>
+    <div class="nav-buttons">
+        <button onclick="location.href='recipes.html'">🍳 Recipes</button>
+        <button onclick="location.href='product_list.html'">📊 Products</button>
+        <button onclick="location.href='home.html'">🛒 Grocery List</button>
+        <button onclick="location.href='preferences.html'">🔧 Preferences</button>
+        <button onclick="location.href='login.html'">👋 Log Out</button>
+    </div>
+  </nav>
+
+
+  <div class="container">
+    <h2 id="productName">Product Name</h2>
+    <img id="productImage" class="product-image" src="" alt="Product">
+    <div class="price-info" id="priceInfo"></div>
+    <canvas id="priceChart"></canvas>
+  </div>
+
+  <script>
+    const queryParams = new URLSearchParams(window.location.search);
+    const name = queryParams.get('name');
+    
+    // Fetch product data from API
+    fetch(`http://127.0.0.1:5000/api/products/${name}`)
+      .then(response => response.json())
+      .then(product => {
+        if (product.error) {
+          document.querySelector(".container").innerHTML = `<p>${product.error}</p>`;
+        } else {
+          document.getElementById("productName").textContent = name;
+          document.getElementById("productImage").src = `/static/images/${product.image}`;
+          document.getElementById("productImage").alt = name;
+
+          document.getElementById("priceInfo").innerHTML = `
+            <strong>Last Week:</strong> $${product.lastWeekPrice.toFixed(2)}<br>
+            <strong>This Week:</strong> $${product.thisWeekPrice.toFixed(2)}
+          `;
+
+          new Chart(document.getElementById("priceChart"), {
+            type: 'line',
             data: {
-                labels: xValues,
-                datasets: [{
-                backgroundColor:"rgba(0,0,255,1.0)",
-                borderColor: "rgba(0,0,255,0.1)",
-                data: yValues
-                }]
+              labels: ["6w ago", "5w", "4w", "3w", "2w", "Last Week", "This Week"],
+              datasets: [{
+                label: `${name} Price ($)`,
+                data: product.history,
+                fill: false,
+                borderColor: 'green',
+                tension: 0.1
+              }]
             },
-            options:{legend: {display: false}}
-            });
-        </script>
-        <script src="" async defer></script>
-    </body>
+            options: {
+              responsive: true,
+              plugins: {
+                legend: {
+                  display: false
+                }
+              },
+              scales: {
+                y: {
+                  beginAtZero: false
+                }
+              }
+            }
+          });
+        }
+      })
+      .catch(error => {
+        document.querySelector(".container").innerHTML = `<p>Error fetching product data: ${error}</p>`;
+      });
+  </script>
+
+</body>
 </html>

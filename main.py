@@ -58,7 +58,30 @@ def home():
 def logged_in():
     return 'token' in session
 
-@app.route("/preferences")
+@app.route('/signup', methods=['GET', 'POST'])
+def signup():
+    if request.method == 'POST':
+        email = request.form.get('email')
+        password = request.form.get('password')
+        name = request.form.get('name')
+
+        user_id = firebase_connection.create_user(email, password, name)
+
+        if user_id:
+
+            firebase_connection.upload_to_firebase("users", {"preferences": {}}, doc_id=email)
+
+            session['token'] = user_id
+            session['email'] = email
+            session['name'] = name
+            return redirect(url_for('home'))
+        else:
+            return render_template('signup.html', error="Signup failed. Try again.")
+
+    return render_template('signup.html')
+
+
+@app.route("/preferences", methods=['GET', 'POST'])
 def preferences():
     if not logged_in(): return redirect(url_for("home"))
     prefs = firebase_connection.get_node('preferences', session['email'])
