@@ -171,6 +171,17 @@ def add_product_price_and_store(price, store_name):
     except Exception as e:
         print(f"Error uploading product price and store name: {str(e)}")
 
+def get_price_history_by_item(item_name):
+    try:
+        collection_name = "price_points"
+        docs = db.collection(collection_name).where("item_name", "==", item_name).order_by("date").stream()
+
+        price_history = [{"date": doc.to_dict()["date"], "price": doc.to_dict()["price"]} for doc in docs]
+        
+        return price_history
+    except Exception as e:
+        print(f"Error retrieving price history for item '{item_name}': {str(e)}")
+        return []
 
 
 if __name__ == "__main__":

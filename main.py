@@ -124,6 +124,8 @@ def preferences():
     
     return render_template("preferences.html", **template_prefs)
 
+
+
 def time_y(time):
     return math.sin(time.year+time.month+time.day+datetime.datetime.now().second)
     #return (time.year-2020)*12 + time.month-1
@@ -168,9 +170,17 @@ def recipe():
     print(recipe)
     return check_login(render_template('/recipe.html', recipe=recipe))
 
-@app.route('/charts')
-def populate():
-    return render_template('/charts.html')
+@app.route('/charts', methods=['GET', 'POST'])
+def charts():
+    if request.method == 'POST':
+        price = request.form['price']
+        store_name = request.form['store_name']
+
+        add_product_price_and_store(price, store_name)
+
+        return redirect(url_for('charts'))
+
+    return render_template('charts.html')
 
 @app.route("/search", methods=['GET', 'POST'])
 def search():
@@ -183,6 +193,19 @@ def search():
         else:
             return render_template('/search_results.html', items=[], category=category)  
     return render_template('/search.html')  
+
+@app.route('/product/<item_name>', methods=['GET'])
+def product(item_name):
+    price_history = firebase_connection.get_price_history_by_item(item_name)
+
+    if not price_history:
+        return redirect(url_for('home'))
+
+    dates = [entry["date"].strftime("%Y-%m-%d") for entry in price_history]
+    prices = [entry["price"] for entry in price_history]
+
+    return render_template('product.html', item_name=item_name, price_history=zip(dates, prices))
+
 
 
 if __name__ == '__main__':
