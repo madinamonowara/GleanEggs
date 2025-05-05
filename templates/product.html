@@ -93,6 +93,7 @@
     </div>
   </nav>
 
+
   <div class="container">
     <h2 id="productName">Product Name</h2>
     <img id="productImage" class="product-image" src="" alt="Product">
@@ -101,76 +102,56 @@
   </div>
 
   <script>
-    const productData = {
-      Apple: {
-        image: "apple.jpg",
-        lastWeekPrice: 1.60,
-        thisWeekPrice: 1.50,
-        history: [1.70, 1.65, 1.60, 1.60, 1.55, 1.53, 1.50]
-      },
-      Banana: {
-        image: "banana.jpg",
-        lastWeekPrice: 1.05,
-        thisWeekPrice: 0.99,
-        history: [1.20, 1.15, 1.10, 1.05, 1.00, 0.98, 0.99]
-      },
-      Carrot: {
-        image: "carrot.jpg",
-        lastWeekPrice: 0.80,
-        thisWeekPrice: 0.75,
-        history: [0.90, 0.85, 0.83, 0.82, 0.80, 0.78, 0.75]
-      },
-      Milk: {
-        image: "milk.jpg",
-        lastWeekPrice: 2.60,
-        thisWeekPrice: 2.50,
-        history: [2.80, 2.75, 2.65, 2.60, 2.55, 2.53, 2.50]
-      }
-    };
-
     const queryParams = new URLSearchParams(window.location.search);
     const name = queryParams.get('name');
-    const product = productData[name];
+    
+    // Fetch product data from API
+    fetch(`http://127.0.0.1:5000/api/products/${name}`)
+      .then(response => response.json())
+      .then(product => {
+        if (product.error) {
+          document.querySelector(".container").innerHTML = `<p>${product.error}</p>`;
+        } else {
+          document.getElementById("productName").textContent = name;
+          document.getElementById("productImage").src = `/static/images/${product.image}`;
+          document.getElementById("productImage").alt = name;
 
-    if (product) {
-      document.getElementById("productName").textContent = name;
-      document.getElementById("productImage").src = `/static/images/${product.image}`;
-      document.getElementById("productImage").alt = name;
+          document.getElementById("priceInfo").innerHTML = `
+            <strong>Last Week:</strong> $${product.lastWeekPrice.toFixed(2)}<br>
+            <strong>This Week:</strong> $${product.thisWeekPrice.toFixed(2)}
+          `;
 
-      document.getElementById("priceInfo").innerHTML = `
-        <strong>Last Week:</strong> $${product.lastWeekPrice.toFixed(2)}<br>
-        <strong>This Week:</strong> $${product.thisWeekPrice.toFixed(2)}
-      `;
-
-      new Chart(document.getElementById("priceChart"), {
-        type: 'line',
-        data: {
-          labels: ["6w ago", "5w", "4w", "3w", "2w", "Last Week", "This Week"],
-          datasets: [{
-            label: `${name} Price ($)`,
-            data: product.history,
-            fill: false,
-            borderColor: 'green',
-            tension: 0.1
-          }]
-        },
-        options: {
-          responsive: true,
-          plugins: {
-            legend: {
-              display: false
+          new Chart(document.getElementById("priceChart"), {
+            type: 'line',
+            data: {
+              labels: ["6w ago", "5w", "4w", "3w", "2w", "Last Week", "This Week"],
+              datasets: [{
+                label: `${name} Price ($)`,
+                data: product.history,
+                fill: false,
+                borderColor: 'green',
+                tension: 0.1
+              }]
+            },
+            options: {
+              responsive: true,
+              plugins: {
+                legend: {
+                  display: false
+                }
+              },
+              scales: {
+                y: {
+                  beginAtZero: false
+                }
+              }
             }
-          },
-          scales: {
-            y: {
-              beginAtZero: false
-            }
-          }
+          });
         }
+      })
+      .catch(error => {
+        document.querySelector(".container").innerHTML = `<p>Error fetching product data: ${error}</p>`;
       });
-    } else {
-      document.querySelector(".container").innerHTML = `<p>Product not found.</p>`;
-    }
   </script>
 
 </body>
