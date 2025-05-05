@@ -46,18 +46,58 @@ def home():
 
 @app.route("/preferences")
 def preferences():
-    return check_login(render_template("/preferences.html"))
+    if not logged_in():
+        return redirect(url_for("login"))
+    
+    user_id = session.get('email')
+    
+    if request.method == 'POST':
+        preferences = {
+            "diet": {
+                "vegan": "vegan" in request.form.getlist("diet"),
+                "vegetarian": "vegetarian" in request.form.getlist("diet"),
+                "glutenfree": "glutenfree" in request.form.getlist("diet"),
+                "keto": "keto" in request.form.getlist("diet")
+            },
+            "allergies": {
+                "peanuts": "peanuts" in request.form.getlist("allergy"),
+                "dairy": "dairy" in request.form.getlist("allergy"),
+                "soy": "soy" in request.form.getlist("allergy"),
+                "shellfish": "shellfish" in request.form.getlist("allergy")
+            },
+            "shopping": {
+                "frequency": request.form.get("shop-frequency"),
+                "budget": request.form.get("budget", "10")
+            }
+        }
+        
+        firebase_connection.save_user_preferences(user_id, preferences)
+        return redirect(url_for("home"))
+    
 
-@app.route('/bls')
-def bls_data():
-    #bls_prices.api.read_queries()
-    prices = [1.1, 1.3, 1.5, 1.4, 1, 1.2]
-    dates = [datetime.datetime(2024, 1, 1), datetime.datetime(2024, 2, 1), datetime.datetime(2024, 3, 1), datetime.datetime(2024, 4, 1),
-             datetime.datetime(2024, 5, 1), datetime.datetime(2024, 6, 1)]
-    nd = []
-    for d in dates:
-        nd.append(time_y(d))
-    return render_template('/product.html', date=dates, price=nd)
+    existing_prefs = firebase_connection.get_user_preferences(user_id)
+
+    template_prefs = {
+
+        "diet_vegan_checked": "checked" if existing_prefs.get("diet", {}).get("vegan") else "",
+        "diet_vegetarian_checked": "checked" if existing_prefs.get("diet", {}).get("vegetarian") else "",
+        "diet_glutenfree_checked": "checked" if existing_prefs.get("diet", {}).get("glutenfree") else "",
+        "diet_keto_checked": "checked" if existing_prefs.get("diet", {}).get("keto") else "",
+
+        "allergy_peanuts_checked": "checked" if existing_prefs.get("allergies", {}).get("peanuts") else "",
+        "allergy_dairy_checked": "checked" if existing_prefs.get("allergies", {}).get("dairy") else "",
+        "allergy_soy_checked": "checked" if existing_prefs.get("allergies", {}).get("soy") else "",
+        "allergy_shellfish_checked": "checked" if existing_prefs.get("allergies", {}).get("shellfish") else "",
+
+        "freq_1x_checked": "checked" if existing_prefs.get("shopping", {}).get("frequency") == "1x" else "",
+        "freq_2x_checked": "checked" if existing_prefs.get("shopping", {}).get("frequency") == "2x" else "",
+        "freq_biweekly_checked": "checked" if existing_prefs.get("shopping", {}).get("frequency") == "biweekly" else "",
+        "freq_monthly_checked": "checked" if existing_prefs.get("shopping", {}).get("frequency") == "monthly" else "",
+        
+        "budget_value": existing_prefs.get("shopping", {}).get("budget", "10")
+    }
+    
+    return render_template("preferences.html", **template_prefs)
 
 def time_y(time):
     return math.sin(time.year+time.month+time.day+datetime.datetime.now().second)
@@ -70,7 +110,38 @@ def populate_data():
 
 @app.route('/recipes')
 def recipes():
-    return check_login(render_template('/recipes.html'))
+    if not logged_in(): return redirect(url_for("home"))
+    
+    list = firebase_connection.get_node("groceryLists", session['email'])
+    if not list:  return redirect(url_for("home"))
+    recipes = []
+    for id in list["recipes"]:
+        response = recipe_api.get_recipe(id)
+        meal = response["meals"][0]
+        recipes.append({
+            "id": id,
+            "image": meal["strMealThumb"],
+            "name": meal["strMeal"],
+            "area":meal["strArea"],
+            "category":meal["strCategory"]
+        })
+
+
+    return check_login(render_template('/recipes.html', recipes=recipes))
+
+@app.route('/recipe')
+def recipe():
+    id = request.args.get('id')
+    response = recipe_api.get_recipe(id)
+    recipe = response["meals"][0]
+    recipe["items"] = []
+    for i in range(1,21):
+        if ("strIngredient"+str(i)) in recipe:
+            if recipe['strIngredient'+str(i)] == '': break
+            recipe["items"].append({"ingredient": recipe["strIngredient"+str(i)], "measure": recipe["strMeasure"+str(i)]})
+        else:  break
+    print(recipe)
+    return check_login(render_template('/recipe.html', recipe=recipe))
 
 @app.route('/charts')
 def populate():
