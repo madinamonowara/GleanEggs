@@ -2,12 +2,8 @@ import requests
 import json
 import datetime
 from types import SimpleNamespace
-<<<<<<< HEAD
 import modules.keys as keys
 import modules.firebase_connection as firebase_connection
-=======
-import keys as keys
->>>>>>> 00057e6ab78c72c20ee751f2849a127061511734
 import random
 
 mealdb_url = 'https://www.themealdb.com/api/json/v1/'

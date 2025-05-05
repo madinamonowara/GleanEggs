@@ -4,6 +4,7 @@ from modules import process_data
 from modules import firebase_connection
 from modules.api import recipe_api
 
+import json
 import datetime
 import math
 try:
@@ -138,6 +139,22 @@ def recipes():
 
     return check_login(render_template('/recipes.html', recipes=recipes))
 
+@app.route('/product_list')
+def product_list():
+    if not logged_in(): return redirect(url_for("home"))
+    return check_login(render_template('/product_list.html', recipes=recipes))
+
+@app.route('/product')
+def products():
+    if not logged_in(): return redirect(url_for("home"))
+    return check_login(render_template('/product.html', recipes=recipes))
+
+
+@app.route('/product_data', methods=['GET'])
+def product_data():
+    name = request.args.get('name')
+    product = {"history": [], "lastWeekPrice": 0, "thisWeekPrice": 0, "image": recipe_api.get_thumbnail(name)}
+    return json.dumps(product)
 @app.route('/recipe')
 def recipe():
     id = request.args.get('id')
