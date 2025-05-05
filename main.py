@@ -103,10 +103,10 @@ def time_y(time):
     return math.sin(time.year+time.month+time.day+datetime.datetime.now().second)
     #return (time.year-2020)*12 + time.month-1
 
-@app.route('/create_list')
-def populate_data():
-    grocery_list = process_data.generate_grocery_list()
-    return render_template('/grocery_list.html', items=grocery_list)
+# @app.route('/create_list')
+# def populate_data():
+#     grocery_list = process_data.generate_grocery_list()
+#     return render_template('/grocery_list.html', items=grocery_list)
 
 @app.route('/recipes')
 def recipes():

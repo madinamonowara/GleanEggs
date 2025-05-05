@@ -82,7 +82,14 @@ def get_all_items_from_collection(collection_name):
     except Exception as e:
         print(f"Error retrieving items from {collection_name}: {str(e)}")
         return []
-    
+
+def get_all_tracked_items():
+    try:
+        items = get_all_items_from_collection("Grocery_Items")
+        return [[item["name"], item["price"], item["diff"], item["trend"], 0] for item in items]
+    except Exception as e:
+        print(e)
+        return []
 
 def add_item_by_category(name, price, diff, trend, category):
     data = {
@@ -142,7 +149,7 @@ def add_product_price_and_store(price, store_name):
 
 def get_price_history_by_item(item_name):
     try:
-        collection_name = "price_points"
+        collection_name = "Price_Point"
         docs = db.collection(collection_name).where("item_name", "==", item_name).order_by("date").stream()
 
         price_history = [{"date": doc.to_dict()["date"], "price": doc.to_dict()["price"]} for doc in docs]
