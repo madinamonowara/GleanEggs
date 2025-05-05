@@ -88,7 +88,7 @@
             {% if list %}
             <h2>Hey, {{name}}! Here’s Your Grocery List</h2>
     
-            <button class="clear-btn" onclick="clearList()">Remake List</button>
+            <button id="make_button" class="clear-btn" onclick="makeList()">Remake List</button>
             <section class="grocery-list" id="groceryList">
                 {% for item in list %}
                 <div class="grocery-item" data-name="{{item['product']}}" data-quantity="" id="item-1">
@@ -110,7 +110,7 @@
             </section> -->
             {% else %}
             <h2>Hi {{ name }}, let's make a list!</h2>
-            <button class="save-btn" onclick="saveForLater()">Start New List</button>
+            <button id="make_button" class="save-btn" onclick="makeList()">Start New List</button>
             {% endif %}
             
         </main>
@@ -130,9 +130,13 @@
             }
         }
 
-        function clearList() {
-            const list = document.getElementById('groceryList');
-            list.innerHTML = '';
+        function makeList() {
+            document.getElementById("make_button").disabled = true
+            fetch(`/generate_list`)
+            .then(response => response.json())
+            .then(data => {
+                location.reload()
+            })
         }
 
         function saveForLater() {

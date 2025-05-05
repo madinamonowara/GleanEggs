@@ -60,6 +60,6 @@ def get_recipe_ingredients(recipes):
             if (ing == '' or ing == None): continue
             if not(ing in ing_tracker):
                 ing_tracker.append(ing)
-                ingredients.append([ing, "Necessary for "+r[1]])
+                ingredients.append([ing, 0, "Necessary for "+r[1]])
     print("ingredients:\n"+str(ingredients))
     return ingredients

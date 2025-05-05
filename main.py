@@ -108,15 +108,31 @@ def save_preferences():
     firebase_connection.upload_to_firebase("preferences", preferences, session['email'])
     return 'Data retrieved successfully!'
 
+@app.route("/generate_list", methods=['GET'])
+def generate_list():
+    if not logged_in(): return "Failure"
+
+    email = session['email']
+    returned_list = process_data.generate_grocery_list()
+    grocery_list = {"items": [], "prices": [], "reason": [], "recipes": [i[0] for i in returned_list[1]]}
+    
+    for i in returned_list[0]:
+        grocery_list["items"].append(i[0])
+        grocery_list["prices"].append(i[1])
+        grocery_list["reason"].append(i[2])
+    
+    firebase_connection.upload_to_firebase("groceryLists", grocery_list, email)
+    return "Success"
+
     
 def time_y(time):
     return math.sin(time.year+time.month+time.day+datetime.datetime.now().second)
     #return (time.year-2020)*12 + time.month-1
 
-@app.route('/create_list')
-def populate_data():
-    grocery_list = process_data.generate_grocery_list()
-    return render_template('/grocery_list.html', items=grocery_list)
+# @app.route('/create_list')
+# def populate_data():
+#     grocery_list = process_data.generate_grocery_list()
+#     return render_template('/grocery_list.html', items=grocery_list)
 
 @app.route('/recipes')
 def recipes():
@@ -189,21 +205,18 @@ def search():
     return render_template('/search.html')  
 
 
-def product_data():
-    return json.dumps(product)
 
 @app.route('/product_data', methods=['GET'])
-def product():
+def product_data():
     name = request.args.get('name')
+    name = name.lower().replace(" ", "_")
     price_history = firebase_connection.get_price_history_by_item(name)
-
-    if not price_history:
-        return redirect(url_for('home'))
 
     dates = [entry["date"].strftime("%Y-%m-%d") for entry in price_history]
     prices = [entry["price"] for entry in price_history]
-    product = {"history": zip(dates, prices), "lastWeekPrice": 0, "thisWeekPrice": 0, "image": recipe_api.get_thumbnail(name)}
-
+    history = [list(item) for item in zip(dates, prices)]
+    print(history)
+    product = {"history": history, "lastWeekPrice": 0, "thisWeekPrice": 0, "image": recipe_api.get_thumbnail(name)}
     return json.dumps(product)
 
 
