@@ -106,7 +106,7 @@
     const name = queryParams.get('name');
     
     // Fetch product data from API
-    fetch(`/product_data?name=${name}`)
+    fetch(`http://127.0.0.1:5000/api/products?name=${name}`)
       .then(response => response.json())
       .then(product => {
         if (product.error) {
