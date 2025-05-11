@@ -40,6 +40,7 @@ def login_return():
     session['name'] =  request.args.get("name")
     return redirect(url_for("home"))
 
+@app.route("/home")
 @app.route("/")
 def home():
     if not logged_in(): return redirect(url_for("login"))
@@ -153,6 +154,7 @@ def recipes():
         })
 
 
+
     return check_login(render_template('/recipes.html', recipes=recipes))
 
 @app.route('/product_list')
@@ -215,10 +217,22 @@ def product_data():
     dates = [entry["date"].strftime("%Y-%m-%d") for entry in price_history]
     prices = [entry["price"] for entry in price_history]
     history = [list(item) for item in zip(dates, prices)]
-    print(history)
-    product = {"history": history, "lastWeekPrice": 0, "thisWeekPrice": 0, "image": recipe_api.get_thumbnail(name)}
+    item =  firebase_connection.get_node("Grocery_Items", name)
+    price = 0.0
+    if item:
+        price = item["price"]
+    product = {"history": history, "lastWeekPrice": 0, "thisWeekPrice": price, "image": recipe_api.get_thumbnail(name)}
     return json.dumps(product)
 
+@app.route('/get_products', methods=['GET'])
+def get_products():
+    returns = firebase_connection.get_all_items_from_collection("Grocery_Items")
+
+    item = []
+    for p in returns:
+        item.append({"name": p["name"], "displayName":   p["name"].capitalize().replace("_", " "), "image": recipe_api.get_thumbnail(p["name"]) , "price": p["price"],"category":p["category"]})
+    output = {"products": item}
+    return json.dumps(output)
 
 
 if __name__ == '__main__':
