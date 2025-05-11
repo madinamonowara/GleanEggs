@@ -40,6 +40,7 @@ def login_return():
     session['name'] =  request.args.get("name")
     return redirect(url_for("home"))
 
+@app.route("/home")
 @app.route("/")
 def home():
     return check_login(render_template("/home.html", name=get_session_value("name")))
@@ -125,6 +126,7 @@ def recipes():
             "area":meal["strArea"],
             "category":meal["strCategory"]
         })
+
 
 
     return check_login(render_template('/recipes.html', recipes=recipes))

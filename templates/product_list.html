@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Products | GleanEggs</title>
   <link href="https://fonts.googleapis.com/css2?family=Boldonse&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="{{ url_for('static',filename='styles/mainstyle.css') }}">
   <link rel="stylesheet" href="{{ url_for('static',filename='styles/navbarstyle.css') }}"/>
   <style>
     body {
@@ -146,108 +147,36 @@
   </div>
 
   <script>
-    
-    const products = [
-            { name: "Flour", quantity: 1, image: "flour.jpg" },
-            { name: "Rice", quantity: 1, image: "rice.jpg" },
-            { name: "Spaghetti and macaroni", quantity: 1, image: "spaghetti_and_macaroni.jpg" },
-            { name: "Bread", quantity: 1, image: "bread.jpg" },
-            { name: "Bread: whole wheat", quantity: 1, image: "bread_whole_wheat.jpg" },
-            { name: "Cookies", quantity: 1, image: "cookies.jpg" },
-            { name: "Ground chuck", quantity: 1, image: "ground_chuck.jpg" },
-            { name: "Ground beef", quantity: 1, image: "ground_beef.jpg" },
-            { name: "Ground beef: lean and extra lean", quantity: 1, image: "ground_beef_lean.jpg" },
-            { name: "All uncooked ground beef", quantity: 1, image: "ground_beef_uncooked.jpg" },
-            { name: "Chuck roast", quantity: 1, image: "chuck_roast.jpg" },
-            { name: "Chuck roast: USDA Choice", quantity: 1, image: "chuck_roast_usda_choice.jpg" },
-            { name: "Round roast", quantity: 1, image: "round_roast.jpg" },
-            { name: "Round roast: graded and ungraded", quantity: 1, image: "round_roast_graded.jpg" },
-            { name: "All Uncooked Beef Roasts", quantity: 1, image: "beef_roasts_uncooked.jpg" },
-            { name: "Steak", quantity: 1, image: "steak.jpg" },
-            { name: "Steak: round", quantity: 1, image: "steak_round.jpg" },
-            { name: "Steak: sirloin", quantity: 1, image: "steak_sirloin.jpg" },
-            { name: "Beef for stew", quantity: 1, image: "beef_for_stew.jpg" },
-            { name: "All Uncooked Beef Steaks", quantity: 1, image: "beef_steaks_uncooked.jpg" },
-            { name: "All Uncooked Other Beef (Excluding Veal)", quantity: 1, image: "other_beef_uncooked.jpg" },
-            { name: "Bacon", quantity: 1, image: "bacon.jpg" },
-            { name: "Chops", quantity: 1, image: "chops.jpg" },
-            { name: "Chops: boneless", quantity: 1, image: "chops_boneless.jpg" },
-            { name: "All Pork Chops", quantity: 1, image: "pork_chops_all.jpg" },
-            { name: "Ham", quantity: 1, image: "ham.jpg" },
-            { name: "Ham: boneless", quantity: 1, image: "ham_boneless.jpg" },
-            { name: "All Ham (Excluding Canned Ham and Luncheon Slices)", quantity: 1, image: "ham_all.jpg" },
-            { name: "All Other Pork (Excluding Canned Ham and Luncheon Slices)", quantity: 1, image: "other_pork.jpg" },
-            { name: "Bologna", quantity: 1, image: "bologna.jpg" },
-            { name: "Chicken", quantity: 1, image: "chicken.jpg" },
-            { name: "Chicken breast", quantity: 1, image: "chicken_breast.jpg" },
-            { name: "Chicken breast: boneless", quantity: 1, image: "chicken_breast_boneless.jpg" },
-            { name: "Chicken legs", quantity: 1, image: "chicken_legs.jpg" },
-            { name: "Turkey", quantity: 1, image: "turkey.jpg" },
-            { name: "Eggs", quantity: 1, image: "eggs.jpg" },
-            { name: "Milk", quantity: 1, image: "milk.jpg" },
-            { name: "Butter", quantity: 1, image: "butter.jpg" },
-            { name: "American processed cheese", quantity: 1, image: "processed_cheese.jpg" },
-            { name: "Cheddar cheese", quantity: 1, image: "cheddar_cheese.jpg" },
-            { name: "Ice cream", quantity: 1, image: "ice_cream.jpg" },
-            { name: "Apple", quantity: 1, image: "apples.jpg" },
-            { name: "Banana", quantity: 1, image: "bananas.jpg" },
-            { name: "Orange", quantity: 1, image: "oranges.jpg" },
-            { name: "Oranges: Valencia", quantity: 1, image: "oranges_valencia.jpg" },
-            { name: "Cherries", quantity: 1, image: "cherries.jpg" },
-            { name: "Grapefruit", quantity: 1, image: "grapefruit.jpg" },
-            { name: "Grape", quantity: 1, image: "grapes.jpg" },
-            { name: "Lemon", quantity: 1, image: "lemons.jpg" },
-            { name: "Peach", quantity: 1, image: "peaches.jpg" },
-            { name: "Pear", quantity: 1, image: "pears.jpg" },
-            { name: "Strawberries", quantity: 1, image: "strawberries.jpg" },
-            { name: "Potato", quantity: 1, image: "potatoes.jpg" },
-            { name: "Lettuce", quantity: 1, image: "lettuce.jpg" },
-            { name: "Lettuce: romaine", quantity: 1, image: "lettuce_romaine.jpg" },
-            { name: "Tomato", quantity: 1, image: "tomatoes.jpg" },
-            { name: "Broccoli", quantity: 1, image: "broccoli.jpg" },
-            { name: "Cabbage", quantity: 1, image: "cabbage.jpg" },
-            { name: "Carrot", quantity: 1, image: "carrots.jpg" },
-            { name: "Celery", quantity: 1, image: "celery.jpg" },
-            { name: "Pepper", quantity: 1, image: "peppers.jpg" },
-            { name: "Orange juice", quantity: 1, image: "orange_juice.jpg" },
-            { name: "Beans", quantity: 1, image: "beans.jpg" },
-            { name: "Sugar", quantity: 1, image: "sugar.jpg" },
-            { name: "Sugar: white", quantity: 1, image: "sugar_white.jpg" },
-            { name: "Margarine", quantity: 1, image: "margarine.jpg" },
-            { name: "Margarine: soft", quantity: 1, image: "margarine_soft.jpg" },
-            { name: "Peanut butter", quantity: 1, image: "peanut_butter.jpg" },
-            { name: "Cola", quantity: 1, image: "cola.jpg" },
-            { name: "Coffee", quantity: 1, image: "coffee.jpg" },
-            { name: "Potato chips", quantity: 1, image: "potato_chips.jpg" },
-            { name: "Malt beverages", quantity: 1, image: "malt_beverages.jpg" },
-            { name: "Wine", quantity: 1, image: "wine.jpg" }
-        ];
-
-
-    function addItem(name, quantity, image, price, category) {
-  const list = document.getElementById("groceryList");
-  const item = document.createElement("div");
-  item.classList.add("grocery-item");
-  item.dataset.name = name;
-  item.dataset.quantity = quantity;
-  item.dataset.category = category;
-
-  item.innerHTML = `
-    <img src="${image}" alt="${name}">
-    <div class="item-details">
-      <p class="item-name">${name} ${quantity}x</p>
-    </div>
-    <div class="action-buttons">
-      <button onclick="alert('Item added or removed')">Add/Remove</button>
-      <a href="product?name=${encodeURIComponent(name)}">
-  <button class="remove-item">View</button>
-</a>
-
-    </div>
-  `;
-  list.appendChild(item);
-}
-
+    fetch('/get_products').then(response => response.json())
+      .then(data => {
+        const products = data.products;
+        products.forEach(product => addItem(product.name, product.displayName, product.image, product.price, product.category));
+      });
+      
+      
+      function addItem(name, displayName, image, price, category) {
+        const list = document.getElementById("groceryList");
+        const item = document.createElement("div");
+        item.classList.add("grocery-item");
+        item.dataset.name = name;
+        item.dataset.category = category;
+        
+        item.innerHTML = `
+        <img src="${image}" alt="${name}">
+        <div class="item-details">
+          <p class="item-name">${displayName}</p>
+          </div>
+          <div class="action-buttons">
+            <button onclick="alert('Item added or removed')">Add/Remove</button>
+            <a href="product?name=${encodeURIComponent(name)}">
+              <button class="remove-item">View</button>
+              </a>
+              
+              </div>
+              `;
+              list.appendChild(item);
+            }
+            
 
     function filterProducts() {
       const searchValue = document.getElementById("searchInput").value.toLowerCase();
@@ -265,7 +194,6 @@
       });
     }
 
-    products.forEach(product => addItem(product.name, product.quantity, product.image, product.price, product.category));
 
     document.getElementById("searchInput").addEventListener("input", filterProducts);
     document.getElementById("categorySelect").addEventListener("change", filterProducts);
