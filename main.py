@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request, session, redirect, url_for, jsonify
+from flask import Flask, render_template, request, session, redirect, url_for, jsonify
 from modules.api import bls_prices
 from modules import process_data
 from modules import firebase_connection
