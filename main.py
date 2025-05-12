@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, session, redirect, url_for
+from flask import Flask, render_template, request, session, redirect, url_for, jsonify
 from modules.api import bls_prices
 from modules import process_data
 from modules import firebase_connection
@@ -212,9 +212,12 @@ def search():
 
 @app.route('/product_data', methods=['GET'])
 def product_data():
-    name = request.args.get('name')
-    name = name.lower().replace(" ", "_")
-    price_history = firebase_connection.get_price_history_by_item(name)
+    names = request.args.getlist('name')  
+    products = []
+
+    for name in names:
+        formatted_name = name.lower().replace(" ", "_")
+        price_history = firebase_connection.get_price_history_by_item(formatted_name)
 
     dates = [entry["date"].strftime("%Y-%m-%d") for entry in price_history]
     prices = [entry["price"] for entry in price_history]
