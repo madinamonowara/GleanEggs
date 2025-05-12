@@ -89,9 +89,22 @@ def preferences():
     prefs = firebase_connection.get_node('preferences', session['email'])
     if not prefs: return check_login(render_template("/preferences.html", preferences={}))
     preferences = {}
-    for j in prefs:
-        preferences[j+"_"+prefs[j]] = "checked"
-    if "budget" in prefs: preferences["budget"] = prefs['budget']
+    if 'diet' in prefs:
+        if prefs['diet'] == 'none':
+            pass # Leave all diet checkboxes unchecked
+        else:
+            for diet in prefs['diet']:
+                preferences[f"diet_{diet}"] = "checked"
+    if 'allergy' in prefs:
+        if prefs['allergy'] == 'none':
+            pass # Leave all allergy checkboxes unchecked
+        else:
+            for allergy in prefs['allergy']:
+                preferences[f"allergy_{allergy}"] = "checked"
+    if "shop" in prefs:
+        preferences[f"shop_{prefs['shop']}"] = "checked"
+    if "budget" in prefs:
+        preferences["budget"] = prefs['budget']
     print(preferences)
     return check_login(render_template("/preferences.html", preferences=preferences))
 
@@ -100,12 +113,30 @@ def save_preferences():
     if request.method != 'POST': return ""
     if not logged_in(): return ""
 
-    preferences = {
-        "diet": request.form['diet'],
-        "allergy": request.form['allergy'],
-        "shop": request.form['shop-frequency'],
-        "budget": request.form['budget']
-    }
+    diet = request.form.getlist('diet')
+    allergy = request.form.getlist('allergy')
+    shop_frequency = request.form.get('shop-frequency')
+    budget = request.form.get('budget')
+
+    preferences = {}
+
+    if 'none' in diet and len(diet) == 1:
+        preferences['diet'] = 'none'
+    elif diet:
+        preferences['diet'] = diet
+    else:
+        preferences['diet'] = 'none' 
+
+    if 'none' in allergy and len(allergy) == 1:
+        preferences['allergy'] = 'none'
+    elif allergy:
+        preferences['allergy'] = allergy
+    else:
+        preferences['allergy'] = 'none' 
+
+    preferences['shop'] = shop_frequency
+    preferences['budget'] = budget
+
     firebase_connection.upload_to_firebase("preferences", preferences, session['email'])
     return 'Data retrieved successfully!'
 
@@ -116,16 +147,16 @@ def generate_list():
     email = session['email']
     returned_list = process_data.generate_grocery_list()
     grocery_list = {"items": [], "prices": [], "reason": [], "recipes": [i[0] for i in returned_list[1]]}
-    
+
     for i in returned_list[0]:
         grocery_list["items"].append(i[0])
         grocery_list["prices"].append(i[1])
         grocery_list["reason"].append(i[2])
-    
+
     firebase_connection.upload_to_firebase("groceryLists", grocery_list, email)
     return "Success"
 
-    
+
 def time_y(time):
     return math.sin(time.year+time.month+time.day+datetime.datetime.now().second)
     #return (time.year-2020)*12 + time.month-1
@@ -138,7 +169,7 @@ def time_y(time):
 @app.route('/recipes')
 def recipes():
     if not logged_in(): return redirect(url_for("home"))
-    
+
     list = firebase_connection.get_node("groceryLists", session['email'])
     if not list:  return redirect(url_for("home"))
     recipes = []
@@ -152,9 +183,6 @@ def recipes():
             "area":meal["strArea"],
             "category":meal["strCategory"]
         })
-
-
-
     return check_login(render_template('/recipes.html', recipes=recipes))
 
 @app.route('/product_list')
@@ -197,15 +225,14 @@ def charts():
 @app.route("/search", methods=['GET', 'POST'])
 def search():
     if request.method == 'POST':
-        category = request.form['category'] 
-        items = firebase_connection.get_items_by_category(category)  
+        category = request.form['category']
+        items = firebase_connection.get_items_by_category(category)
 
         if items:
-            return render_template('/search_results.html', items=items, category=category)  
+            return render_template('/search_results.html', items=items, category=category)
         else:
-            return render_template('/search_results.html', items=[], category=category)  
-    return render_template('/search.html')  
-
+            return render_template('/search_results.html', items=[], category=category)
+    return render_template('/search.html')
 
 
 @app.route('/product_data', methods=['GET'])

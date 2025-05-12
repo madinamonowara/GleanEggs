@@ -253,11 +253,11 @@
       <span class="logo-text">GleanEggs</span>
     </div>
     <div class="nav-buttons">
-      <button onclick="location.href='recipes.html'">🍳 Recipes</button>
-      <button onclick="location.href='product_list.html'">📊 Products</button>
-      <button onclick="location.href='home.html'">🛒 Grocery List</button>
-      <button onclick="location.href='preferences.html'">🔧 Preferences</button>
-      <button onclick="location.href='login.html'">👋 Log Out</button>
+      <button onclick="location.href='/recipes'">🍳 Recipes</button>
+      <button onclick="location.href='/product_list'">📊 Products</button>
+      <button onclick="location.href='/home'">🛒 Grocery List</button>
+      <button onclick="location.href='/preferences'">🔧 Preferences</button>
+      <button onclick="location.href='/login'">👋 Log Out</button>
     </div>
   </div>
   <!-- Header end -->
@@ -377,21 +377,31 @@
     const form = document.getElementById('myForm');
 
     form.addEventListener('submit', (event) => {
-      event.preventDefault();
+        event.preventDefault();
 
-      const formData = new FormData(form);
+        const formData = new FormData(form);
+        const dietSelections = formData.getAll('diet');
+        const allergySelections = formData.getAll('allergy');
 
-      fetch('/save_preferences', {
-        method: 'POST',
-        body: formData
-      })
-      .then(response => response.text())
-      .then(data => {
-        alert("Successfully saved preferences")
-      })
-      .catch(error => {
-        console.error('Error:', error);
-      });
+        if (dietSelections.length === 0) {
+          formData.append('diet', 'none');
+        }
+
+        if (allergySelections.length === 0) {
+          formData.append('allergy', 'none');
+        }
+
+        fetch('/save_preferences', {
+          method: 'POST',
+          body: formData
+        })
+        .then(response => response.text())
+        .then(data => {
+          alert("Successfully saved preferences");
+        })
+        .catch(error => {
+          console.error('Error:', error);
+        });
     });
   </script>
   
