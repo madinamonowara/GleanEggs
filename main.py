@@ -212,6 +212,7 @@ def search():
 
 @app.route('/product_data', methods=['GET'])
 def product_data():
+    print("hello")
     name = request.args.get('name')
     name = name.lower().replace(" ", "_")
     price_history = firebase_connection.get_price_history_by_item(name)
@@ -224,7 +225,7 @@ def product_data():
     if item:
         price = item["price"]
     product = {"history": history, "lastWeekPrice": 0, "thisWeekPrice": price, "image": recipe_api.get_thumbnail(name)}
-    products = [product1, product2]
+    # products = [product1, product2]
     return json.dumps(product)
 
 @app.route('/get_products', methods=['GET'])
