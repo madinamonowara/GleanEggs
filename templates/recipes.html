@@ -64,6 +64,54 @@
         .nav-buttons button:hover {
             background-color: #e8f5e9;
         }
+
+        .recipe-card {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            padding: 12px;
+            margin-top: 16px;
+            border: 1px solid #e0e0e0;
+            border-radius: 10px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+            transition: background 0.3s;
+            cursor: pointer;
+        }
+
+        .recipe-card:hover {
+            background-color: #f5f5f5;
+        }
+
+        .recipe-card img {
+            width: 60px;
+            height: 60px;
+            border-radius: 8px;
+            object-fit: cover;
+        }
+
+        .recipe-info {
+            text-align: left;
+        }
+
+        .recipe-info .recipe-name {
+            font-size: 18px;
+            font-weight: 600;
+            margin: 0 0 5px;
+        }
+
+        .recipe-info .tag {
+            display: inline-block;
+            background: #fff7d6;
+            color: #8b6f00;
+            font-size: 12px;
+            font-weight: bold;
+            padding: 2px 8px;
+            border-radius: 5px;
+            margin-right: 8px;
+        }
+
+
+
     </style>
 </head>
 <body>
@@ -90,20 +138,17 @@
         <p class="text-gray-600">Try a new recipe from your grocery list!</p>
 
         <!-- Clickable Recipe Card -->
-         {% for recipe in recipes %}
-         <div class="border rounded-lg overflow-hidden shadow-sm p-4 mt-4 cursor-pointer hover:bg-gray-100 transition"
-         onclick="viewRecipe({{ recipe["id"]}})">
-         <div class="flex gap-4">
-             <img src="{{recipe["image"]}}" alt="{{recipe["name"]}}" class="w-20 h-20 object-cover rounded-lg">
-             <div>
-                 <p class="font-bold text-lg">{{recipe["name"]}}</p>
-                 <span class="bg-yellow-200 text-yellow-700 text-sm font-bold p-1 rounded-md">{{ recipe["area"]}}</span>
-                 <span class="bg-gray-200 text-gray-700 text-sm font-bold p-1 rounded-md ml-2">{{ recipe["category"]}}</span>
-                 
-                </div>
+        {% for recipe in recipes %}
+        <div class="recipe-card" onclick="viewRecipe({{ recipe['id'] }})">
+            <img src="{{ recipe['image'] }}" alt="{{ recipe['name'] }}">
+            <div class="recipe-info">
+                <p class="recipe-name">{{ recipe['name'] }}</p>
+                <span class="tag">{{ recipe['area'] }}</span>
+                <span class="tag" style="background:#e0e0e0; color:#333;">{{ recipe['category'] }}</span>
             </div>
         </div>
         {% endfor %}
+        
     </div>
 
     <!-- Script to store recipe in localStorage and redirect -->
