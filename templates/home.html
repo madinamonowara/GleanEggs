@@ -165,22 +165,28 @@
             }
         }
 
-        function makeList() {
-            document.getElementById("make_button").disabled = true;
-            document.getElementById("loadingOverlay").style.display = "flex";
+        
+    function makeList() {
+        const overlay = document.getElementById("loadingOverlay");
+        const button = document.getElementById("make_button");
+        button.disabled = true;
+        overlay.style.display = "flex";
 
-            fetch(`/generate_list`)
-                .then(response => response.json())
-                .then(data => {
-                    alert("reload");
+        fetch(`/generate_list`)
+            .then(response => response.json())
+            .then(data => {
+                // Add a slight delay so user sees the spinner
+                setTimeout(() => {
                     location.reload();
-                })
+                }, 600);  //can adjust this to 1000ms maybe
+            })
             .catch(error => {
                 console.error('Error:', error);
-                document.getElementById("loadingOverlay").style.display = "none";
-                document.getElementById("make_button").disabled = false;
-        });
+                overlay.style.display = "none";
+                button.disabled = false;
+            });
     }
+
 
 
         function saveForLater() {
