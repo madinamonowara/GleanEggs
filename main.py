@@ -114,10 +114,12 @@ def generate_list():
     if not logged_in(): return "Failure"
 
     email = session['email']
-    returned_list = process_data.generate_grocery_list()
+    returned_list = process_data.generate_grocery_list(email)
     grocery_list = {"items": [], "prices": [], "reason": [], "recipes": [i[0] for i in returned_list[1]]}
     
     for i in returned_list[0]:
+        if len(i) != 3: continue
+        if "*" in i[0]: continue
         grocery_list["items"].append(i[0])
         grocery_list["prices"].append(i[1])
         grocery_list["reason"].append(i[2])
@@ -222,6 +224,7 @@ def product_data():
     if item:
         price = item["price"]
     product = {"history": history, "lastWeekPrice": 0, "thisWeekPrice": price, "image": recipe_api.get_thumbnail(name)}
+    products = [product1, product2]
     return json.dumps(product)
 
 @app.route('/get_products', methods=['GET'])

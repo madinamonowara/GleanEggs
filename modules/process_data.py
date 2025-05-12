@@ -23,15 +23,25 @@ def compile_start_list(li):
             writer.writerow(l)
         return output.getvalue()
 
-def generate_grocery_list():
+def complile_preferences(preferences):
+    s = ""
+    for p in preferences:
+        s += p+": "+preferences[p]+"\n"
+    return s
+     
+def generate_grocery_list(user):
+        
+        preferences = firebase_connection.get_user_preferences(user)
+        output = complile_preferences(preferences)
+        messages = []
+        data = ai_integration.get_generic_list(messages)
         data = compile_start_list(firebase_connection.get_all_tracked_items())
         
-        suggested_list = ai_integration.get_base_list(data)
+        suggested_list = ai_integration.get_base_list(data, messages)
         recipes = recipe_api.get_recipes_for_items(suggested_list)
         recipe_ingredients = recipe_api.get_recipe_ingredients(recipes)
         rough_list = []
         
-        print("ROUGH LIST")
         for s in suggested_list:
             rough_list.append(s)
         
@@ -39,8 +49,7 @@ def generate_grocery_list():
             rough_list.append(i)
         
         rl_data = compile_rough_list(rough_list)
-        full_list = ai_integration.get_completed_list(rl_data)
-        print("FULL LIST")
+        full_list = ai_integration.get_completed_list(rl_data, messages)
         
         for f in full_list:
             print(f)
