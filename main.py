@@ -227,7 +227,7 @@ def product_data():
     if item:
         price = item["price"]
     product = {"history": history, "lastWeekPrice": 0, "thisWeekPrice": price, "image": recipe_api.get_thumbnail(name)}
-    products = [product1, product2]
+    # products = [product1, product2]
     return json.dumps(product)
 
 # changed to allow user's inputted price to show in products after being changed
