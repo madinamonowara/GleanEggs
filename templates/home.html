@@ -172,6 +172,7 @@
             fetch(`/generate_list`)
                 .then(response => response.json())
                 .then(data => {
+                    alert("reload");
                     location.reload();
                 })
             .catch(error => {
