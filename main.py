@@ -240,6 +240,28 @@ def get_products():
     output = {"products": item}
     return json.dumps(output)
 
+# for comparing products when user is in products list page
+@app.route('/compare')
+def compare():
+    selected_names = request.args.getlist('name')
+
+    products = []
+    for name in selected_names:
+        product_data = get_product_by_name(name)  
+        products.append({
+            'name': name,
+            'displayName': product_data['displayName'],
+            'image': product_data['image'],
+            'current_price': product_data['price'],
+            'price_history': {
+                'dates': product_data['price_dates'],
+                'values': product_data['price_values']
+            }
+        })
+
+    return render_template("compare.html", products=products)
+
+
 
 if __name__ == '__main__':
     app.secret_key = 'SECRET KEY'
