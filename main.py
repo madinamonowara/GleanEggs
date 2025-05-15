@@ -288,24 +288,61 @@ def submit_instore_price():
     return jsonify({"success": True}), 200
 
 
-# for comparing products when user is in products list page
+# for comparing products when user is in products list page (dummy info for now included)
 @app.route('/compare')
 def compare():
     selected_names = request.args.getlist('name')
 
+    # Temporary dummy data for now
+    dummy_db = {
+        "apple": {
+            "displayName": "Apple",
+            "image": "/static/images/apple.png",
+            "price": 1.99,
+            "price_dates": ["Apr 1", "Apr 8", "Apr 15", "Apr 22", "Apr 29", "May 6", "May 13"],
+            "price_values": [1.89, 1.92, 2.05, 2.10, 2.00, 1.99, 1.99]
+        },
+        "banana": {
+            "displayName": "Banana",
+            "image": "/static/images/banana.png",
+            "price": 0.69,
+            "price_dates": ["Apr 1", "Apr 8", "Apr 15", "Apr 22", "Apr 29", "May 6", "May 13"],
+            "price_values": [0.60, 0.65, 0.68, 0.70, 0.69, 0.69, 0.69]
+        },
+        "milk": {
+            "displayName": "Milk",
+            "image": "/static/images/milk.png",
+            "price": 3.49,
+            "price_dates": ["Apr 1", "Apr 8", "Apr 15", "Apr 22", "Apr 29", "May 6", "May 13"],
+            "price_values": [3.59, 3.55, 3.50, 3.49, 3.49, 3.49, 3.49]
+        }
+    }
+
     products = []
     for name in selected_names:
-        product_data = get_product_by_name(name)  
-        products.append({
-            'name': name,
-            'displayName': product_data['displayName'],
-            'image': product_data['image'],
-            'current_price': product_data['price'],
-            'price_history': {
-                'dates': product_data['price_dates'],
-                'values': product_data['price_values']
-            }
-        })
+        if name in dummy_db:
+            d = dummy_db[name]
+            products.append({
+                'name': name,
+                'displayName': d['displayName'],
+                'image': d['image'],
+                'current_price': d['price'],
+                'price_history': {
+                    'dates': d['price_dates'],
+                    'values': d['price_values']
+                }
+            })
+        else:
+            products.append({
+                'name': name,
+                'displayName': name.capitalize(),
+                'image': '/static/images/placeholder.png',
+                'current_price': 0.00,
+                'price_history': {
+                    'dates': ["N/A"],
+                    'values': [0]
+                }
+            })
 
     return render_template("compare.html", products=products)
 

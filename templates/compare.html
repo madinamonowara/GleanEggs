@@ -100,6 +100,15 @@
       width: 100% !important;
       height: 200px !important;
     }
+    .highlight {
+      background-color: #e8f5e9;
+      border: 2px solid #4CAF50;
+      border-radius: 6px;
+      padding: 6px;
+      font-weight: bold;
+      color: #2e7d32;
+    }
+
   </style>
 </head>
 <body>
@@ -112,13 +121,19 @@
       <button onclick="location.href='/product_list'">← Back to Products</button>
     </div>
   </nav>
+  {% set min_price = products | min(attribute='current_price') %}
 
   <div class="comparison-container">
     {% for product in products %}
     <div class="product-card">
       <img src="{{ product.image }}" alt="{{ product.name }}">
       <div class="product-name">{{ product.displayName }}</div>
-      <div class="product-price">Current Price: ${{ product.current_price }}</div>
+      <div class="product-price {% if product.current_price == min_price %}highlight{% endif %}">
+        Current Price: ${{ "%.2f"|format(product.current_price) }}
+        {% if product.current_price == min_price %}
+          🏆 <span style="font-size: 14px;">Best Price</span>
+        {% endif %}
+      </div>      
       <canvas id="chart_{{ loop.index }}"></canvas>
     </div>
     {% endfor %}
