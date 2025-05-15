@@ -76,6 +76,7 @@
     canvas {
       max-width: 100%;
     }
+
   </style>
 </head>
 <body>
@@ -100,6 +101,10 @@
     <img id="productImage" class="product-image" src="" alt="Product">
     <div class="price-info" id="priceInfo"></div>
     <canvas id="priceChart"></canvas>
+    <div id="userPriceSection" style="margin-top: 20px;">
+      <button onclick="enterStorePrice()" style="padding: 10px 15px; border: 2px solid #4CAF50; border-radius: 8px; background: white; cursor: pointer;">✏️ Enter In-Store Price</button>
+      <p id="userPriceDisplay" style="margin-top: 10px; font-size: 16px;"></p>
+    </div>    
   </div>
 
   <script>
@@ -153,6 +158,38 @@
       .catch(error => {
         document.querySelector(".container").innerHTML = `<p>Error fetching product data: ${error}</p>`;
       });
+
+    function enterStorePrice() {
+      const input = prompt("Enter the price you saw in-store (e.g., 3.49):");
+      const parsed = parseFloat(input);
+
+      if (!isNaN(parsed) && parsed >= 0) {
+        document.getElementById("userPriceDisplay").textContent = `🛒 You saw: $${parsed.toFixed(2)} in-store`;
+
+        // Send to Firebase via Flask
+        fetch('/submit_instore_price', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            name: name,  // from earlier in script
+            price: parsed
+          })
+        })
+        .then(res => {
+          if (!res.ok) throw new Error('Failed to save price.');
+        })
+        .catch(err => {
+          alert("Error saving in-store price.");
+          console.error(err);
+        });
+      } else {
+        alert("Please enter a valid number.");
+      }
+    }
+
+
   </script>
 
 </body>

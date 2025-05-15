@@ -150,8 +150,16 @@
     fetch('/get_products').then(response => response.json())
       .then(data => {
         const products = data.products;
-        products.forEach(product => addItem(product.name, product.displayName, product.image, product.price, product.category));
-      });
+        products.forEach(product => {
+          addItem(
+            product.name,
+            product.displayName,
+            product.image,
+            product.price,
+            product.category,
+            product.in_store_price // new for user's input of price
+          );
+        });
 
       <button onclick="goToComparisonPage()" style="margin-top: 20px; padding: 10px 20px; border: none; background: #4CAF50; color: white; border-radius: 8px;">
         Compare Selected Items
@@ -159,17 +167,38 @@
 
       
       
-      function addItem(name, displayName, image, price, category) {
+      function addItem(name, displayName, image, price, category, inStorePrice = null) {
         const list = document.getElementById("groceryList");
         const item = document.createElement("div");
         item.classList.add("grocery-item");
         item.dataset.name = name;
         item.dataset.category = category;
 
+        // Compare prices
+        let inStoreHTML = "";
+        let onlineHTML = `<p class="item-price">Online: $${price.toFixed(2)}</p>`;
+        
+        if (inStorePrice !== null && !isNaN(inStorePrice)) {
+          const isCheaper = inStorePrice < price;
+          const color = isCheaper ? "green" : "gray";
+          const emoji = isCheaper ? "⬇️" : "👁️";
+
+          inStoreHTML = `
+            <p class="item-price" style="color: ${color};">
+              🛒 In-store: $${inStorePrice.toFixed(2)} <span title="Submitted by a user">${emoji}</span>
+            </p>
+          `;
+        }
+
         item.innerHTML = `
           <img src="${image}" alt="${name}">
           <div class="item-details">
             <p class="item-name">${displayName}</p>
+            ${onlineHTML}
+            ${inStoreHTML}
+            <button onclick="promptInStoreUpdate('${name}')" style="margin-top: 5px; font-size: 12px; background: white; border: 1px dashed #4CAF50; border-radius: 6px; padding: 4px 8px; cursor: pointer;">
+              ✏️ Update In-Store Price
+            </button>
           </div>
           <div class="action-buttons">
             <label>
@@ -181,8 +210,10 @@
             </a>
           </div>
         `;
+
         list.appendChild(item);
       }
+
 
             
 
@@ -234,8 +265,38 @@
     const params = Array.from(selectedItems).map(name => `name=${encodeURIComponent(name)}`).join("&");
     window.location.href = `/compare?${params}`;
   }
-</script>
 
+  function promptInStoreUpdate(name) {
+  const input = prompt(`Enter the price you saw in-store for "${name}" (e.g. 2.99):`);
+  const parsed = parseFloat(input);
+
+  if (!isNaN(parsed) && parsed >= 0) {
+    // POST to Flask -> Firebase
+    fetch('/submit_instore_price', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ name: name, price: parsed })
+    })
+    .then(response => {
+      if (response.ok) {
+        alert("Thanks! The in-store price has been updated.");
+        location.reload(); // Refresh to show new data
+      } else {
+        alert("Error saving in-store price.");
+      }
+    })
+    .catch(error => {
+      console.error(error);
+      alert("Error connecting to server.");
+    });
+  } else {
+    alert("Please enter a valid number.");
+  }
+}
+
+</script>
 
 
 </body>

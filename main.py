@@ -230,15 +230,63 @@ def product_data():
     products = [product1, product2]
     return json.dumps(product)
 
+# changed to allow user's inputted price to show in products after being changed
 @app.route('/get_products', methods=['GET'])
 def get_products():
     returns = firebase_connection.get_all_items_from_collection("Grocery_Items")
 
     item = []
     for p in returns:
-        item.append({"name": p["name"], "displayName":   p["name"].capitalize().replace("_", " "), "image": recipe_api.get_thumbnail(p["name"]) , "price": p["price"],"category":p["category"]})
-    output = {"products": item}
-    return json.dumps(output)
+        name = p["name"]
+        displayName = name.capitalize().replace("_", " ")
+        image = recipe_api.get_thumbnail(name)
+        category = p.get("category", "")
+        price = p["price"]
+
+        # Check in-store prices
+        price_doc = firebase_connection.get_node("in_store_prices", name)
+        in_store_price = None
+        if price_doc:
+            try:
+                latest_timestamp = max(price_doc)
+                in_store_price = price_doc[latest_timestamp]
+            except:
+                pass
+
+        item.append({
+            "name": name,
+            "displayName": displayName,
+            "image": image,
+            "price": price,
+            "category": category,
+            "in_store_price": in_store_price
+        })
+
+    return json.dumps({"products": item})
+
+# for user to add their own price in product
+@app.route('/submit_instore_price', methods=['POST'])
+def submit_instore_price():
+    data = request.get_json()
+    name = data.get('name')
+    price = data.get('price')
+
+    if not name or price is None:
+        return jsonify({"error": "Missing name or price"}), 400
+
+    from datetime import datetime
+    timestamp = datetime.now().isoformat()
+
+    # This assumes upload_to_firebase supports merge=True for updating a nested dict
+    firebase_connection.upload_to_firebase(
+        "in_store_prices",
+        {timestamp: price},
+        doc_id=name,
+        merge=True
+    )
+
+    return jsonify({"success": True}), 200
+
 
 # for comparing products when user is in products list page
 @app.route('/compare')
