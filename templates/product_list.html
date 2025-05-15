@@ -152,6 +152,11 @@
         const products = data.products;
         products.forEach(product => addItem(product.name, product.displayName, product.image, product.price, product.category));
       });
+
+      <button onclick="goToComparisonPage()" style="margin-top: 20px; padding: 10px 20px; border: none; background: #4CAF50; color: white; border-radius: 8px;">
+        Compare Selected Items
+      </button>
+
       
       
       function addItem(name, displayName, image, price, category) {
@@ -160,22 +165,25 @@
         item.classList.add("grocery-item");
         item.dataset.name = name;
         item.dataset.category = category;
-        
+
         item.innerHTML = `
-        <img src="${image}" alt="${name}">
-        <div class="item-details">
-          <p class="item-name">${displayName}</p>
+          <img src="${image}" alt="${name}">
+          <div class="item-details">
+            <p class="item-name">${displayName}</p>
           </div>
           <div class="action-buttons">
-            <button onclick="alert('Item added or removed')">Add/Remove</button>
+            <label>
+              <input type="checkbox" class="compare-checkbox" data-name="${name}">
+              Compare
+            </label>
             <a href="product?name=${encodeURIComponent(name)}">
               <button class="remove-item">View</button>
-              </a>
-              
-              </div>
-              `;
-              list.appendChild(item);
-            }
+            </a>
+          </div>
+        `;
+        list.appendChild(item);
+      }
+
             
 
     function filterProducts() {
@@ -198,5 +206,37 @@
     document.getElementById("searchInput").addEventListener("input", filterProducts);
     document.getElementById("categorySelect").addEventListener("change", filterProducts);
   </script>
+
+<script>
+  const selectedItems = new Set();
+
+  document.addEventListener('change', (e) => {
+    if (e.target.classList.contains('compare-checkbox')) {
+      const name = e.target.dataset.name;
+      if (e.target.checked) {
+        if (selectedItems.size >= 3) {
+          alert("You can only select up to 3 items.");
+          e.target.checked = false;
+        } else {
+          selectedItems.add(name);
+        }
+      } else {
+        selectedItems.delete(name);
+      }
+    }
+  });
+
+  function goToComparisonPage() {
+    if (selectedItems.size === 0) {
+      alert("Select at least one item to compare.");
+      return;
+    }
+    const params = Array.from(selectedItems).map(name => `name=${encodeURIComponent(name)}`).join("&");
+    window.location.href = `/compare?${params}`;
+  }
+</script>
+
+
+
 </body>
 </html>

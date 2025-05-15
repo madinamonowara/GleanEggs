@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, session, redirect, url_for
+from flask import Flask, render_template, request, session, redirect, url_for, jsonify
 from modules.api import bls_prices
 from modules import process_data
 from modules import firebase_connection
@@ -212,10 +212,19 @@ def search():
 
 @app.route('/product_data', methods=['GET'])
 def product_data():
+<<<<<<< HEAD
     print("hello")
     name = request.args.get('name')
     name = name.lower().replace(" ", "_")
     price_history = firebase_connection.get_price_history_by_item(name)
+=======
+    names = request.args.getlist('name')  
+    products = []
+
+    for name in names:
+        formatted_name = name.lower().replace(" ", "_")
+        price_history = firebase_connection.get_price_history_by_item(formatted_name)
+>>>>>>> c077501d56522b2664def0300a4f344ba3846cc5
 
     dates = [entry["date"].strftime("%Y-%m-%d") for entry in price_history]
     prices = [entry["price"] for entry in price_history]
@@ -237,6 +246,28 @@ def get_products():
         item.append({"name": p["name"], "displayName":   p["name"].capitalize().replace("_", " "), "image": recipe_api.get_thumbnail(p["name"]) , "price": p["price"],"category":p["category"]})
     output = {"products": item}
     return json.dumps(output)
+
+# for comparing products when user is in products list page
+@app.route('/compare')
+def compare():
+    selected_names = request.args.getlist('name')
+
+    products = []
+    for name in selected_names:
+        product_data = get_product_by_name(name)  
+        products.append({
+            'name': name,
+            'displayName': product_data['displayName'],
+            'image': product_data['image'],
+            'current_price': product_data['price'],
+            'price_history': {
+                'dates': product_data['price_dates'],
+                'values': product_data['price_values']
+            }
+        })
+
+    return render_template("compare.html", products=products)
+
 
 
 if __name__ == '__main__':
