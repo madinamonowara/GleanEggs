@@ -43,8 +43,12 @@ def login_return():
 @app.route("/home")
 @app.route("/")
 def home():
+    print("TRY")
+    print(logged_in())
     if not logged_in(): return redirect(url_for("login"))
+    print("here")
     list = firebase_connection.get_node("groceryLists", session['email'])
+    print(list)
     if not list: return check_login(render_template("/home.html", name=get_session_value("name")))
     grocery_list = []
     all_images = {}
@@ -60,7 +64,7 @@ def home():
             "price": list["prices"][i],
             "reason": list["reason"][i],
             "img":  img})
-    return check_login(render_template("/home.html", name=get_session_value("name"), list=grocery_list))
+    return check_login(render_template("/home.html", name=get_session_value("name"), list=grocery_list, reason=list["full_reason"]))
 
 def logged_in():
     return 'token' in session
@@ -215,9 +219,11 @@ def search():
 def product_data():
     name = request.args.get('name')  
     print("HERE")
+    return json.dumps(get_product(name))
     # for name in names:
+
+def get_product(name):
     formatted_name = name.lower().replace(" ", "_")
-    products = []
     price_history = firebase_connection.get_price_history_by_item(formatted_name)
     
     # dates = [entry["date"] for entry in price_history]
@@ -228,12 +234,12 @@ def product_data():
         print(entry)
         if not entry["date"] in d_dict:
             d_dict[entry["date"]] = []
-        d_dict[entry["date"]].append(entry["price"])
+        d_dict[entry["date"]].append(float(entry["price"]))
         if entry["type"] != "user":
-            last_verified = entry["price"]
+            last_verified = float(entry["price"])
         if last_verified:
-            for i in 15:
-                d_dict[entry["date"]].append(entry["price"])
+            for i in range(15):
+                d_dict[entry["date"]].append(last_verified)
     dates = d_dict.keys()
     prices = [sum(d_dict[k])/len(d_dict[k]) for k in d_dict.keys()]
     history = [list(item) for item in zip(dates, prices)]
@@ -246,9 +252,13 @@ def product_data():
         item["name"] = item["name"].capitalize().replace("_", " ")
     if len(history) == 0:
         history.append([0,0])
-    product = {"history": history, "averagePrice": sum(prices)/max(len(prices), 1), "currentPrice": 0 if len(prices) == 0 else prices[-1], "image": item["image"], "name": item["name"]}
+    if not "image" in item:
+        item["image"] = recipe_api.get_thumbnail(item["name"])
+    avg = item["average"] if len(prices) <= 0 else sum(prices)/max(len(prices), 1)
+    price = item["price"] if len(prices) <= 0 else prices[-1]
+    product = {"history": history, "averagePrice": float(avg), "currentPrice": float(price), "image": item["image"], "name": item["name"]}
     # products = [product1, product2]
-    return json.dumps(product)
+    return product
 
 # changed to allow user's inputted price to show in products after being changed
 @app.route('/get_products', methods=['GET'])
@@ -261,7 +271,9 @@ def get_products():
             p["price"] = 0
         if not "image" in p:
             p["image"] = recipe_api.get_thumbnail(p["name"])
-        item.append({"name": p["name"], "displayName":   p["name"].capitalize().replace("_", " "), "image": p["image"], "price": p["price"],"category":p["category"]})
+        if not "average" in p:
+            p["average"] = p["price"]
+        item.append({"name": p["name"], "displayName":   p["name"].capitalize().replace("_", " "), "image": p["image"], "price": p["price"],"category":p["category"] ,"average":p["average"]})
     output = {"products": item}
     print(f"ITEMS: {len(output['products'])}")
     return json.dumps(output)

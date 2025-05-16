@@ -179,7 +179,7 @@
         let inStoreHTML = "";
         let onlineHTML = `<p class="item-price">Average Price: $${averagePrice.toFixed(2)}</p>`;
         
-        if (averagePrice !== null && !isNaN(inStorePrice)) {
+        if (averagePrice !== null && !isNaN(averagePrice)) {
           const isCheaper = averagePrice > price;
           const color = isCheaper ? "green" : "gray";
           const emoji = isCheaper ? "⬇️" : "👁️";

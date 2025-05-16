@@ -2,6 +2,7 @@ import requests
 import json
 import io
 
+quit()
 def get_category(category):
     response = requests.get(f"https://www.themealdb.com/api/json/v1/1/filter.php?c={category}")
     r_js = json.loads(response.text)

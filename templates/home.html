@@ -115,7 +115,7 @@
         <main>
             {% if list %}
             <h2>Hey, {{name}}! Here’s Your Grocery List</h2>
-    
+            <p>{{reason}}</p>
             <button id="make_button" class="clear-btn" onclick="makeList()">Remake List</button>
             <section class="grocery-list" id="groceryList">
                 {% for item in list %}

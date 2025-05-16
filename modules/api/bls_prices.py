@@ -11,12 +11,14 @@ class BLSData(get_prices_now.APIPriceConnection):
     def get_price_for(self, item):
         resp = requests.get(bls_url_base.format(id =item))
         
-        jr = json.loads(resp.text,object_hook=lambda d: SimpleNamespace(**d))
+        jr = json.loads(resp.text)
         
-        price_points = []
-        for result in jr.Results:
-            date = datetime.datetime(result.year, result.period[1:].ltrim('0'), 1)
-            price = result.value
+        price_points = []        
+        for result in jr["Results"]["series"][0]["data"]:
+            print(result)            
+            ""
+            date = datetime.datetime(int(result["year"]), int(result["period"][1:].lstrip('0')), 1)
+            price = result["value"]
             price_points.append({"date": date, "price": price})
         return price_points
     

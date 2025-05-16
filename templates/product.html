@@ -129,78 +129,82 @@
           document.getElementById("productImage").alt = name;
 
           document.getElementById("priceInfo").innerHTML = `
-            <strong>Average Price:</strong> $${product.averagePrice.toFixed(2)}<br>
-            <strong>Latest Price:</strong> $${product.currentPrice.toFixed(2)}
+            <strong>Average Price:</strong> $${Number(product.averagePrice).toFixed(2)}<br>
+            <strong>Latest Price:</strong> $${Number(product.currentPrice).toFixed(2)}
           `;
 
-          new Chart(document.getElementById("priceChart"), {
-            type: 'line',
-            data: {
-              // labels: ["6w ago", "5w", "4w", "3w", "2w", "Last Week", "This Week"],
-              datasets: [{
-                label: `${name} Price ($)`,
-                data: product.history,
-                fill: false,
-                borderColor: 'green',
-                tension: 0.1
-              },
-            {
-                label: 'Average',
-                data: [
-                  { x: product.history[0][0], y: product.averagePrice.toFixed(2) },
-                  { x: product.history[product.history.length - 1][0], y: product.averagePrice.toFixed(2) }
-                ],
-                borderColor: 'rgba(0, 0, 255, 0.5)',
-                borderDash: [6, 6],
-                pointRadius: 0,
-                borderWidth: 2,
-                fill: false,
-                type: 'line'
-              }]
-            },
-            options: {
-              responsive: true,
-              plugins: {
-                legend: {
-                  display: false
-                }
-              },
-              scales: {
-                y: {
-                  beginAtZero: false
+
+          if (product.history.length > 2){
+
+            new Chart(document.getElementById("priceChart"), {
+              type: 'line',
+              data: {
+                // labels: ["6w ago", "5w", "4w", "3w", "2w", "Last Week", "This Week"],
+                datasets: [{
+                  label: `${name} Price ($)`,
+                  data: product.history,
+                  fill: false,
+                  borderColor: 'green',
+                  tension: 0.1
                 },
-                x: {
-                  type: 'time',
-                  time: {
-                    unit: 'day'
+                {
+                  label: 'Average',
+                  data: [
+                    { x: product.history[0][0], y: product.averagePrice.toFixed(2) },
+                    { x: product.history[product.history.length - 1][0], y: product.averagePrice.toFixed(2) }
+                  ],
+                  borderColor: 'rgba(0, 0, 255, 0.5)',
+                  borderDash: [6, 6],
+                  pointRadius: 0,
+                  borderWidth: 2,
+                  fill: false,
+                  type: 'line'
+                }]
+              },
+              options: {
+                responsive: true,
+                plugins: {
+                  legend: {
+                    display: false
+                  }
+                },
+                scales: {
+                  y: {
+                    beginAtZero: false
+                  },
+                  x: {
+                    type: 'time',
+                    time: {
+                      unit: 'day'
+                    }
+                  }
+                },
+                plugins: {
+                  zoom: {
+                    zoom: {
+                      wheel: {
+                        enabled: true, // Zoom with mouse wheel
+                      },
+                      pinch: {
+                        enabled: true, // Zoom with pinch gesture on touch
+                      },
+                      mode: 'x', // Zoom only on x-axis
+                    },
+                    pan: {
+                      enabled: true,
+                      mode: 'x', // Pan only on x-axis
+                    },
                   }
                 }
-              },
-              plugins: {
-                zoom: {
-                  zoom: {
-                    wheel: {
-                      enabled: true, // Zoom with mouse wheel
-                    },
-                    pinch: {
-                      enabled: true, // Zoom with pinch gesture on touch
-                    },
-                    mode: 'x', // Zoom only on x-axis
-                  },
-                  pan: {
-                    enabled: true,
-                    mode: 'x', // Pan only on x-axis
-                  },
-                }
               }
-            }
-          });
+            });
+          }
         }
-      })
-      .catch(error => {
-        document.querySelector(".container").innerHTML = `<p>Error fetching product data: ${error}</p>`;
-      });
-
+        })
+        .catch(error => {
+          document.querySelector(".container").innerHTML = `<p>Error fetching product data: ${error}</p>`;
+        });
+        
     function enterStorePrice() {
       const input = prompt("Enter the price you saw in-store (e.g., 3.49):");
       const parsed = parseFloat(input);
