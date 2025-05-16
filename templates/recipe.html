@@ -44,9 +44,16 @@
     const ingredientList = document.getElementById("ingredient-list");
     var li = null
     {% for item in recipe['items'] %}
-      li = document.createElement("li");
-      li.textContent = `{{item['measure']}} {{item['ingredient']}}`;
-      ingredientList.appendChild(li);
+    li = document.createElement("li");
+
+    const link = document.createElement("a");
+    link.href = `/product.html?name={{ item['ingredient'] | urlencode }}`;
+    link.textContent = `{{ item['measure'] }} {{ item['ingredient'] }}`;
+    link.className = "text-blue-600 underline";
+
+    li.appendChild(link);
+    ingredientList.appendChild(li);
+
     {% endfor %}
     
   </script>

@@ -347,6 +347,35 @@ def compare():
     return render_template("compare.html", products=products)
 
 
+# for linking product page to ingredients in a recipe
+@app.route('/api/products')
+def get_product_by_name():
+    name = request.args.get('name')
+    if not name:
+        return jsonify({"error": "Missing name"}), 400
+
+    formatted_name = name.lower().replace(" ", "_")
+    item = firebase_connection.get_node("Grocery_Items", formatted_name)
+
+    if not item:
+        return jsonify({"error": f"Product '{name}' not found"}), 404
+
+    # Fallback if no price history exists
+    price_history = firebase_connection.get_price_history_by_item(formatted_name) or []
+    prices = [entry["price"] for entry in price_history]
+    last_price = prices[-2] if len(prices) > 1 else item.get("price", 0.0)
+    this_price = prices[-1] if prices else item.get("price", 0.0)
+
+    product = {
+        "name": name,
+        "image": recipe_api.get_thumbnail(formatted_name),
+        "lastWeekPrice": last_price,
+        "thisWeekPrice": this_price,
+        "history": prices[-7:] if prices else [this_price] * 7
+    }
+
+    return jsonify(product)
+
 
 if __name__ == '__main__':
     app.secret_key = 'SECRET KEY'
