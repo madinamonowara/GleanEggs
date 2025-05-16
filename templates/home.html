@@ -119,7 +119,7 @@
             <button id="make_button" class="clear-btn" onclick="makeList()">Remake List</button>
             <section class="grocery-list" id="groceryList">
                 {% for item in list %}
-                <div class="grocery-item" data-name="{{item['product']}}" data-quantity="" id="item-1">
+                <div class="grocery-item" data-name="{{item['product']}}" data-quantity="" id="item-{{ loop.index }}">
                     <input type="checkbox" class="checkbox">
                     <img src="{{item['img']}}" alt="{{item['product']}}">
                     <div class="item-details">
@@ -127,10 +127,11 @@
                         <p class="item-price">{{item['price']}}</p>
                         <p>{{item['reason']}}</p>
                     </div>
-                    <button class="remove-item" onclick="removeItem(1)">❌</button>
+                    <button class="remove-item" onclick="removeItem({{ loop.index }})">❌</button>
                 </div>
                 {% endfor %}
             </section>
+            
             
             
             <!-- <section class="saved-list" id="savedList">
