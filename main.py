@@ -180,7 +180,7 @@ def recipe():
     for i in range(1,21):
         if ("strIngredient"+str(i)) in recipe:
             if recipe['strIngredient'+str(i)] == '': break
-            recipe["items"].append({"ingredient": recipe["strIngredient"+str(i)], "measure": recipe["strMeasure"+str(i)]})
+            recipe["items"].append({"ingredient": recipe["strIngredient"+str(i)], "measure": recipe["strMeasure"+str(i)], "name": recipe["strIngredient"+str(i)].lower().replace(" ", "_")})
         else:  break
     print(recipe)
     return check_login(render_template('/recipe.html', recipe=recipe))
@@ -214,14 +214,25 @@ def search():
 @app.route('/product_data', methods=['GET'])
 def product_data():
     name = request.args.get('name')  
-    products = []
-
+    print("HERE")
     # for name in names:
     formatted_name = name.lower().replace(" ", "_")
     price_history = firebase_connection.get_price_history_by_item(formatted_name)
-
-    dates = [entry["date"].strftime("%Y-%m-%d") for entry in price_history]
-    prices = [entry["price"] for entry in price_history]
+    products = []
+    
+    # dates = [entry["date"] for entry in price_history]
+    # prices = [entry["price"] for entry in price_history]
+    d_dict = {}
+    for entry in price_history:
+        print(entry)
+        if not entry["date"] in d_dict:
+            d_dict[entry["date"]] = []
+        d_dict[entry["date"]].append(entry["price"])
+        if entry["type"] != "user":
+            for i in 10:
+                d_dict[entry["date"]].append(entry["price"])
+    dates = d_dict.keys()
+    prices = [sum(d_dict[k])/len(d_dict[k]) for k in d_dict.keys()]
     history = [list(item) for item in zip(dates, prices)]
     item =  firebase_connection.get_node("Grocery_Items", name)
     price = 0.0
@@ -234,9 +245,10 @@ def product_data():
     # products = [product1, product2]
     return json.dumps(product)
 
+# changed to allow user's inputted price to show in products after being changed
 @app.route('/get_products', methods=['GET'])
 def get_products():
-    returns = firebase_connection.get_all_items_from_collection("Grocery_Items")
+    returns = firebase_connection.get_all_tracked_items()
     print("Call?")
     item = []
     for p in returns:
@@ -246,34 +258,132 @@ def get_products():
             p["image"] = recipe_api.get_thumbnail(p["name"])
         item.append({"name": p["name"], "displayName":   p["name"].capitalize().replace("_", " "), "image": p["image"], "price": p["price"],"category":p["category"]})
     output = {"products": item}
+    print(f"ITEMS: {len(output['products'])}")
     return json.dumps(output)
 
-# for comparing products when user is in products list page
+    #     # Check in-store prices
+    #     price_doc = firebase_connection.get_node("in_store_prices", name)
+    #     in_store_price = None
+    #     if price_doc:
+    #         try:
+    #             latest_timestamp = max(price_doc)
+    #             in_store_price = price_doc[latest_timestamp]
+    #         except:
+    #             pass
+
+    #     item.append({
+    #         "name": name,
+    #         "displayName": displayName,
+    #         "image": image,
+    #         "price": price,
+    #         "category": category,
+    #         "in_store_price": in_store_price
+    #     })
+
+    # return json.dumps({"products": item})
+
+# for user to add their own price in product
+@app.route('/submit_instore_price', methods=['POST'])
+def submit_instore_price():
+    data = request.get_json()
+    name = data.get('name')
+    price = data.get('price')
+    print(data)
+
+    if not name or price is None:
+        return jsonify({"error": "Missing name or price"}), 400
+
+    from datetime import datetime
+    timestamp = datetime.now().isoformat()
+
+    # This assumes upload_to_firebase supports merge=True for updating a nested dict
+    firebase_connection.upload_to_firebase(
+        f"Price_Point",
+        {"timestamp": timestamp, "price": price, "type": "user", "item_name": name, "date": str(datetime.now().date())},
+        doc_id=f"user_{timestamp}"
+    )
+
+    return jsonify({"success": True}), 200
+
+
+# for comparing products when user is in products list page (dummy info for now included)
 @app.route('/compare')
 def compare():
     selected_names = request.args.getlist('name')
-    price_history = firebase_connection.get_price_history_by_item(formatted_name)
+    dummy_db = {}
+    for n in selected_names:
+        formatted_name = n.lower().replace(" ", "_")
+        price_history = firebase_connection.get_price_history_by_item(formatted_name)
 
-    dates = [entry["date"].strftime("%Y-%m-%d") for entry in price_history]
-    prices = [entry["price"] for entry in price_history]
-    history = [list(item) for item in zip(dates, prices)]
+        dates = [entry["date"].strftime("%Y-%m-%d") for entry in price_history]
+        prices = [entry["price"] for entry in price_history]
+        history = [list(item) for item in zip(dates, prices)]
+        product = firebase_connection.get_node("Grocery_Items", formatted_name)
+        dummy_db[n] = {
+            "displayName": formatted_name.capitalize().replace("_", " "),
+            "image": product["image"],
+            "price": product["price"],
+            "price_dates": dates,
+            "price_values": prices
+        }
 
-    products = []
+    products= []
     for name in selected_names:
-        product_data = firebase_connection.get_node("Grocery_Items", name)
-        products.append({
-            'name': name,
-            'displayName': product_data['displayName'],
-            'image': product_data['image'],
-            'current_price': product_data['price'],
-            'price_history': {
-                'dates': product_data['price_dates'],
-                'values': product_data['price_values']
-            }
-        })
+        if name in dummy_db:
+            d = dummy_db[name]
+            products.append({
+                'name': name,
+                'displayName': d['displayName'],
+                'image': d['image'],
+                'current_price': d['price'],
+                'price_history': {
+                    'dates': d['price_dates'],
+                    'values': d['price_values']
+                }
+            })
+        else:
+            products.append({
+                'name': name,
+                'displayName': name.capitalize(),
+                'image': '/static/images/placeholder.png',
+                'current_price': 0.00,
+                'price_history': {
+                    'dates': ["N/A"],
+                    'values': [0]
+                }
+            })
 
     return render_template("compare.html", products=products)
 
+
+# for linking product page to ingredients in a recipe
+@app.route('/api/products')
+def get_product_by_name():
+    name = request.args.get('name')
+    if not name:
+        return jsonify({"error": "Missing name"}), 400
+
+    formatted_name = name.lower().replace(" ", "_")
+    item = firebase_connection.get_node("Grocery_Items", formatted_name)
+
+    if not item:
+        return jsonify({"error": f"Product '{name}' not found"}), 404
+
+    # Fallback if no price history exists
+    price_history = firebase_connection.get_price_history_by_item(formatted_name) or []
+    prices = [entry["price"] for entry in price_history]
+    last_price = prices[-2] if len(prices) > 1 else item.get("price", 0.0)
+    this_price = prices[-1] if prices else item.get("price", 0.0)
+
+    product = {
+        "name": name,
+        "image": recipe_api.get_thumbnail(formatted_name),
+        "lastWeekPrice": last_price,
+        "thisWeekPrice": this_price,
+        "history": prices[-7:] if prices else [this_price] * 7
+    }
+
+    return jsonify(product)
 
 
 if __name__ == '__main__':

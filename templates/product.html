@@ -8,6 +8,12 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='styles/navbarstyle.css') }}">
   <link rel="stylesheet" href="{{ url_for('static',filename='styles/mainstyle.css') }}">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Luxon (date library) -->
+  <script src="https://cdn.jsdelivr.net/npm/luxon@3/build/global/luxon.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@2.0.1"></script>
+
+  <!-- Chart.js Luxon Adapter -->
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-luxon@1"></script>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -76,6 +82,7 @@
     canvas {
       max-width: 100%;
     }
+
   </style>
 </head>
 <body>
@@ -100,6 +107,10 @@
     <img id="productImage" class="product-image" src="" alt="Product">
     <div class="price-info" id="priceInfo"></div>
     <canvas id="priceChart"></canvas>
+    <div id="userPriceSection" style="margin-top: 20px;">
+      <button onclick="enterStorePrice()" style="padding: 10px 15px; border: 2px solid #4CAF50; border-radius: 8px; background: white; cursor: pointer;">✏️ Enter In-Store Price</button>
+      <p id="userPriceDisplay" style="margin-top: 10px; font-size: 16px;"></p>
+    </div>    
   </div>
 
   <script>
@@ -125,7 +136,7 @@
           new Chart(document.getElementById("priceChart"), {
             type: 'line',
             data: {
-              labels: ["6w ago", "5w", "4w", "3w", "2w", "Last Week", "This Week"],
+              // labels: ["6w ago", "5w", "4w", "3w", "2w", "Last Week", "This Week"],
               datasets: [{
                 label: `${name} Price ($)`,
                 data: product.history,
@@ -144,6 +155,29 @@
               scales: {
                 y: {
                   beginAtZero: false
+                },
+                x: {
+                  type: 'time',
+                  time: {
+                    unit: 'day'
+                  }
+                }
+              },
+              plugins: {
+                zoom: {
+                  zoom: {
+                    wheel: {
+                      enabled: true, // Zoom with mouse wheel
+                    },
+                    pinch: {
+                      enabled: true, // Zoom with pinch gesture on touch
+                    },
+                    mode: 'x', // Zoom only on x-axis
+                  },
+                  pan: {
+                    enabled: true,
+                    mode: 'x', // Pan only on x-axis
+                  },
                 }
               }
             }
@@ -153,6 +187,36 @@
       .catch(error => {
         document.querySelector(".container").innerHTML = `<p>Error fetching product data: ${error}</p>`;
       });
+
+    function enterStorePrice() {
+      const input = prompt("Enter the price you saw in-store (e.g., 3.49):");
+      const parsed = parseFloat(input);
+
+      if (!isNaN(parsed) && parsed >= 0) {
+        document.getElementById("userPriceDisplay").textContent = `🛒 You saw: $${parsed.toFixed(2)} in-store`;
+
+        // Send to Firebase via Flask
+        fetch('/submit_instore_price', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            name: name,  // from earlier in script
+            price: parsed
+          })
+        })
+        .then(res => {
+          if (!res.ok) throw new Error('Failed to save price.');
+        })
+        .catch(err => {
+          alert("Error saving in-store price.");
+          console.error(err);
+        });
+      }
+    }
+
+
   </script>
 
 </body>

@@ -180,7 +180,7 @@ def get_price_history_by_item(item_name):
         collection_name = "Price_Point"
         docs = db.collection(collection_name).where("item_name", "==", item_name).order_by("date").stream()
 
-        price_history = [{"date": doc.to_dict()["date"], "price": doc.to_dict()["price"]} for doc in docs]
+        price_history = [{"date": doc.to_dict()["date"], "price": doc.to_dict()["price"], "type": doc.to_dict()["type"]} for doc in docs]
         
         return price_history
     except Exception as e:
