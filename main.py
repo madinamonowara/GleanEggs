@@ -44,8 +44,12 @@ def login_return():
 @app.route("/home")
 @app.route("/")
 def home():
+    print("TRY")
+    print(logged_in())
     if not logged_in(): return redirect(url_for("login"))
+    print("here")
     list = firebase_connection.get_node("groceryLists", session['email'])
+    print(list)
     if not list: return check_login(render_template("/home.html", name=get_session_value("name")))
     grocery_list = []
     all_images = {}
@@ -61,7 +65,7 @@ def home():
             "price": list["prices"][i],
             "reason": list["reason"][i],
             "img":  img})
-    return check_login(render_template("/home.html", name=get_session_value("name"), list=grocery_list))
+    return check_login(render_template("/home.html", name=get_session_value("name"), list=grocery_list, reason=list["full_reason"]))
 
 def logged_in():
     return 'token' in session
@@ -233,9 +237,13 @@ def product_data():
         item["name"] = item["name"].capitalize().replace("_", " ")
     if len(history) == 0:
         history.append([0,0])
-    product = {"history": history, "averagePrice": sum(prices)/max(len(prices), 1), "currentPrice": 0 if len(prices) == 0 else prices[-1], "image": item["image"], "name": item["name"]}
+    if not "image" in item:
+        item["image"] = recipe_api.get_thumbnail(item["name"])
+    avg = item["average"] if len(prices) <= 0 else sum(prices)/max(len(prices), 1)
+    price = item["price"] if len(prices) <= 0 else prices[-1]
+    product = {"history": history, "averagePrice": float(avg), "currentPrice": float(price), "image": item["image"], "name": item["name"]}
     # products = [product1, product2]
-    return json.dumps(product)
+    return product
 
 # changed to allow user's inputted price to show in products after being changed
 @app.route('/get_products', methods=['GET'])

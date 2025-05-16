@@ -53,7 +53,9 @@ def upload_to_firebase(collection_name, data_dict, doc_id=None):
 
 def get_node(collection, node_id, alias_check = True):
     try:
+        print("trying to get")
         doc = db.collection(collection).document(str(node_id)).get()
+        print("got")
         if doc.exists:
             check = doc.to_dict()
             if "alias" in check and alias_check:

@@ -123,8 +123,8 @@
           document.getElementById("productImage").alt = name;
 
           document.getElementById("priceInfo").innerHTML = `
-            <strong>Average Price:</strong> $${product.averagePrice.toFixed(2)}<br>
-            <strong>Latest Price:</strong> $${product.currentPrice.toFixed(2)}
+            <strong>Average Price:</strong> $${Number(product.averagePrice).toFixed(2)}<br>
+            <strong>Latest Price:</strong> $${Number(product.currentPrice).toFixed(2)}
           `;
 
           new Chart(document.getElementById("priceChart"), {
@@ -167,11 +167,11 @@
             }
           });
         }
-      })
-      .catch(error => {
-        document.querySelector(".container").innerHTML = `<p>Error fetching product data: ${error}</p>`;
-      });
-
+        })
+        .catch(error => {
+          document.querySelector(".container").innerHTML = `<p>Error fetching product data: ${error}</p>`;
+        });
+        
     function enterStorePrice() {
       const input = prompt("Enter the price you saw in-store (e.g., 3.49):");
       const parsed = parseFloat(input);
