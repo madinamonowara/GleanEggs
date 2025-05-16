@@ -113,13 +113,13 @@
         if (product.error) {
           document.querySelector(".container").innerHTML = `<p>${product.error}</p>`;
         } else {
-          document.getElementById("productName").textContent = name;
+          document.getElementById("productName").textContent = product.name;
           document.getElementById("productImage").src = product.image;
           document.getElementById("productImage").alt = name;
 
           document.getElementById("priceInfo").innerHTML = `
             <strong>Last Week:</strong> $${product.lastWeekPrice.toFixed(2)}<br>
-            <strong>This Week:</strong> $${product.thisWeekPrice.toFixed(2)}
+            <strong>This Week:</strong> $${product.thisWeekPrice}
           `;
 
           new Chart(document.getElementById("priceChart"), {
