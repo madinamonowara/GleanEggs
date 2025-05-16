@@ -123,8 +123,8 @@
           document.getElementById("productImage").alt = name;
 
           document.getElementById("priceInfo").innerHTML = `
-            <strong>Last Week:</strong> $${product.lastWeekPrice.toFixed(2)}<br>
-            <strong>This Week:</strong> $${product.thisWeekPrice}
+            <strong>Average Price:</strong> $${product.averagePrice.toFixed(2)}<br>
+            <strong>Latest Price:</strong> $${product.currentPrice.toFixed(2)}
           `;
 
           new Chart(document.getElementById("priceChart"), {
@@ -137,6 +137,19 @@
                 fill: false,
                 borderColor: 'green',
                 tension: 0.1
+              },
+            {
+                label: 'Average',
+                data: [
+                  { x: product.history[0][0], y: product.averagePrice.toFixed(2) },
+                  { x: product.history[product.history.length - 1][0], y: product.averagePrice.toFixed(2) }
+                ],
+                borderColor: 'rgba(0, 0, 255, 0.5)',
+                borderDash: [6, 6],
+                pointRadius: 0,
+                borderWidth: 2,
+                fill: false,
+                type: 'line'
               }]
             },
             options: {

@@ -231,7 +231,9 @@ def product_data():
         print(price)
     if "name" in item:
         item["name"] = item["name"].capitalize().replace("_", " ")
-    product = {"history": history, "lastWeekPrice": 0, "thisWeekPrice": price, "image": item["image"], "name": item["name"]}
+    if len(history) == 0:
+        history.append([0,0])
+    product = {"history": history, "averagePrice": sum(prices)/max(len(prices), 1), "currentPrice": 0 if len(prices) == 0 else prices[-1], "image": item["image"], "name": item["name"]}
     # products = [product1, product2]
     return json.dumps(product)
 
