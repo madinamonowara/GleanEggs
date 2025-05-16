@@ -1,23 +1,27 @@
-import csv
+from modules import firebase_connection
+from modules.api import ai_integration
+from modules.api import recipe_api
 
-comma_line = ""
-output = []
-name_r = []
-with open("./bls_data.txt", "r") as inp:
-    for line in inp.readlines():
-        if "," in line:
-            comma_line = line
-        elif "APU" in line and comma_line != "":
-            name_val = comma_line.split(",")[0]
-            if name_val in name_r:
-                name_val = ":".join(comma_line.split(",")[0:2])
-            if name_val in name_r:
-                continue
-            name_r .append(name_val)
-            output.append([name_val, line[line.index("APU"):-1]])
-            comma_line = ""
+import json
+import requests
+import modules.api
+
+def format_name(s):
+    return s.lower().replace(" ", "_")
+response = requests.get("https://www.themealdb.com/api/json/v1/1/list.php?i=list")
+
+ret = json.loads(response.text)
+data = []
+for i in ret["meals"]:
+    img = f'https://www.themealdb.com/images/ingredients/{format_name(i["strIngredient"])}.png'
+    if i["strType"] == None or i["strType"] == "null":
+        i["strType"] = "Misc"
+    # response = requests.get(url+"ingredients/"+str(id)+".png")
+    data.append({"name": format_name(i["strIngredient"]), "image": img, "category": i["strType"], "price": 0})
+
+firebase_connection.write_multiple_objects_batch(data, "Grocery_Items")
 
 
-with open("bls_data_items.csv", 'w', newline='') as file:
-    writer = csv.writer(file)
-    writer.writerows(output)
+
+# print("Stopping")
+

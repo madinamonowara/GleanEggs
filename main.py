@@ -48,14 +48,19 @@ def home():
     list = firebase_connection.get_node("groceryLists", session['email'])
     if not list: return check_login(render_template("/home.html", name=get_session_value("name")))
     grocery_list = []
+    all_images = {}
+    for i in firebase_connection.get_all_tracked_items():
+        all_images[i["name"]] = i
+    print(all_images)
     for i in range(len(list["items"])):
+        list["items"][i] = list["items"][i].lower().replace(" ", "_")
+        img = all_images[list["items"][i]]["image"] if list["items"][i] in all_images else recipe_api.get_thumbnail(list["items"][i])
         grocery_list.append({
             "product": list["items"][i],
             "name": list["items"][i].capitalize().replace("_", " "),
             "price": list["prices"][i],
             "reason": list["reason"][i],
-            "img":  recipe_api.get_thumbnail(list["items"][i])
-        })
+            "img":  img})
     return check_login(render_template("/home.html", name=get_session_value("name"), list=grocery_list))
 
 def logged_in():
@@ -101,12 +106,8 @@ def save_preferences():
     if request.method != 'POST': return ""
     if not logged_in(): return ""
 
-    preferences = {
-        "diet": request.form['diet'],
-        "allergy": request.form['allergy'],
-        "shop": request.form['shop-frequency'],
-        "budget": request.form['budget']
-    }
+    
+    preferences = request.form
     firebase_connection.upload_to_firebase("preferences", preferences, session['email'])
     return 'Data retrieved successfully!'
 
@@ -116,14 +117,14 @@ def generate_list():
 
     email = session['email']
     returned_list = process_data.generate_grocery_list(email)
-    grocery_list = {"items": [], "prices": [], "reason": [], "recipes": [i[0] for i in returned_list[1]]}
+    returned_list[0] = {k.lower(): v for k, v in returned_list[0].items()}
+    grocery_list = {"items": [], "prices": [], "reason": [], "recipes": [i['id'] for i in returned_list[1]['recipes']], "full_reason": returned_list[0]['reason']}
     
-    for i in returned_list[0]:
-        if len(i) != 3: continue
-        if "*" in i[0]: continue
-        grocery_list["items"].append(i[0])
-        grocery_list["prices"].append(i[1])
-        grocery_list["reason"].append(i[2])
+    for i in returned_list[0]["grocery_list"]:
+        # if "*" in i[0]: continue
+        grocery_list["items"].append(i["name"])
+        grocery_list["prices"].append(i['price'])
+        grocery_list["reason"].append(i['Reason'])
     
     firebase_connection.upload_to_firebase("groceryLists", grocery_list, email)
     return "Success"
@@ -227,7 +228,10 @@ def product_data():
     price = 0.0
     if item:
         price = item["price"]
-    product = {"history": history, "lastWeekPrice": 0, "thisWeekPrice": price, "image": recipe_api.get_thumbnail(name)}
+        print(price)
+    if "name" in item:
+        item["name"] = item["name"].capitalize().replace("_", " ")
+    product = {"history": history, "lastWeekPrice": 0, "thisWeekPrice": price, "image": item["image"], "name": item["name"]}
     # products = [product1, product2]
     return json.dumps(product)
 
@@ -235,7 +239,7 @@ def product_data():
 @app.route('/get_products', methods=['GET'])
 def get_products():
     returns = firebase_connection.get_all_items_from_collection("Grocery_Items")
-
+    print("Call?")
     item = []
     for p in returns:
         name = p["name"]

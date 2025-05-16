@@ -51,10 +51,14 @@ def upload_to_firebase(collection_name, data_dict, doc_id=None):
     except Exception as e:
         print(f"Error uploading to {collection_name}: {str(e)}")
 
-def get_node(collection, node_id):
+def get_node(collection, node_id, alias_check = True):
     try:
         doc = db.collection(collection).document(str(node_id)).get()
         if doc.exists:
+            check = doc.to_dict()
+            if "alias" in check and alias_check:
+                print(check["alias"])
+                return get_node(collection, check["alias"], False)
             return doc.to_dict()
         return None
     except Exception as e:
@@ -83,16 +87,18 @@ def get_user_by_email(email):
         return None
     
 def get_user_preferences(user_id):
-  
+    print(user_id)
     try:
-        doc = db.collection("users").document(str(user_id)).get()
+        doc = db.collection("preferences").document(str(user_id)).get()
+        print(doc)
         if doc.exists:
-            return doc.to_dict().get("preferences")
+            return doc.to_dict()
         return None
     except Exception as e:
         print(f"Error retrieving preferences for {user_id}: {str(e)}")
         return None
 
+print("HELLO?")
 def get_prices(name, date):
     collection_name = "price_points"
     try:
@@ -117,7 +123,7 @@ def get_all_items_from_collection(collection_name):
 def get_all_tracked_items():
     try:
         items = get_all_items_from_collection("Grocery_Items")
-        return [[item["name"], item["price"], item["diff"], item["trend"], 0] for item in items]
+        return items
     except Exception as e:
         print(e)
         return []
@@ -154,15 +160,6 @@ def save_user_preferences(user_id, preferences):
         print(f"Error saving preferences for {user_id}: {str(e)}")
         return False
 
-def get_user_preferences(user_id):
-    try:
-        doc = db.collection("users").document(str(user_id)).get()
-        if doc.exists:
-            return doc.to_dict().get("preferences", {})
-        return {}
-    except Exception as e:
-        print(f"Error retrieving preferences for {user_id}: {str(e)}")
-        return {}
 
 def add_product_price_and_store(price, store_name):
     try:
@@ -224,3 +221,11 @@ if __name__ == "__main__":
 
 
 
+def write_multiple_objects_batch(data_list, collection_name):
+    """Writes multiple objects to Firestore using a batched write."""
+    batch = db.batch()
+    for data in data_list:
+        doc_ref = db.collection(collection_name).document(data["name"])  # Automatically generate unique IDs
+        batch.set(doc_ref, data)
+    batch.commit()
+    print(f"Successfully wrote {len(data_list)} objects using batched write.")

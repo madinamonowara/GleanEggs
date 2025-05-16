@@ -146,6 +146,9 @@
     </section>
   </div>
 
+  <button onclick="goToComparisonPage()" style="margin-top: 20px; padding: 10px 20px; border: none; background: #4CAF50; color: white; border-radius: 8px;">
+    Compare Selected Items
+  </button>
   <script>
     fetch('/get_products').then(response => response.json())
       .then(data => {
@@ -161,9 +164,6 @@
           );
         });
 
-      <button onclick="goToComparisonPage()" style="margin-top: 20px; padding: 10px 20px; border: none; background: #4CAF50; color: white; border-radius: 8px;">
-        Compare Selected Items
-      </button>
 
       
       
