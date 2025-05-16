@@ -5,6 +5,7 @@ from modules.api import recipe_api
 from modules import firebase_connection
 import csv
 import io
+import json
 
 #2D-array to string containing a csv list for AI processing data
 def compile_rough_list(rough_list):
@@ -30,30 +31,38 @@ def complile_preferences(preferences):
     return s
      
 def generate_grocery_list(user):
-        
-        preferences = firebase_connection.get_user_preferences(user)
-        output = complile_preferences(preferences)
         messages = []
-        data = ai_integration.get_generic_list(messages)
-        data = compile_start_list(firebase_connection.get_all_tracked_items())
-        
-        suggested_list = ai_integration.get_base_list(data, messages)
-        recipes = recipe_api.get_recipes_for_items(suggested_list)
+        print("Starting")
+        preferences = json.dumps(firebase_connection.get_user_preferences(user))
+        products = json.dumps({"products": firebase_connection.get_all_tracked_items()})
+        c_products = []
+        for p in products:
+            if "price"in p:
+                c_products.append(p)
+        grocery_list = ai_integration.get_generic_list(f"```json\n{preferences}\n```", messages)
+        grocery_list = ai_integration.get_base_list(f"```json\n{c_products}\n```", messages)
+        category_output = ai_integration.recipe_suggestion(messages)
+        all_recipes = {}
+        for i in category_output["categories"]:
+            with open(f"data/recipes/{i.lower()}_recipes.json", "r") as file:
+                recipe_list = json.load(file)
+                for r in recipe_list:
+                    all_recipes[r] = recipe_list[r]
+
+        with open(f"data/recipes/miscellaneous_recipes.json", "r") as file:
+            recipe_list = json.load(file)
+            for r in recipe_list:
+                all_recipes[r] = recipe_list[r]
+
+        recipe_list_f ={"recipes": [{"name": i, "id": all_recipes[i]} for i in all_recipes]}
+        recipes = ai_integration.recipe_suggestion_2(f"```json\n{json.dumps(recipe_list_f)}\n```", messages)
         recipe_ingredients = recipe_api.get_recipe_ingredients(recipes)
-        rough_list = []
-        
-        for s in suggested_list:
-            rough_list.append(s)
-        
-        for i in recipe_ingredients:
-            rough_list.append(i)
-        
-        rl_data = compile_rough_list(rough_list)
-        full_list = ai_integration.get_completed_list(rl_data, messages)
-        
-        for f in full_list:
-            print(f)
-        return [full_list, recipes]
+        ingredients_j = json.dumps(recipe_ingredients)
+
+        grocery_list = ai_integration.get_completed_list(ingredients_j, messages)
+        print(grocery_list)
+        print(recipes)
+        return [grocery_list, recipes]
 
 def default_product_record(data):
      product = {"price": data["price"],

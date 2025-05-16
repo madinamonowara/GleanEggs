@@ -51,8 +51,8 @@ def get_recipes_for_items(items, num_items = 3):
 def get_recipe_ingredients(recipes):
     ingredients = []
     ing_tracker= []
-    for r in recipes:
-        url = get_base_url()+"lookup.php?i="+r[0]
+    for r in recipes["recipes"]:
+        url = get_base_url()+"lookup.php?i="+r['id']
         response_raw = requests.get(url)
         response = json.loads(response_raw.text)
         for i in range(1, 20):
@@ -60,6 +60,6 @@ def get_recipe_ingredients(recipes):
             if (ing == '' or ing == None): continue
             if not(ing in ing_tracker):
                 ing_tracker.append(ing)
-                ingredients.append([ing, 0, "Necessary for "+r[1]])
+                ingredients.append({"name": ing,"reason": "Necessary for "+r['name']})
     print("ingredients:\n"+str(ingredients))
-    return ingredients
+    return {"ingredients": ingredients}
