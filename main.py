@@ -213,35 +213,6 @@ def search():
 
 @app.route('/product_data', methods=['GET'])
 def product_data():
-<<<<<<< HEAD
-    names = request.args.getlist('name')  
-    products = []
-
-    for name in names:
-        formatted_name = name.lower().replace(" ", "_")
-        price_history = firebase_connection.get_price_history_by_item(formatted_name)
-
-        dates = [entry["date"].strftime("%Y-%m-%d") for entry in price_history]
-        prices = [entry["price"] for entry in price_history]
-        history = [list(item) for item in zip(dates, prices)]
-
-        item = firebase_connection.get_node("Grocery_Items", formatted_name)
-        price = item["price"] if item else 0.0
-
-        product = {
-            "name": name,
-            "history": history,
-            "lastWeekPrice": 0,
-            "thisWeekPrice": price,
-            "image": recipe_api.get_thumbnail(formatted_name)
-        }
-
-        products.append(product)
-
-    return jsonify(products)
-
-
-=======
     name = request.args.get('name')  
     products = []
 
@@ -262,7 +233,6 @@ def product_data():
     product = {"history": history, "lastWeekPrice": 0, "thisWeekPrice": price, "image": item["image"], "name": item["name"]}
     # products = [product1, product2]
     return json.dumps(product)
->>>>>>> 177c79987cfff2f0daeca29c5b6958a34b7830ca
 
 @app.route('/get_products', methods=['GET'])
 def get_products():
