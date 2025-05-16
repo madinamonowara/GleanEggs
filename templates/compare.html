@@ -8,6 +8,12 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='styles/navbarstyle.css') }}">
   <link rel="stylesheet" href="{{ url_for('static',filename='styles/mainstyle.css') }}">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Luxon (date library) -->
+  <script src="https://cdn.jsdelivr.net/npm/luxon@3/build/global/luxon.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@2.0.1"></script>
+
+  <!-- Chart.js Luxon Adapter -->
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-luxon@1"></script>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -121,16 +127,22 @@
       <button onclick="location.href='/product_list'">← Back to Products</button>
     </div>
   </nav>
-  {% set min_price = products | min(attribute='current_price') %}
+  {% set min_price = products | min(attribute='currentPrice') %}
 
   <div class="comparison-container">
     {% for product in products %}
     <div class="product-card">
       <img src="{{ product.image }}" alt="{{ product.name }}">
       <div class="product-name">{{ product.displayName }}</div>
-      <div class="product-price {% if product.current_price == min_price %}highlight{% endif %}">
-        Current Price: ${{ "%.2f"|format(product.current_price) }}
-        {% if product.current_price == min_price %}
+      <div class="product-price {% if product.currentPrice == min_price %}highlight{% endif %}">
+        Current Price: ${{ "%.2f"|format(product.currentPrice) }}
+        {% if product.currentPrice == min_price %}
+          🏆 <span style="font-size: 14px;">Best Price</span>
+        {% endif %}
+      </div>      
+      <div class="product-price {% if product.currentPrice == min_price %}highlight{% endif %}">
+        Average Price: ${{ "%.2f"|format(product.averagePrice) }}
+        {% if product.currentPrice == min_price %}
           🏆 <span style="font-size: 14px;">Best Price</span>
         {% endif %}
       </div>      
@@ -145,25 +157,67 @@
     productData.forEach((product, index) => {
       const ctx = document.getElementById(`chart_${index + 1}`).getContext('2d');
       new Chart(ctx, {
-        type: 'line',
-        data: {
-          labels: product.price_history.dates,
-          datasets: [{
-            label: 'Price Over Time',
-            data: product.price_history.values,
-            borderColor: 'green',
-            backgroundColor: 'rgba(0, 128, 0, 0.1)',
-            fill: true,
-            tension: 0.3
-          }]
-        },
-        options: {
-          scales: {
-            y: { beginAtZero: false },
-            x: { display: true, title: { display: true, text: 'Date' } }
-          }
-        }
-      });
+              type: 'line',
+              data: {
+                // labels: ["6w ago", "5w", "4w", "3w", "2w", "Last Week", "This Week"],
+                datasets: [{
+                  label: `${name} Price ($)`,
+                  data: product.history,
+                  fill: false,
+                  borderColor: 'green',
+                  tension: 0.1
+                },
+                {
+                  label: 'Average',
+                  data: [
+                    { x: product.history[0][0], y: product.averagePrice.toFixed(2) },
+                    { x: product.history[product.history.length - 1][0], y: product.averagePrice.toFixed(2) }
+                  ],
+                  borderColor: 'rgba(0, 0, 255, 0.5)',
+                  borderDash: [6, 6],
+                  pointRadius: 0,
+                  borderWidth: 2,
+                  fill: false,
+                  type: 'line'
+                }]
+              },
+              options: {
+                responsive: true,
+                plugins: {
+                  legend: {
+                    display: false
+                  }
+                },
+                scales: {
+                  y: {
+                    beginAtZero: false
+                  },
+                  x: {
+                    type: 'time',
+                    time: {
+                      unit: 'day'
+                    }
+                  }
+                },
+                plugins: {
+                  zoom: {
+                    zoom: {
+                      wheel: {
+                        enabled: true, // Zoom with mouse wheel
+                      },
+                      pinch: {
+                        enabled: true, // Zoom with pinch gesture on touch
+                      },
+                      mode: 'x', // Zoom only on x-axis
+                    },
+                    pan: {
+                      enabled: true,
+                      mode: 'x', // Pan only on x-axis
+                    },
+                  }
+                }
+              }
+            });
     });
   </script>
 </body>

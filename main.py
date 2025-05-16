@@ -328,47 +328,9 @@ def submit_instore_price():
 def compare():
     selected_names = request.args.getlist('name')
     dummy_db = {}
+    products = []
     for n in selected_names:
-        formatted_name = n.lower().replace(" ", "_")
-        price_history = firebase_connection.get_price_history_by_item(formatted_name)
-
-        dates = [entry["date"].strftime("%Y-%m-%d") for entry in price_history]
-        prices = [entry["price"] for entry in price_history]
-        history = [list(item) for item in zip(dates, prices)]
-        product = firebase_connection.get_node("Grocery_Items", formatted_name)
-        dummy_db[n] = {
-            "displayName": formatted_name.capitalize().replace("_", " "),
-            "image": product["image"],
-            "price": product["price"],
-            "price_dates": dates,
-            "price_values": prices
-        }
-
-    products= []
-    for name in selected_names:
-        if name in dummy_db:
-            d = dummy_db[name]
-            products.append({
-                'name': name,
-                'displayName': d['displayName'],
-                'image': d['image'],
-                'current_price': d['price'],
-                'price_history': {
-                    'dates': d['price_dates'],
-                    'values': d['price_values']
-                }
-            })
-        else:
-            products.append({
-                'name': name,
-                'displayName': name.capitalize(),
-                'image': '/static/images/placeholder.png',
-                'current_price': 0.00,
-                'price_history': {
-                    'dates': ["N/A"],
-                    'values': [0]
-                }
-            })
+        products.append(get_product(n))
 
     return render_template("compare.html", products=products)
 
