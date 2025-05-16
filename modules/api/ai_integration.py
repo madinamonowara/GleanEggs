@@ -70,12 +70,10 @@ def get_base_list(data = "", messages =[]):
     
     Example Input
     ```json
-    {"products": [{'category': 'Fruits', 'price': 4.4, 'diff': '0.6', 'trend': 0.5, 'name': 'apple'}]}
+    {"products": [{'category': 'Fruits', 'price': 4.4, 'average': '0.6', 'name': 'apple'}]}
     ```
-    price- price of the item
-    name- name of the item
-    diff- difference in price from last week
-    trend- predicted difference for next week
+    price- current price of the item
+    average- average price of the item
 
     Using the initial grocery list as a base, try to modify it by adding items that align with the goal of having the best price and most complete list given user preferences.
     Ensure that the list expands outside of the given products so that the user can have a complete grocery list that is well constructed, versatile, and tailor made.
@@ -148,7 +146,37 @@ def recipe_suggestion_2(recipes, messages):
     )
     return get_message(response, messages)
 
-def get_completed_list(data, messages = []):
+def predict_item_prices(data, messages = []):
+    client = OpenAI(api_key=keys.deep_seek_test, base_url="https://api.deepseek.com/beta")
+    prompt = """
+    The user is providing a dictionary of grocery items.
+    For each item modify the value to be a predicted average price for the item expressed as a float.
+    Use your knowledge of grocery store prices and United States price averages to complete this task.
+    Example ingredient input:
+    ```json
+    {"ex1": 0, "ex2": 0, "ex3": 0}
+    ```
+
+    Example ingredient output:
+    ```json
+    {"ex1": 2.50, "ex2": 1.00, "ex3": 3.20}
+    ```
+    """
+
+    messages.append({"role": "system", "content": prompt})
+    messages.append({"role": "user", "content": data})
+    messages.append({"role": "assistant", "content": '```json\n', "prefix":True})
+
+    print("Getting response")
+    response = client.chat.completions.create(
+        model="deepseek-chat",
+        messages=messages,
+        stop=["```"],
+        stream=False
+    )
+    return get_message(response, messages)
+
+def get_completed_list(data, messages=[]):
     client = OpenAI(api_key=keys.deep_seek_test, base_url="https://api.deepseek.com/beta")
     prompt = """
     The system has collected ingredients for the recipes that were chosen. Modify the grocery list by adding the items chosen. Predict the price for items that don't have a defined price in the list
@@ -180,5 +208,7 @@ def get_completed_list(data, messages = []):
         stream=False
     )
     return get_message(response, messages)
+
 def clean_json(s):
     return s.replace('```json\n', '').replace('```', '')
+

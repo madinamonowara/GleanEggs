@@ -217,11 +217,12 @@ def product_data():
     print("HERE")
     # for name in names:
     formatted_name = name.lower().replace(" ", "_")
-    price_history = firebase_connection.get_price_history_by_item(formatted_name)
     products = []
+    price_history = firebase_connection.get_price_history_by_item(formatted_name)
     
     # dates = [entry["date"] for entry in price_history]
     # prices = [entry["price"] for entry in price_history]
+    last_verified = 0.00
     d_dict = {}
     for entry in price_history:
         print(entry)
@@ -229,7 +230,9 @@ def product_data():
             d_dict[entry["date"]] = []
         d_dict[entry["date"]].append(entry["price"])
         if entry["type"] != "user":
-            for i in 10:
+            last_verified = entry["price"]
+        if last_verified:
+            for i in 15:
                 d_dict[entry["date"]].append(entry["price"])
     dates = d_dict.keys()
     prices = [sum(d_dict[k])/len(d_dict[k]) for k in d_dict.keys()]
@@ -241,7 +244,9 @@ def product_data():
         print(price)
     if "name" in item:
         item["name"] = item["name"].capitalize().replace("_", " ")
-    product = {"history": history, "lastWeekPrice": 0, "thisWeekPrice": price, "image": item["image"], "name": item["name"]}
+    if len(history) == 0:
+        history.append([0,0])
+    product = {"history": history, "averagePrice": sum(prices)/max(len(prices), 1), "currentPrice": 0 if len(prices) == 0 else prices[-1], "image": item["image"], "name": item["name"]}
     # products = [product1, product2]
     return json.dumps(product)
 

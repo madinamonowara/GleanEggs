@@ -159,7 +159,8 @@
             product.displayName,
             product.image,
             parseFloat(product.price),
-            product.category
+            product.category,
+            product.average
             // product.in_store_price // new for user's input of price
           );
         });});
@@ -167,7 +168,7 @@
 
       
       
-      function addItem(name, displayName, image, price, category, inStorePrice = null) {
+      function addItem(name, displayName, image, price, category, averagePrice) {
         const list = document.getElementById("groceryList");
         const item = document.createElement("div");
         item.classList.add("grocery-item");
@@ -176,16 +177,16 @@
 
         // Compare prices
         let inStoreHTML = "";
-        let onlineHTML = `<p class="item-price">Online: $${price.toFixed(2)}</p>`;
+        let onlineHTML = `<p class="item-price">Average Price: $${averagePrice.toFixed(2)}</p>`;
         
-        if (inStorePrice !== null && !isNaN(inStorePrice)) {
-          const isCheaper = inStorePrice < price;
+        if (averagePrice !== null && !isNaN(inStorePrice)) {
+          const isCheaper = averagePrice > price;
           const color = isCheaper ? "green" : "gray";
           const emoji = isCheaper ? "⬇️" : "👁️";
 
           inStoreHTML = `
             <p class="item-price" style="color: ${color};">
-              🛒 In-store: $${inStorePrice.toFixed(2)} <span title="Submitted by a user">${emoji}</span>
+              🛒 Current Price: $${price.toFixed(2)} <span>${emoji}</span>
             </p>
           `;
         }
