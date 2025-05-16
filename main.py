@@ -212,19 +212,12 @@ def search():
 
 @app.route('/product_data', methods=['GET'])
 def product_data():
-<<<<<<< HEAD
-    print("hello")
-    name = request.args.get('name')
-    name = name.lower().replace(" ", "_")
-    price_history = firebase_connection.get_price_history_by_item(name)
-=======
     names = request.args.getlist('name')  
     products = []
 
     for name in names:
         formatted_name = name.lower().replace(" ", "_")
         price_history = firebase_connection.get_price_history_by_item(formatted_name)
->>>>>>> c077501d56522b2664def0300a4f344ba3846cc5
 
     dates = [entry["date"].strftime("%Y-%m-%d") for entry in price_history]
     prices = [entry["price"] for entry in price_history]
