@@ -134,7 +134,13 @@
       100% { transform: rotate(360deg); }
     }
 
-
+    #scroll-wrapper {
+      height: 500px;
+      overflow-y: auto;
+      margin-bottom: 20px;
+      padding-right: 5px; /* prevents content from hiding behind scrollbar */
+    }
+    
   </style>
 </head>
 <body>
@@ -173,7 +179,9 @@
           <option value="meat">Meat</option>
         </select>
       </div>
-      <div class="grocery-list" id="groceryList"></div>
+      <div id="scroll-wrapper" style="height: 500px; overflow-y: auto; margin-bottom: 20px;">
+        <div class="grocery-list" id="groceryList"></div>
+      </div>      
     </section>
 
     <button onclick="goToComparisonPage()" style="margin-top: 20px; padding: 10px 20px; border: none; background: #4CAF50; color: white; border-radius: 8px;">
