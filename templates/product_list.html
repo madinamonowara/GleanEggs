@@ -169,6 +169,8 @@
       
       
       function addItem(name, displayName, image, price, category, averagePrice) {
+        price = Number(price)
+        averagePrice = Number(averagePrice)
         const list = document.getElementById("groceryList");
         const item = document.createElement("div");
         item.classList.add("grocery-item");
