@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Nearby Grocery Stores</title>
+    <style>
+        #map {
+            height: 400px;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <h1>Nearby Grocery Stores</h1>
+    <div id="map"></div>
+    <script>
+        let map;
+        let service;
+        let infoWindow;
+        const nearbyRadiusMiles = 5;
+        const nearbyRadiusMeters = nearbyRadiusMiles * 1609.34; // Convert miles to meters
+
+        function initMap() {
+            infoWindow = new google.maps.InfoWindow();
+
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    (position) => {
+                        const userPos = {
+                            lat: position.coords.latitude,
+                            lng: position.coords.longitude,
+                        };
+
+                        map = new google.maps.Map(document.getElementById("map"), {
+                            center: userPos,
+                            zoom: 12, // Adjust zoom to see a wider area initially
+                        });
+
+                        // Initialize Places Service
+                        service = new google.maps.places.PlacesService(map);
+
+                        // Perform a nearby search for grocery stores with a larger radius
+                        const request = {
+                            location: userPos,
+                            radius: nearbyRadiusMeters * 2, // Search a larger area initially
+                            type: "grocery_store",
+                        };
+
+                        service.nearbySearch(request, (results, status) => {
+                            if (status === google.maps.places.PlacesServiceStatus.OK && results) {
+                                results.forEach(place => {
+                                    createMarker(place, userPos);
+                                });
+                                map.setCenter(userPos); // Keep the user's location as the center
+                            } else {
+                                console.error("Could not find any grocery stores:", status);
+                            }
+                        });
+                    },
+                    () => {
+                        handleLocationError(true, infoWindow, map.getCenter());
+                    }
+                );
+            } else {
+                handleLocationError(false, infoWindow, map.getCenter());
+            }
+        }
+
+        function createMarker(place, userPos) {
+            if (!place.geometry || !place.geometry.location) return;
+
+            const placeLoc = place.geometry.location;
+            const distance = google.maps.geometry.spherical.computeDistanceBetween(userPos, placeLoc);
+            const isNearby = distance <= nearbyRadiusMeters;
+
+            const icon = {
+                url: isNearby ? 'http://maps.google.com/mapfiles/ms/icons/green-dot.png' : 'http://maps.google.com/mapfiles/ms/icons/red-dot.png',
+                scaledSize: new google.maps.Size(32, 32),
+            };
+
+            const marker = new google.maps.Marker({
+                map,
+                position: placeLoc,
+                icon: icon,
+            });
+
+            google.maps.event.addListener(marker, "click", () => {
+                infoWindow.setContent(place.name || "");
+                infoWindow.open(map, marker);
+            });
+        }
+
+        function handleLocationError(browserHasGeolocation, infoWindow, pos) {
+            infoWindow.setPosition(pos);
+            infoWindow.setContent(
+                browserHasGeolocation
+                    ? "Error: The Geolocation service failed."
+                    : "Error: Your browser doesn't support geolocation."
+            );
+            infoWindow.open(map);
+        }
+    </script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places,geometry&callback=initMap"></script>
+</body>
+</html>

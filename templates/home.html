@@ -154,31 +154,6 @@
     
 
     <script>
-        // Function to remove an item from the grocery list
-        function removeItem(itemId) {
-            const item = document.getElementById('item-' + itemId);
-            const productName = item.dataset.name;
-
-            fetch('/remove_item', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ name: productName })
-            })
-            .then(response => {
-                if (response.ok) {
-                    item.remove();
-                } else {
-                    console.error('Failed to remove item from server.');
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-            });
-        }
-
-        /*
         function removeItem(itemId) {
             const item = document.getElementById('item-' + itemId);
             let quantity = parseInt(item.dataset.quantity);
@@ -190,29 +165,28 @@
                 item.remove();
             }
         }
-        */
 
-        
-    function makeList() {
-        const overlay = document.getElementById("loadingOverlay");
-        const button = document.getElementById("make_button");
-        button.disabled = true;
-        overlay.style.display = "flex";
+    
+        function makeList() {
+            const overlay = document.getElementById("loadingOverlay");
+            const button = document.getElementById("make_button");
+            button.disabled = true;
+            overlay.style.display = "flex";
 
         fetch(`/generate_list`)
-            .then(response => response.json())
-            .then(data => {
-                // Add a slight delay so user sees the spinner
-                setTimeout(() => {
-                    location.reload();
-                }, 600);  //can adjust this to 1000ms maybe
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                overlay.style.display = "none";
-                button.disabled = false;
-            });
-    }
+                .then(response => response.json())
+                .then(data => {
+                    // Add a slight delay so user sees the spinner
+                    setTimeout(() => {
+                        location.reload();
+                    }, 600);  //can adjust this to 1000ms maybe
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    overlay.style.display = "none";
+                    button.disabled = false;
+                });
+        }
 
 
 
