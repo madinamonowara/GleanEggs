@@ -3,6 +3,7 @@ from modules.api import bls_prices
 from modules import process_data
 from modules import firebase_connection
 from modules.api import recipe_api
+from modules.api.ai_integration import generate_single_item_description_json
 
 import json
 import datetime
@@ -18,6 +19,14 @@ app = Flask(__name__)
 def get_session_value(key):
     if not key in session: return ""
     else: return session[key]
+
+def format_name_for_storage(display_name):
+    if not isinstance(display_name, str): return "" 
+    else: return display_name.lower().replace(" ", "_")
+
+def format_name_for_display(stored_name):
+    if not isinstance(stored_name, str): return ""
+    else: return stored_name.capitalize().replace("_", " ")
 
 @app.route('/login')
 def login():
@@ -44,27 +53,61 @@ def login_return():
 @app.route("/")
 def home():
     print("TRY")
-    print(logged_in())
+    print(logged_in()) 
     if not logged_in(): return redirect(url_for("login"))
     print("here")
-    list = firebase_connection.get_node("groceryLists", session['email'])
-    print(list)
-    if not list: return check_login(render_template("/home.html", name=get_session_value("name")))
-    grocery_list = []
-    all_images = {}
-    for i in firebase_connection.get_all_tracked_items():
-        all_images[i["name"]] = i
+    
+    list_from_db = firebase_connection.get_node("groceryLists", session['email']) 
+    print(list_from_db)
+    
+    if not list_from_db: 
+        return check_login(render_template("/home.html", name=get_session_value("name"), list=[], reason="No grocery list found."))
+
+    grocery_list = [] 
+    all_images = {} 
+    
+    fetched_tracked_items = firebase_connection.get_all_tracked_items()
+    if fetched_tracked_items:
+        for item_detail in fetched_tracked_items: 
+            if isinstance(item_detail, dict) and "name" in item_detail:
+                all_images[item_detail["name"]] = item_detail 
+            else:
+                print(f"Skipping malformed item in get_all_tracked_items(): {item_detail}")
     print(all_images)
-    for i in range(len(list["items"])):
-        list["items"][i] = list["items"][i].lower().replace(" ", "_")
-        img = all_images[list["items"][i]]["image"] if list["items"][i] in all_images else recipe_api.get_thumbnail(list["items"][i])
+
+    items_in_list = list_from_db.get("items", [])
+    prices_in_list = list_from_db.get("prices", [])
+    reasons_in_list = list_from_db.get("reason", []) 
+
+    if not isinstance(items_in_list, list): items_in_list = []
+    if not isinstance(prices_in_list, list): prices_in_list = []
+    if not isinstance(reasons_in_list, list): reasons_in_list = []
+
+    for i in range(len(items_in_list)): 
+        item_name_from_fb = items_in_list[i] 
+        
+        product_key_and_internal_name = item_name_from_fb.lower().replace(" ", "_")
+        display_name_for_template = product_key_and_internal_name.capitalize().replace("_", " ")
+        img_url = recipe_api.get_thumbnail(product_key_and_internal_name) 
+        cached_item_detail = all_images.get(product_key_and_internal_name)
+        if cached_item_detail and isinstance(cached_item_detail, dict) and "image" in cached_item_detail:
+            img_url = cached_item_detail["image"]
+        
+        item_price = prices_in_list[i] if i < len(prices_in_list) else 0.0 
+        item_reason = reasons_in_list[i] if i < len(reasons_in_list) else "No description available"
+
+
         grocery_list.append({
-            "product": list["items"][i],
-            "name": list["items"][i].capitalize().replace("_", " "),
-            "price": list["prices"][i],
-            "reason": list["reason"][i],
-            "img":  img})
-    return check_login(render_template("/home.html", name=get_session_value("name"), list=grocery_list, reason=list["full_reason"]))
+            "product": product_key_and_internal_name, 
+            "name": display_name_for_template,        
+            "price": item_price,
+            "reason": item_reason,
+            "img":  img_url
+        })
+        
+    full_reason_from_list = list_from_db.get("full_reason", "")
+
+    return check_login(render_template("/home.html", name=get_session_value("name"), list=grocery_list, reason=full_reason_from_list))
 
 def logged_in():
     return 'token' in session
@@ -364,6 +407,158 @@ def get_product_by_name():
 
     return jsonify(product)
 
+
+@app.route('/api/grocery-list/item-status', methods=['GET'])
+def grocery_list_item_status():
+    if not logged_in():
+        return jsonify({"error": "Unauthorized"}), 401
+
+    product_name_display = request.args.get('productName')
+    if not product_name_display:
+        return jsonify({"error": "productName parameter is required"}), 400
+
+    user_email = session['email']
+    product_name_stored = format_name_for_storage(product_name_display)
+
+    user_list_data = firebase_connection.get_node("groceryLists", user_email)
+    
+    is_in_list = False
+    if user_list_data and "items" in user_list_data and isinstance(user_list_data["items"], list):
+        if product_name_stored in user_list_data["items"]:
+            is_in_list = True
+            
+    return jsonify({"isInList": is_in_list})
+
+@app.route('/api/grocery-list/add', methods=['POST'])
+def grocery_list_add_item():
+    if not logged_in():
+        return jsonify({"error": "Unauthorized"}), 401
+
+    data = request.get_json()
+    if not data or 'productName' not in data:
+        return jsonify({"error": "Missing productName in request body"}), 400
+
+    product_name_display = data['productName']
+    user_email = session['email']
+    product_name_stored = format_name_for_storage(product_name_display)
+
+    user_list_data = firebase_connection.get_node("groceryLists", user_email)
+
+    product_details = get_product(product_name_display) 
+    price_to_add = 0.0
+    if product_details and "currentPrice" in product_details:
+        price_to_add = float(product_details.get("currentPrice", 0.0))
+    else:
+        print(f"Warning: Could not fetch currentPrice for '{product_name_display}' via get_product. Defaulting to 0.0.")
+
+    
+    reason_to_add = f"Added {product_name_display}."
+
+    try:
+        user_preferences = firebase_connection.get_user_preferences(user_email)
+        preferences_json_string = json.dumps(user_preferences) if user_preferences else "{}"
+        
+        print(f"Calling AI to generate description for: {product_name_display}")
+       
+        ai_response_dict = generate_single_item_description_json(
+            item_display_name=product_name_display, 
+            user_preferences_json_string=preferences_json_string
+        )
+        
+        ai_generated_description = None
+        if isinstance(ai_response_dict, dict) and "description" in ai_response_dict:
+            ai_generated_description = ai_response_dict["description"]
+
+        if ai_generated_description and isinstance(ai_generated_description, str) and ai_generated_description.strip():
+            reason_to_add = ai_generated_description
+            print(f"AI successfully generated description for {product_name_display}: {reason_to_add}")
+        else:
+            print(f"AI did not return a valid description for {product_name_display} (response from AI function: {ai_response_dict}). Using fallback: '{reason_to_add}'")
+            
+    except Exception as e:
+        print(f"Error during AI description generation or processing for '{product_name_display}': {e}")
+
+    if not user_list_data or not isinstance(user_list_data, dict):
+        print(f"No existing list for {user_email} or list malformed. Creating new list.")
+        user_list_data = {
+            "items": [], "prices": [], "reason": [], "recipes": [], "full_reason": ""
+        }
+    
+    for key in ["items", "prices", "reason", "recipes"]:
+        if key not in user_list_data or not isinstance(user_list_data[key], list):
+            user_list_data[key] = []
+
+    if product_name_stored not in user_list_data["items"]:
+        user_list_data["items"].append(product_name_stored)
+        user_list_data["prices"].append(price_to_add)
+        user_list_data["reason"].append(reason_to_add) 
+    else: 
+        print(f"Item '{product_name_stored}' already in list for {user_email}. Updating price and reason if applicable.")
+        try:
+            existing_item_index = user_list_data["items"].index(product_name_stored)
+            
+            while len(user_list_data["prices"]) <= existing_item_index:
+                user_list_data["prices"].append(0.0) 
+            user_list_data["prices"][existing_item_index] = price_to_add
+
+            while len(user_list_data["reason"]) <= existing_item_index:
+                user_list_data["reason"].append("") 
+            
+            current_reason = user_list_data["reason"][existing_item_index]
+
+            if (not current_reason or current_reason.startswith("Added ") or current_reason == "Added manually") and \
+               (reason_to_add != f"Added {product_name_display}."): 
+                user_list_data["reason"][existing_item_index] = reason_to_add
+            elif not current_reason and reason_to_add: 
+                 user_list_data["reason"][existing_item_index] = reason_to_add
+        except (ValueError, IndexError) as e:
+            print(f"Error updating existing item '{product_name_stored}' in grocery list: {e}")
+
+    num_items = len(user_list_data.get("items", []))
+    for key_array in ["prices", "reason"]:
+        current_array = user_list_data.get(key_array, [])
+        if not isinstance(current_array, list): current_array = []
+        
+        default_value_for_padding = 0.0 if key_array == "prices" else f"Added {product_name_display}."
+        
+        while len(current_array) < num_items:
+            current_array.append(default_value_for_padding)
+        user_list_data[key_array] = current_array[:num_items] 
+
+    firebase_connection.upload_to_firebase("groceryLists", user_list_data, user_email)
+    return jsonify({"message": f"'{product_name_display}' added/updated in grocery list", "productName": product_name_display}), 200
+
+
+@app.route('/api/grocery-list/item/remove', methods=['DELETE'])
+def grocery_list_remove_item():
+    if not logged_in():
+        return jsonify({"error": "Unauthorized"}), 401
+
+    product_name_display = request.args.get('productName')
+    if not product_name_display:
+        return jsonify({"error": "productName parameter is required"}), 400
+    
+    user_email = session['email']
+    product_name_stored = format_name_for_storage(product_name_display)
+
+    user_list_data = firebase_connection.get_node("groceryLists", user_email)
+
+    if not user_list_data or "items" not in user_list_data or not isinstance(user_list_data["items"], list):
+        return jsonify({"message": f"'{product_name_display}' not found in list or list empty"}), 200 
+
+    try:
+        item_index = user_list_data["items"].index(product_name_stored)
+        user_list_data["items"].pop(item_index)
+
+        if item_index < len(user_list_data.get("prices", [])):
+            user_list_data["prices"].pop(item_index)
+        if item_index < len(user_list_data.get("reason", [])):
+            user_list_data["reason"].pop(item_index)
+            
+        firebase_connection.upload_to_firebase("groceryLists", user_list_data, user_email)
+        return jsonify({"message": f"'{product_name_display}' removed from grocery list"}), 200
+    except ValueError: 
+        return jsonify({"message": f"'{product_name_display}' not found in the grocery list"}), 200 
 
 if __name__ == '__main__':
     app.secret_key = 'SECRET KEY'

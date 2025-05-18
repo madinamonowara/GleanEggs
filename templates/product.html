@@ -101,21 +101,213 @@
     </div>
   </nav>
 
-
+  
   <div class="container">
-    <h2 id="productName">Product Name</h2>
-    <img id="productImage" class="product-image" src="" alt="Product">
-    <div class="price-info" id="priceInfo"></div>
+    <div class="product-main-header">
+
+      <div class="product-action-button-area"> <button id="addToGroceryListBtn" style="padding: 8px 12px; border: 2px solid #007bff; border-radius: 8px; background: white; cursor: pointer; font-size: 15px; display: block; margin-left: auto;">
+        ➕ Add to Grocery List
+        </button>
+        <p id="addToGroceryListStatus" style="margin-top: 5px; font-size: 14px; color: green; text-align: right;"></p>
+      </div>
+
+      <div class="product-info-block"> <h2 id="productName">Product Name</h2>
+        <img id="productImage" class="product-image" src="" alt="Product">
+        <div class="price-info" id="priceInfo"></div>
+      </div>
+
+      <!--
+      <div class="product-action-button-area"> <button id="addToGroceryListBtn" style="padding: 10px 15px; border: 2px solid #007bff; border-radius: 8px; background: white; cursor: pointer; font-size: 16px; display: block; margin-left: auto;">
+          🛒 Add to Grocery List
+        </button>
+        <p id="addToGroceryListStatus" style="margin-top: 5px; font-size: 14px; color: green; text-align: right;"></p>
+      </div>
+      -->
+
+    </div>
     <canvas id="priceChart"></canvas>
     <div id="userPriceSection" style="margin-top: 20px;">
       <button onclick="enterStorePrice()" style="padding: 10px 15px; border: 2px solid #4CAF50; border-radius: 8px; background: white; cursor: pointer;">✏️ Enter In-Store Price</button>
       <p id="userPriceDisplay" style="margin-top: 10px; font-size: 16px;"></p>
-    </div>    
+    </div>
   </div>
 
   <script>
     const queryParams = new URLSearchParams(window.location.search);
     const name = queryParams.get('name');
+
+    let isProductInList = false; //to check if product is in list
+    const addToGroceryListBtn = document.getElementById("addToGroceryListBtn");
+    const addToGroceryListStatus = document.getElementById("addToGroceryListStatus");
+
+    function setButtonToAdd() {
+      if (!addToGroceryListBtn) return;
+      addToGroceryListBtn.textContent = "➕ Add to Grocery List";
+      addToGroceryListBtn.style.borderColor = "#007bff";
+      addToGroceryListBtn.style.color = "#007bff";
+      addToGroceryListBtn.disabled = false;
+      isProductInList = false;
+    }
+
+    function setButtonToRemove() {
+      if (!addToGroceryListBtn) return;
+      addToGroceryListBtn.textContent = "➖ Remove from List";
+      addToGroceryListBtn.style.borderColor = "#dc3545"; 
+      addToGroceryListBtn.style.color = "#dc3545"; 
+      addToGroceryListBtn.disabled = false;
+      isProductInList = true;
+    }
+
+    // START HERE //
+
+    // --- START: API Interaction Functions for Grocery List ---
+    async function checkGroceryListItemStatus() {
+      if (!name) { // Using 'name' from URL
+        console.error("Product name from URL is missing, cannot check list status.");
+        setButtonToAdd(); // Default behavior
+        if (addToGroceryListStatus) addToGroceryListStatus.textContent = "Product identifier missing.";
+        if (addToGroceryListBtn) addToGroceryListBtn.disabled = true; // Disable if no name
+        return;
+      }
+      if (!addToGroceryListBtn) return;
+
+      addToGroceryListBtn.disabled = true;
+      addToGroceryListBtn.textContent = "Loading status...";
+
+      try {
+        // GET /api/grocery-list/item-status?productName=<product_name>
+        const response = await fetch(`http://127.0.0.1:5000/api/grocery-list/item-status?productName=${encodeURIComponent(name)}`);
+        if (!response.ok) {
+          console.error('Failed to check grocery list status. Server returned:', response.status);
+          setButtonToAdd();
+          if(addToGroceryListStatus) addToGroceryListStatus.textContent = "Could not verify list status.";
+          return; // Exit before finally if fundamental error
+        }
+        const data = await response.json();
+        if (data.isInList) {
+          setButtonToRemove();
+          if(addToGroceryListStatus) addToGroceryListStatus.textContent = "This item is in your grocery list.";
+        } else {
+          setButtonToAdd();
+          if(addToGroceryListStatus) addToGroceryListStatus.textContent = ""; // Clear if not in list
+        }
+      } catch (error) {
+        console.error('Error checking grocery list status:', error);
+        setButtonToAdd();
+        if(addToGroceryListStatus) addToGroceryListStatus.textContent = "Error checking list status.";
+      } finally {
+        // Re-enable button only if a name was present for the check
+        if (name) addToGroceryListBtn.disabled = false;
+      }
+    }
+
+    async function addItemToGroceryList() {
+      if (!name) { // Using 'name' from URL
+        alert("Product name is missing. Cannot add to list.");
+        return;
+      }
+      if (!addToGroceryListBtn) return;
+
+      addToGroceryListBtn.disabled = true;
+      addToGroceryListBtn.textContent = "Adding...";
+      if (addToGroceryListStatus) {
+        addToGroceryListStatus.textContent = "Adding item...";
+        addToGroceryListStatus.style.color = "orange";
+      }
+
+      try {
+        // POST /api/grocery-list/add Body: { "productName": "name" }
+        const response = await fetch('http://127.0.0.1:5000/api/grocery-list/add', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ productName: name }) // Using 'name' from URL
+        });
+
+        if (!response.ok) {
+          const errorData = await response.json().catch(() => ({ message: `Server error: ${response.status}` }));
+          throw new Error(errorData.message || `Failed to add item. Status: ${response.status}`);
+        }
+        setButtonToRemove();
+        if (addToGroceryListStatus) {
+            addToGroceryListStatus.textContent = `"${name}" added to your grocery list!`;
+            addToGroceryListStatus.style.color = "green";
+        }
+      } catch (error) {
+        console.error('Error adding item to grocery list:', error);
+        if (addToGroceryListStatus) {
+            addToGroceryListStatus.textContent = `Error: ${error.message}`;
+            addToGroceryListStatus.style.color = "red";
+        }
+        setButtonToAdd(); // Revert state if add failed
+      } finally {
+        addToGroceryListBtn.disabled = false;
+      }
+    }
+
+    async function removeItemFromGroceryList() {
+      if (!name) { // Using 'name' from URL
+        alert("Product name is missing. Cannot remove from list.");
+        return;
+      }
+      if (!addToGroceryListBtn) return;
+
+      addToGroceryListBtn.disabled = true;
+      addToGroceryListBtn.textContent = "Removing...";
+      if (addToGroceryListStatus) {
+        addToGroceryListStatus.textContent = "Removing item...";
+        addToGroceryListStatus.style.color = "orange";
+      }
+
+      try {
+        // DELETE /api/grocery-list/item/remove?productName=PRODUCT_NAME
+        const response = await fetch(`http://127.0.0.1:5000/api/grocery-list/item/remove?productName=${encodeURIComponent(name)}`, {
+          method: 'DELETE'
+        });
+
+        if (!response.ok) {
+          const errorData = await response.json().catch(() => ({ message: `Server error: ${response.status}` }));
+          throw new Error(errorData.message || `Failed to remove item. Status: ${response.status}`);
+        }
+        setButtonToAdd();
+        if (addToGroceryListStatus) {
+            addToGroceryListStatus.textContent = `"${name}" removed from your grocery list.`;
+            addToGroceryListStatus.style.color = "green";
+        }
+      } catch (error) {
+        console.error('Error removing item from grocery list:', error);
+        if (addToGroceryListStatus) {
+            addToGroceryListStatus.textContent = `Error: ${error.message}`;
+            addToGroceryListStatus.style.color = "red";
+        }
+        setButtonToRemove(); // Revert state if remove failed
+      } finally {
+        addToGroceryListBtn.disabled = false;
+      }
+    }
+    // --- END: API Interaction Functions ---
+
+    // --- START: Main Event Handler for Grocery List Button ---
+    function handleGroceryListAction() {
+      if (isProductInList) {
+        removeItemFromGroceryList();
+      } else {
+        addItemToGroceryList();
+      }
+    }
+    // --- END: Main Event Handler ---
+
+    // --- START: Event Listener Attachment ---
+    // Ensure the button exists in your HTML when this script part runs.
+    // If not, this might need to be moved inside the .then() block of the main product fetch.
+    if (addToGroceryListBtn) {
+        addToGroceryListBtn.addEventListener('click', handleGroceryListAction);
+    } else {
+        // This will only log if the script runs before the button element is parsed.
+        // Consider placing the button earlier in HTML or deferring this listener attachment.
+        console.warn("addToGroceryListBtn not found when trying to attach event listener. If it's loaded later, this is an issue.");
+    }
+    // --- END: Event Listener Attachment ---
+
     
     // Fetch product data from API
     fetch(`http://127.0.0.1:5000/product_data?name=${name}`)
@@ -199,6 +391,19 @@
               }
             });
           }
+
+          if (name) { // 'name' is the global variable from the URL queryParams
+            checkGroceryListItemStatus();
+          } else {
+            // This case implies 'name' from URL was missing, disable button
+            if(addToGroceryListBtn) {
+                addToGroceryListBtn.style.display = 'none'; // Or addToGroceryListBtn.disabled = true;
+            }
+            if(addToGroceryListStatus) {
+                addToGroceryListStatus.textContent = 'Product identifier missing.';
+            }
+          }
+
         }
         })
         .catch(error => {
