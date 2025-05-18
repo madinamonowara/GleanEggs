@@ -250,6 +250,25 @@ def get_products():
     return json.dumps(output)
 
 
+@app.route('/add_item', methods=["POST"])
+def add_item():
+    if not logged_in(): return jsonify({"success": False, "message": "Not logged in"})
+    
+    item_name = request.form.get("item_name")
+    success = firebase_connection.add_to_grocery_list(session["email"], item_name)
+    return jsonify({"success": success})
+
+
+@app.route('/remove_item', methods=["POST"])
+def remove_item():
+    if not logged_in(): return jsonify({"success": False, "message": "Not logged in"})
+    
+    item_name = request.form.get("item_name")
+    success = firebase_connection.remove_from_grocery_list(session["email"], item_name)
+    return jsonify({"success": success})
+
+
+
 if __name__ == '__main__':
     app.secret_key = 'SECRET KEY'
     app.run(debug=True)
