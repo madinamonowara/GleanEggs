@@ -188,6 +188,78 @@ def get_price_history_by_item(item_name):
     except Exception as e:
         print(f"Error retrieving price history for item '{item_name}': {str(e)}")
         return []
+    
+
+def add_to_grocery_list(user_email, item_name):
+    try:
+        user_doc = db.collection("groceryLists").document(user_email).get()
+        if user_doc.exists:
+            data = user_doc.to_dict()
+            items = data.get("items", [])
+            prices = data.get("prices", [])
+            reasons = data.get("reason", [])
+        else:
+            items, prices, reasons = [], [], []
+
+        if item_name in items:
+            print(f"{item_name} already in grocery list")
+            return False
+
+        item_data = get_node("Grocery_Items", item_name.lower())
+        if not item_data:
+            print(f"{item_name} not found in Grocery_Items")
+            return False
+        
+        items.append(item_name)
+        prices.append(item_data["price"])
+        reasons.append("user added")
+
+        db.collection("groceryLists").document(user_email).set({
+            "items": items,
+            "prices": prices,
+            "reason": reasons
+        }, merge=True)
+        print(f"{item_name} added to {user_email}'s grocery list")
+        return True
+
+    except Exception as e:
+        print(f"Error adding to grocery list: {str(e)}")
+        return False
+
+
+def remove_from_grocery_list(user_email, item_name):
+    try:
+        user_doc = db.collection("groceryLists").document(user_email).get()
+        if not user_doc.exists:
+            print(f"No grocery list found for {user_email}")
+            return False
+        
+        data = user_doc.to_dict()
+        items = data.get("items", [])
+        prices = data.get("prices", [])
+        reasons = data.get("reason", [])
+
+        if item_name not in items:
+            print(f"{item_name} not found in list")
+            return False
+
+        index = items.index(item_name)
+        items.pop(index)
+        prices.pop(index)
+        reasons.pop(index)
+
+        db.collection("groceryLists").document(user_email).set({
+            "items": items,
+            "prices": prices,
+            "reason": reasons
+        }, merge=True)
+        print(f"{item_name} removed from grocery list")
+        return True
+
+    except Exception as e:
+        print(f"Error removing from grocery list: {str(e)}")
+        return False
+
 
 
 if __name__ == "__main__":
