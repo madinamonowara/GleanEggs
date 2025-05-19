@@ -195,9 +195,7 @@
                     }, 600);  //can adjust this to 1000ms maybe
                 })
                 .catch(error => {
-                    console.error('Error:', error);
-                    overlay.style.display = "none";
-                    button.disabled = false;
+                    location.reload();
                 });
         }
 
