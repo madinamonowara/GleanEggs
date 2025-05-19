@@ -55,9 +55,17 @@
             margin-bottom: 15px;
         }
         .subheading {
-            font-size: 16px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-size: 15.5px;
+            color: #777;
+            margin-bottom: 32px;
+        }
+        .subheading1 {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-size: 14px;
             color: #777;
             margin-bottom: 30px;
+            font-style: italic;
         }
         .button {
             display: flex;
@@ -79,7 +87,7 @@
         }
         .apple-btn {
             color: #333;
-            margin-bottom: 1px;
+            margin-bottom: 30px;
         }
         .or {
             margin: 10px 0;
@@ -132,7 +140,10 @@
         </div>
         <div class="right">
             <div class="heading">GleanEggs</div>
+            <!-- 
             <div class="subheading">Fast and easy grocery lists!</div>
+            -->
+            <div class="subheading">Your personal guide to confident grocery decisions.</div>
         
             <!-- google -->
             <div class="button google-btn">
@@ -140,23 +151,31 @@
                 Sign in with Google
             </div>
         
-            <!-- apple -->
+            <!-- apple 
             <div class="button apple-btn">
                 <img src="https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_logo_black.svg" alt="Apple Logo">
                 Sign in with Apple
             </div>
-        
-            <div class="or">--------------- or ---------------</div>
-        
+            -->
+
+            <!-- 
+            <div class="or">--------------- or ---------------</div> 
+            -->
+          
             <!-- login form -->
             <form id="login-form" method="POST" action="/login" style="display: flex; flex-direction: column; align-items: center; width: 100%;">
+                <!--
                 <input type="email" name="email" placeholder="Email" required style="padding: 10px; margin-bottom: 10px; width: 40%; border-radius: 20px; border: 1px solid #ccc;" />
                 <input type="password" name="password" placeholder="Password" required style="padding: 10px; margin-bottom: 20px; width: 40%; border-radius: 20px; border: 1px solid #ccc;" />
                 <button type="submit" class="button create-account">Log In</button>
+                -->
             </form>
         
-            <!-- Sign up redirect (optional) -->
+            <!-- Sign up redirect (optional) 
             <p style="margin-top: 10px;">Don't have an account? <a href="signup.html">Sign up</a></p>
+            -->
+            <div class="subheading1">Shop smarter. Eat better. Every time.</div>
+            
         </div>
         
     </div>
@@ -191,31 +210,7 @@
             alert(error.message);
             });
         });
-        // Email/Password Sign-In
-        const loginForm = document.getElementById("login-form");
-        loginForm.addEventListener("submit", (e) => {
-        e.preventDefault();
-        const email = loginForm.email.value;
-        const password = loginForm.password.value;
-        signInWithEmailAndPassword(auth, email, password)
-            .then((userCredential) => {
-                const user = userCredential.user;
-                console.log("User signed in with email:", user);
-                // Check if the user is coming from the sign-up page
-                const urlParams = new URLSearchParams(window.location.search);
-                if (urlParams.has('from') && urlParams.get('from') === 'signup') {
-                    // Redirect to preferences page after login
-                    window.location.href = "preferences.html";
-                } else {
-                    // Regular login redirection (for existing users)
-                    window.location.href = "home.html";
-                }
-            })
-            .catch((error) => {
-                console.error("Login error:", error.message);
-                alert("Login failed: " + error.message);
-            });
-        });
+
     </script>
 
 

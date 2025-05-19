@@ -10,19 +10,19 @@ def weekly_check():
     for p in firebase_connection.get_all_tracked_items():
         print(p)
         get_product(p["name"])
-        if "bls" in p:
-            prices = bls_prices.api.get_price_for(p["bls"].strip())
+        # if "bls" in p:
+        #     prices = bls_prices.api.get_price_for(p["bls"].strip())
             
-            for pi in prices:
-                id = f"bls_{p['name'].lower().replace(' ', '_')}_{pi['date'].isoformat()}"
-                price_point = {
-                    "item_name": p["name"],
-                    "price": pi["price"],
-                    "date": str(pi["date"].date()),
-                    "timestamp": pi["date"].isoformat(),
-                    "type": "bls"
-                }
-                firebase_connection.upload_to_firebase("Price_Point", price_point, id)
+        #     for pi in prices:
+        #         id = f"bls_{p['name'].lower().replace(' ', '_')}_{pi['date'].isoformat()}"
+        #         price_point = {
+        #             "item_name": p["name"],
+        #             "price": pi["price"],
+        #             "date": str(pi["date"].date()),
+        #             "timestamp": pi["date"].isoformat(),
+        #             "type": "bls"
+        #         }
+        #         firebase_connection.upload_to_firebase("Price_Point", price_point, id)
 
     
 

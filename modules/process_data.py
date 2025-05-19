@@ -38,7 +38,10 @@ def generate_grocery_list(user):
         c_products = []
         for p in products:
             if "price"in p:
-                c_products.append(p)
+                if "average" in p:
+                     if p["price"] != p["average"]:
+                        c_products.append(p)
+        print(c_products)
         grocery_list = ai_integration.get_generic_list(f"```json\n{preferences}\n```", messages)
         grocery_list = ai_integration.get_base_list(f"```json\n{c_products}\n```", messages)
         category_output = ai_integration.recipe_suggestion(messages)

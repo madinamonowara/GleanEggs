@@ -89,9 +89,9 @@ def signup():
             session['name'] = name
             return redirect(url_for('home'))
         else:
-            return render_template('signup.html', error="Signup failed. Try again.")
+            return render_template('login.html', error="Signup failed. Try again.")
 
-    return render_template('signup.html')
+    return render_template('login.html')
 
 
 @app.route("/preferences", methods=['GET', 'POST'])
