@@ -116,7 +116,12 @@ def get_all_items_from_collection(collection_name):
    
     try:
         docs = db.collection(collection_name).stream()
-        items = [doc.to_dict() for doc in docs]
+        items = []
+        for doc in docs:
+            dt = doc.to_dict()
+            dt["id"] = doc.id
+            items.append(dt)
+        # items = [doc.to_dict() for doc in docs]
         return items
     except Exception as e:
         print(f"Error retrieving items from {collection_name}: {str(e)}")
