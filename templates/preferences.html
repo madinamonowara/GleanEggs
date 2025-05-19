@@ -201,6 +201,7 @@
       justify-content: center;
       gap: 10px;
     }
+    
 
     .shop-frequency-options input[type="radio"] {
       display: none;
@@ -323,12 +324,12 @@
         <h3>How often do you grocery shop?</h3>
         <div class="shop-frequency-options">
           <label>
-            <input type="radio" name="shop-frequency" value="1x" {{preferences['shop-frequency_1x']}}/>
+            <input type="radio" name="shop-frequency" value="weekly" {{preferences['shop-frequency_1x']}}/>
             1x a week
           </label>
           
           <label>
-            <input type="radio" name="shop-frequency" value="2x" {{preferences['shop-frequency_2x']}}/>
+            <input type="radio" name="shop-frequency" value="twice per week" {{preferences['shop-frequency_2x']}}/>
             2x a week
           </label>
           <label>
@@ -341,7 +342,35 @@
           </label>
         </div>
       </div>
-      
+      <div class="question-bubble">
+        <h3>What kind of meals do you like?</h3>
+        <div class="shop-frequency-options">
+          <label>
+            <input type="radio" name="meal-preference" value="any" {{preferences['meal-preference_any']}}/>
+            Any
+          </label>
+          <label>
+            <input type="radio" name="meal-preference" value="seafood" {{preferences['meal-preference_seafood']}}/>
+            Seafood
+          </label>
+          <label>
+            <input type="radio" name="meal-preference" value="breakfast" {{preferences['meal-preference_breakfast']}}/>
+            Breakfast
+          </label>
+          <label>
+            <input type="radio" name="meal-preference" value="italian" {{preferences['meal-preference_italian']}}/>
+            Italian
+          </label>
+          <label>
+            <input type="radio" name="meal-preference" value="american" {{preferences['meal-preference_american']}}/>
+            American
+          </label>
+          <label>
+            <input type="radio" name="meal-preference" value="mexican" {{preferences['meal-preference_mexican']}}/>
+            Mexican
+          </label>
+        </div>
+      </div> 
       <div class="question-bubble">
         <h3>What’s your weekly grocery budget?</h3>
         <div class="slider-container">

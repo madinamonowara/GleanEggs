@@ -316,7 +316,7 @@ def submit_instore_price():
     # This assumes upload_to_firebase supports merge=True for updating a nested dict
     firebase_connection.upload_to_firebase(
         f"Price_Point",
-        {"timestamp": timestamp, "price": price, "type": "user", "item_name": name, "date": str(datetime.now().date())},
+        {"timestamp": timestamp, "price": price, "type": "user", "item_name": name.lower().replace(" ","_"), "date": str(datetime.now().date())},
         doc_id=f"user_{timestamp}"
     )
 

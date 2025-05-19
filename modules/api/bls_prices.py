@@ -3,17 +3,19 @@ import requests
 import json
 import datetime
 from types import SimpleNamespace
-
-bls_url_base = 'https://api.bls.gov/publicAPI/v2/timeseries/data/{id}'
+import modules.keys
+bls_url_base = 'https://api.bls.gov/publicAPI/v2/timeseries/data/{id}?registrationkey='+ modules.keys.bls_api_key
 
 class BLSData(get_prices_now.APIPriceConnection):
     #custom function to get BLS data
     def get_price_for(self, item):
+        print(bls_url_base)
         resp = requests.get(bls_url_base.format(id =item))
         
         jr = json.loads(resp.text)
         
         price_points = []        
+        print(jr)
         for result in jr["Results"]["series"][0]["data"]:
             print(result)            
             ""

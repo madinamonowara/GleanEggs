@@ -129,6 +129,7 @@ def recipe_suggestion_2(recipes, messages):
     {"name": "Recipe Name", "id": 0}
     ```
     Considering the names of the recipes, create a small list of recipes for the user to try given their preferences and frequency of shopping. Minimum three recipes.
+    Ensure that the recipes are diverse so that the user isn't bored with the choices.
     
     Example Recipe Output:
     ```json
