@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request, session, redirect, url_for, jsonify
+from flask import Flask, render_template, request, session, redirect, url_for, jsonify
 from modules.api import bls_prices
 from modules import process_data
 from modules import firebase_connection
@@ -61,9 +62,10 @@ def home():
         grocery_list.append({
             "product": list["items"][i],
             "name": list["items"][i].capitalize().replace("_", " "),
-            "price": list["prices"][i],
+            "price": float(int(list["prices"][i]*100))/100,
             "reason": list["reason"][i],
             "img":  img})
+    session['list'] = [i['product'] for i in grocery_list]
     return check_login(render_template("/home.html", name=get_session_value("name"), list=grocery_list, reason=list["full_reason"]))
 
 def logged_in():
@@ -225,7 +227,6 @@ def product_data():
 def get_product(name):
     formatted_name = name.lower().replace(" ", "_")
     price_history = firebase_connection.get_price_history_by_item(formatted_name)
-    
     # dates = [entry["date"] for entry in price_history]
     # prices = [entry["price"] for entry in price_history]
     last_verified = 0.00
@@ -243,7 +244,7 @@ def get_product(name):
     dates = d_dict.keys()
     prices = [sum(d_dict[k])/len(d_dict[k]) for k in d_dict.keys()]
     history = [list(item) for item in zip(dates, prices)]
-    item =  firebase_connection.get_node("Grocery_Items", name)
+    item =  firebase_connection.get_node("Grocery_Items", name.lower().replace(" ", "_"))
     price = 0.0
     if item:
         price = item["price"]
@@ -257,7 +258,11 @@ def get_product(name):
     avg = item["average"] if len(prices) <= 0 else sum(prices)/max(len(prices), 1)
     price = item["price"] if len(prices) <= 0 else prices[-1]
     product = {"history": history, "averagePrice": float(avg), "currentPrice": float(price), "image": item["image"], "name": item["name"]}
+    
     # products = [product1, product2]
+    product['in_list'] = False
+    if 'list' in session:
+        product['in_list'] = product['name'] in session['list']
     return product
 
 # changed to allow user's inputted price to show in products after being changed
@@ -320,6 +325,36 @@ def submit_instore_price():
         doc_id=f"user_{timestamp}"
     )
 
+    last_verified = 0.00
+    d_dict = {}
+    price_history = firebase_connection.get_price_history_by_item(name.lower().replace(" ", "_"))
+    for entry in price_history:
+        print(entry)
+        if not entry["date"] in d_dict:
+            d_dict[entry["date"]] = []
+        d_dict[entry["date"]].append(float(entry["price"]))
+        if entry["type"] != "user":
+            last_verified = float(entry["price"])
+        if last_verified:
+            for i in range(15):
+                d_dict[entry["date"]].append(last_verified)
+    dates = d_dict.keys()
+    prices = [sum(d_dict[k])/len(d_dict[k]) for k in d_dict.keys()]
+    history = [list(item) for item in zip(dates, prices)]
+    item =  firebase_connection.get_node("Grocery_Items", name.lower().replace(" ", "_"))
+    price = 0.0
+    if item:
+        price = item["price"]
+        print(price)
+    if "name" in item:
+        item["name"] = item["name"].capitalize().replace("_", " ")
+    if len(history) == 0:
+        history.append([0,0])
+    if not "image" in item:
+        item["image"] = recipe_api.get_thumbnail(item["name"])
+    item["average"] = item["average"] if len(prices) <= 0 else sum(prices)/max(len(prices), 1)
+    item["price"] = item["price"] if len(prices) <= 0 else prices[-1]
+    firebase_connection.upload_to_firebase("Grocery_Items", item, name.lower().replace(" ", "_"))
     return jsonify({"success": True}), 200
 
 
@@ -369,7 +404,7 @@ def get_product_by_name():
 def add_item():
     if not logged_in(): return jsonify({"success": False, "message": "Not logged in"})
     
-    item_name = request.form.get("item_name")
+    item_name = request.get_json()["item_name"]
     success = firebase_connection.add_to_grocery_list(session["email"], item_name)
     return jsonify({"success": success})
 
@@ -378,7 +413,8 @@ def add_item():
 def remove_item():
     if not logged_in(): return jsonify({"success": False, "message": "Not logged in"})
     
-    item_name = request.form.get("item_name")
+    item_name = request.get_json()["item_name"]
+    print(item_name)
     success = firebase_connection.remove_from_grocery_list(session["email"], item_name)
     return jsonify({"success": success})
 

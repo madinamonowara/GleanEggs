@@ -200,12 +200,12 @@ def add_to_grocery_list(user_email, item_name):
             reasons = data.get("reason", [])
         else:
             items, prices, reasons = [], [], []
-
+        item_name = item_name.replace("_", " ").title()
         if item_name in items:
             print(f"{item_name} already in grocery list")
             return False
 
-        item_data = get_node("Grocery_Items", item_name.lower())
+        item_data = get_node("Grocery_Items", item_name.lower().replace(" ","_"))
         if not item_data:
             print(f"{item_name} not found in Grocery_Items")
             return False
@@ -238,8 +238,9 @@ def remove_from_grocery_list(user_email, item_name):
         items = data.get("items", [])
         prices = data.get("prices", [])
         reasons = data.get("reason", [])
+        item_name = item_name.capitalize().replace("_", " ")
 
-        if item_name not in items:
+        if not item_name.replace("_", " ").title() in items:
             print(f"{item_name} not found in list")
             return False
 

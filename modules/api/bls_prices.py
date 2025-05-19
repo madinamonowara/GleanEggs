@@ -15,7 +15,6 @@ class BLSData(get_prices_now.APIPriceConnection):
         jr = json.loads(resp.text)
         
         price_points = []        
-        print(jr)
         for result in jr["Results"]["series"][0]["data"]:
             print(result)            
             ""

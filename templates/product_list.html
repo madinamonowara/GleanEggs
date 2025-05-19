@@ -110,6 +110,37 @@
       background-color: green;
       color: white;
     }
+
+    #loadingOverlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(255, 255, 255, 0.8);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 999;
+    }
+
+    #loadingOverlay img {
+      width: 80px;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    #scroll-wrapper {
+      height: 500px;
+      overflow-y: auto;
+      margin-bottom: 20px;
+      padding-right: 5px; /* prevents content from hiding behind scrollbar */
+    }
+    
   </style>
 </head>
 <body>
@@ -129,7 +160,13 @@
     </nav>
   </header>
 
-  <div class="container">
+  
+  <div id="loadingOverlay">
+    <img src="/static/images/spinning_egg.png" alt="Loading...">
+  </div>  
+
+  <div id="main-content" style="display: none;">
+    <div class="container">
     <section class="product-container">
       <h2>Hey, Here’s All the Products</h2>
       <div style="display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap;">
@@ -142,41 +179,46 @@
           <option value="meat">Meat</option>
         </select>
       </div>
-      <div class="grocery-list" id="groceryList"></div>
+      <div id="scroll-wrapper" style="height: 500px; overflow-y: auto; margin-bottom: 20px;">
+        <div class="grocery-list" id="groceryList"></div>
+      </div>      
     </section>
+
+    <button onclick="goToComparisonPage()" style="margin-top: 20px; padding: 10px 20px; border: none; background: #4CAF50; color: white; border-radius: 8px;">
+      Compare Selected Items
+    </button>
   </div>
+</div>
 
-  <button onclick="goToComparisonPage()" style="margin-top: 20px; padding: 10px 20px; border: none; background: #4CAF50; color: white; border-radius: 8px;">
-    Compare Selected Items
-  </button>
+  
   <script>
-    fetch('/get_products').then(response => response.json())
-      .then(data => {
-        const products = data.products;
-        products.forEach(product => {
-          addItem(
-            product.name,
-            product.displayName,
-            product.image,
-            parseFloat(product.price),
-            product.category,
-            product.average
-            // product.in_store_price // new for user's input of price
-          );
-        });});
+    // fetch('/get_products').then(response => response.json())
+    //   .then(data => {
+    //     const products = data.products;
+    //     products.forEach(product => {
+    //       addItem(
+    //         product.name,
+    //         product.displayName,
+    //         product.image,
+    //         parseFloat(product.price),
+    //         product.category,
+    //         product.average
+    //         // product.in_store_price // new for user's input of price
+    //       );
+    //     });});
 
 
-      
-      
       function addItem(name, displayName, image, price, category, averagePrice) {
-        price = Number(price)
-        averagePrice = Number(averagePrice)
         const list = document.getElementById("groceryList");
         const item = document.createElement("div");
         item.classList.add("grocery-item");
         item.dataset.name = name;
         item.dataset.category = category;
-
+        console.log(name)
+        console.log(price)
+        console.log(averagePrice)
+        price = Number(price)
+        averagePrice = Number(averagePrice)
         // Compare prices
         let inStoreHTML = "";
         let onlineHTML = `<p class="item-price">Average Price: $${averagePrice.toFixed(2)}</p>`;
@@ -216,9 +258,6 @@
 
         list.appendChild(item);
       }
-
-
-            
 
     function filterProducts() {
       const searchValue = document.getElementById("searchInput").value.toLowerCase();
@@ -296,8 +335,34 @@
     });
   }
 }
-
 </script>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  document.getElementById("loadingOverlay").style.display = "flex";
+
+  fetch('/get_products')
+    .then(response => response.json())
+    .then(data => {
+      const products = data.products;
+      products.forEach(product => {
+        addItem(
+          product.name,
+          product.displayName,
+          product.image,
+          product.price,
+          product.category,
+          product.average
+        );
+      });
+
+      // Hide loader, show content
+      document.getElementById("loadingOverlay").style.display = "none";
+      document.getElementById("main-content").style.display = "block";
+    });
+});
+</script>
+
 
 
 </body>

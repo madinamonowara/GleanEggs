@@ -34,6 +34,24 @@
       top: 0;
       z-index: 100;
     }
+     .action-buttons {
+      display: flex;
+      gap: 10px;
+    }
+    .action-buttons button {
+      padding: 6px 12px;
+      font-size: 12px;
+      background: white;
+      border: 2px solid green;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: background-color 0.3s, color 0.3s;
+    }
+    .action-buttons button:hover {
+      background-color: green;
+      color: white;
+    }
+
     .logo-section {
       display: flex;
       align-items: center;
@@ -106,6 +124,10 @@
     <h2 id="productName">Product Name</h2>
     <img id="productImage" class="product-image" src="" alt="Product">
     <div class="price-info" id="priceInfo"></div>
+    <div class="action-buttons" style='display:flex;margin: auto;place-content: center;'>
+      <button class="remove-item" id="addToList">Add To List</button>
+      <button class="remove-item" id="removeFromList">Remove From List</button>
+    </div>
     <canvas id="priceChart"></canvas>
     <div id="userPriceSection" style="margin-top: 20px;">
       <button onclick="enterStorePrice()" style="padding: 10px 15px; border: 2px solid #4CAF50; border-radius: 8px; background: white; cursor: pointer;">✏️ Enter In-Store Price</button>
@@ -133,7 +155,36 @@
             <strong>Latest Price:</strong> $${Number(product.currentPrice).toFixed(2)}
           `;
 
-
+          if(product.in_list){
+            document.getElementById("addToList").style.visibility = 'hidden'
+            document.getElementById("removeFromList").style.visibility = 'visible'
+          }
+          else{
+            document.getElementById("removeFromList").style.visibility = 'hidden'
+            document.getElementById("addToList").style.visibility = 'visible'
+          }
+          document.getElementById("addToList").onclick = function(){
+            document.getElementById("addToList").style.visibility = 'hidden';
+            document.getElementById("removeFromList").style.visibility = 'visible';
+            fetch('/add_item',
+          { method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            item_name: product.name,  // from earlier in scrip
+          })})};
+          document.getElementById("removeFromList").onclick = function(){
+            document.getElementById("addToList").style.visibility = 'visible';
+            document.getElementById("removeFromList").style.visibility = 'hidden';
+            fetch('/remove_item', {method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            item_name: product.name,  // from earlier in scrip
+          })})};
+          
           if (product.history.length > 2){
 
             new Chart(document.getElementById("priceChart"), {
