@@ -73,17 +73,3 @@ Madina — login page front+backend, fixing preferences bug
 Shameed — Backend, AI logic, API integrations, data collection logic
 Yana — Firebase logic, category systems
 
-
-
-
-# GleanEggs
-AI-Powered Smart Grocery Assistant
-
-Please run the following commands to setup environment in python 3.9+
-Setting up virtual environment:
-
-venv path/to/venv
-source path/to/venv/bin/activate
-
-SETUP:
-pip install -requirements.txt
