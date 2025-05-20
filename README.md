@@ -1,7 +1,5 @@
-# Glean Eggs is a reactive web application designed to help users save time and money on grocery shopping. 
-# By combining real-time price 
-# tracking, AI-generated lists, and user preferences like dietary restrictions and budget, Glean Eggs 
-# empowers users to shop smarter—not harder.
+# Glean Eggs
+## is a reactive web application designed to help users save time and money on grocery shopping. By combining real-time price tracking, AI-generated lists, and user preferences like dietary restrictions and budget, Glean Eggs empowers users to shop smarter—not harder.
 
 # Description of system:
 Generate AI-powered grocery lists based on personal preferences (e.g. vegan, budget-conscious).
