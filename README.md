@@ -69,7 +69,10 @@ heroku open
 # Contributors
 
 Zuzanna — Frontend (UI/UX, all the pages other than login, spinning egg, styling)
+
 Madina — login page front+backend, fixing preferences bug
+
 Shameed — Backend, AI logic, API integrations, data collection logic
+
 Yana — Firebase logic, category systems
 
